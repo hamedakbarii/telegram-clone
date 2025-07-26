@@ -29,7 +29,7 @@
  - 4.Message input field
    - Textarea for message
    - Send BTN 
-   - Support Emoji & Sticker
+   - Support Emoji & Sticker & Gifs
 
  - 5.Extra Options
    - Responsive Design
@@ -38,7 +38,9 @@
    - Add READ.md file for git
    - Music Player
    - Voice & video message
-   -
-   -
-   -
-   -
+   - add "isTyping"
+   - send image  & video
+   - WPA + Offline mode
+   - Scheduled Messages
+   - Reactions & Polls
+   - Lock Telegram
