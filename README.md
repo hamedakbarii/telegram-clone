@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+##NEXTJS TELEGRAM TASKS
 
-## Getting Started
+- 1.LOGIN
 
-First, run the development server:
+- 2.CHAT LIST
+  - Show Contacts & Chats (Also Archive Chat & Pin Message)
+  - Avatar
+  - Last Message For That Chat
+  - UserName
+  - Date or Time
+  - Per message don't seen
+  - Search Bar
+  - Menu Bar
+    - Show Profile
+    - Contacts
+    - Saved Messages
+    - Settings
+    - Night Mode
+    - Copy Right 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 3.MAIN CHAT (CHAT PAGE)
+ - Chat Header
+   - User/Group Name
+   - Optional buttons (e.g. "Call" or "Info" that don't require any actual functionality).
+   
+ - Message Display Range
+   - 
+   
+ - 4.Message input field
+   - Textarea for message
+   - Send BTN 
+   - Support Emoji & Sticker
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+ - 5.Extra Options
+   - Responsive Design
+   - Animations & UI UX
+   - Refactor & Clean Code
+   - Add READ.md file for git
+   - Music Player
+   - Voice & video message
+   -
+   -
+   -
+   -
