@@ -233,13 +233,15 @@ const countries = [
   { name: "Western Sahara", code: "+212", flag: "🇪🇭" },
   { name: "Yemen", code: "+967", flag: "🇾🇪" },
   { name: "Zambia", code: "+260", flag: "🇿🇲" },
-  { name: "Zimbabwe", code: "+263", flag: "🇿🇼" }
+  { name: "Zimbabwe", code: "+263", flag: "🇿🇼" },
 ];
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState(countries.find(c => c.name === "Iran"));
-  const [phoneNumber, setPhoneNumber] = useState("+98");
+  const [selectedCountry, setSelectedCountry] = useState(
+    countries.find((c) => c.name === "Iran")
+  );
+  const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+98");
   const [keepSignedIn, setKeepSignedIn] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -249,29 +251,33 @@ export default function LoginPage() {
   // Handle click outside to close dropdown
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     }
 
     if (isDropdownOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isDropdownOpen]);
 
   const handleLogin = () => {
-    if (!username.trim()) return;
-    login(username.trim());
+    if (!phone.trim()) return alert("لطفاً شماره تلفن را وارد کنید");
+
+    login({ country: countryCode, phone });
     router.push("/chat");
   };
 
-  const handleCountrySelect = (country: typeof countries[0]) => {
+  const handleCountrySelect = (country: (typeof countries)[0]) => {
     setSelectedCountry(country);
-    setPhoneNumber(country.code);
+    setCountryCode(country.code);
     setIsDropdownOpen(false);
   };
 
@@ -279,11 +285,11 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white rounded-none shadow-none p-8 flex flex-col justify-center items-center">
         <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mb-6">
-        <img
-          src="assets/avatar/telegram.jpg"
-          alt="Telegram icon"
-          className="rounded-full w-32 my-4"
-        />
+          <img
+            src="assets/avatar/telegram.jpg"
+            alt="Telegram icon"
+            className="rounded-full w-32 my-4"
+          />
         </div>
 
         <h1 className="text-2xl font-semibold text-center text-black mb-2">
@@ -291,7 +297,8 @@ export default function LoginPage() {
         </h1>
 
         <p className="text-sm text-gray-500 text-center mb-8 leading-relaxed">
-          Please confirm your country code and enter your<br />
+          Please confirm your country code and enter your
+          <br />
           phone number.
         </p>
 
@@ -308,8 +315,18 @@ export default function LoginPage() {
                 className="w-full flex items-center justify-between text-left text-sm bg-transparent border-none outline-none"
               >
                 <span className="text-black">{selectedCountry?.name}</span>
-                <svg className={`w-8 h-8 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                <svg
+                  className={`w-8 h-8 text-gray-500 transition-transform ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </button>
             </div>
@@ -325,14 +342,16 @@ export default function LoginPage() {
                     className="w-full px-4 py-2 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none flex items-center justify-between text-sm text-black"
                   >
                     <div className="flex items-center">
-                      <img 
+                      <img
                         src={`https://emojicdn.elk.sh/${country.flag}?style=apple`}
                         alt={country.name}
                         className="mr-3 w-8 h-8"
                       />
                       <span>{country.name}</span>
                     </div>
-                    <span className="text-gray-500 text-xs">{country.code}</span>
+                    <span className="text-gray-500 text-xs">
+                      {country.code}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -348,8 +367,8 @@ export default function LoginPage() {
             </label>
             <input
               type="tel"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               className="w-full text-black border-none outline-none text-sm bg-transparent"
               placeholder={selectedCountry?.code}
             />
@@ -369,19 +388,30 @@ export default function LoginPage() {
             <div
               onClick={() => setKeepSignedIn(!keepSignedIn)}
               className={`w-5 h-5 rounded border-2 cursor-pointer flex items-center justify-center ${
-                keepSignedIn 
-                  ? 'bg-blue-500 border-blue-500' 
-                  : 'bg-white border-gray-300'
+                keepSignedIn
+                  ? "bg-blue-500 border-blue-500"
+                  : "bg-white border-gray-300"
               }`}
             >
               {keepSignedIn && (
-                <svg className="w-3 h-3 text-white" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                <svg
+                  className="w-3 h-3 text-white"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               )}
             </div>
           </div>
-          <label htmlFor="keepSignedIn" className="ml-3 text-sm text-black cursor-pointer">
+          <label
+            htmlFor="keepSignedIn"
+            className="ml-3 text-sm text-black cursor-pointer"
+          >
             Keep me signed in
           </label>
         </div>
