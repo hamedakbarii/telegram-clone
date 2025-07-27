@@ -2,8 +2,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { IconSearch, IconMenu2, IconEdit, IconDotsVertical, IconPin, IconSun, IconMoon, IconSettings, IconLogout, IconPlus } from '@tabler/icons-react';
 import { chats } from '@/lib/mocks/chat';
+import { FiMoon, FiSearch } from 'react-icons/fi';
+import { MdOutlineMenu } from 'react-icons/md';
+import { FaPlus, FaRegEdit } from 'react-icons/fa';
+import { TbPin } from 'react-icons/tb';
+import { IoSunnyOutline } from 'react-icons/io5';
+import { CiSettings } from 'react-icons/ci';
+import { LuLogOut } from 'react-icons/lu';
 
 export default function ChatListPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,7 +36,7 @@ export default function ChatListPage() {
               onClick={toggleMenu}
               className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer"
             >
-              <IconMenu2 size={20} />
+              <MdOutlineMenu size={20} />
             </button>
             
             {/* Dropdown menu */}
@@ -38,12 +44,12 @@ export default function ChatListPage() {
               <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700 backdrop-blur-md">
                 <div className="py-1 flex flex-col items-center">
                   <button>User</button>
-                  <div className="flex"><button className="flex max-w-5 mx-[0.5rem] me-[1.25rem] mr-8"> <IconPlus /> Add Account</button></div>
+                  <div className="flex"><button className="flex max-w-5 mx-[0.5rem] me-[1.25rem] mr-8"> <FaPlus /> Add Account</button></div>
                   <button>Save Message</button>
                   <button>Contact</button>
                   <button>My Stories</button>
                   <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <IconSettings size={16} className="mr-2" />
+                    <CiSettings size={16} className="mr-2" />
                     Settings
                   </button>
                   <button
@@ -52,12 +58,12 @@ export default function ChatListPage() {
                   >
                     {darkMode ? (
                       <>
-                        <IconSun size={16} className="mr-2" />
+                        <IoSunnyOutline size={16} className="mr-2" />
                         Light Mode
                       </>
                     ) : (
                       <>
-                        <IconMoon size={16} className="mr-2" />
+                        <FiMoon size={16} className="mr-2" />
                         Night Mode
                       </>
                     )}
@@ -72,7 +78,7 @@ export default function ChatListPage() {
                   </div>
 
                   <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-red-500">
-                    <IconLogout size={16} className="mr-2" />
+                    <LuLogOut size={16} className="mr-2" />
                     Log Out
                   </button>
                 </div>
@@ -86,10 +92,10 @@ export default function ChatListPage() {
               placeholder="Search"
               className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg focus:outline-none"
             />
-            <IconSearch size={16} className="absolute left-3 top-2.5 text-gray-500" />
+            <FiSearch size={16} className="absolute left-3 top-2.5 text-gray-500" />
           </div>
           <button className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer">
-            <IconEdit size={20} />
+            <FaRegEdit size={20} />
           </button>
         </div>
 
@@ -130,7 +136,7 @@ export default function ChatListPage() {
                         {chat.unreadCount}
                       </span>
                     )}
-                    {chat.isPinned && <IconPin size={16} className="text-gray-500 ml-0.5" />}
+                    {chat.isPinned && <TbPin size={16} className="text-gray-500 ml-0.5" />}
                   </div>
                 </div>
               </button>
