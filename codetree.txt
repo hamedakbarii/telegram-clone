@@ -2,6 +2,8 @@
 Files Structure
 ================================================================
 app/
+  chat/
+    page.tsx
   globals.css
   layout.tsx
   page.tsx
@@ -22,6 +24,20 @@ tsconfig.json
 ================================================================
 Repository Files
 ================================================================
+
+================
+File: app/chat/page.tsx
+================
+// Path: app/chat/page.tsx
+import React from 'react'
+
+type Props = {}
+
+export default function ChatListPage({}: Props) {
+  return (
+    <div className="">Chat List</div>
+  )
+}
 
 ================
 File: app/globals.css
@@ -190,6 +206,7 @@ File: package.json
   "dependencies": {
     "@mantine/core": "^8.2.1",
     "@mantine/hooks": "^8.2.1",
+    "@mantine/notifications": "^8.2.1",
     "next": "15.4.4",
     "react": "19.1.0",
     "react-dom": "19.1.0"
@@ -250,7 +267,7 @@ File: README.md
  - 4.Message input field
    - Textarea for message
    - Send BTN 
-   - Support Emoji & Sticker
+   - Support Emoji & Sticker & Gifs
 
  - 5.Extra Options
    - Responsive Design
@@ -259,10 +276,12 @@ File: README.md
    - Add READ.md file for git
    - Music Player
    - Voice & video message
-   -
-   -
-   -
-   -
+   - add "isTyping"
+   - send image  & video
+   - WPA + Offline mode
+   - Scheduled Messages
+   - Reactions & Polls
+   - Lock Telegram
 
 ================
 File: tsconfig.json
