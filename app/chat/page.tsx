@@ -28,7 +28,7 @@ export default function ChatListPage() {
 
   return (
     <div
-      className={`flex h-screen text-black dark:text-white bg-gray-100 dark:bg-gray-900`}
+      className={`flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]`}
     >
       {/* Left sidebar - Chat list */}
       <div className="w-96 border-r border-gray-200 dark:border-gray-800 flex flex-col">
@@ -45,8 +45,9 @@ export default function ChatListPage() {
 
             {/* Dropdown menu */}
             {isMenuOpen && (
-              <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700 backdrop-blur-md">
-                < div className="py-1 flex flex-col items-center">
+              // <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700 backdrop-blur-md">
+              <div className="fixed inset-0 z-10 mx-2.5 border-0" onClick={toggleMenu}>
+                < div className="py-1 absolute left-0 mt-2 w-56 bg-white/80 dark:bg-gray-800/80 rounded-md shadow-lg z-20 border border-gray-200 dark:border-gray-700 backdrop-blur-lg">
                   <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
                     <CiSettings size={16} className="mr-2" />
                     User
