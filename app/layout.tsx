@@ -19,8 +19,6 @@ export const metadata: Metadata = {
   description: 'Chat UI project with Mantine and Next.js',
   icons: {
     icon: "/assets/avatar/telegram.jpg",
-    apple: "/apple-touch-icon.png",
-    shortcut: "/favicon.ico",
   },
   manifest: "/site.webmanifest",
 };

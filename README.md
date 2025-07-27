@@ -44,3 +44,4 @@
    - Scheduled Messages
    - Reactions & Polls
    - Lock Telegram
+   - Skeleton for loading
