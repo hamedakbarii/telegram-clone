@@ -1,5 +1,5 @@
 // Path: app/chat/page.tsx
-'use client';
+"use client";
 
 import React, { useState } from 'react';
 import { chats } from '@/lib/mocks/chat';
@@ -19,28 +19,30 @@ export default function ChatListPage() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  }
+  };
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
-    document.documentElement.classList.toggle('dark');
+    document.documentElement.classList.toggle("dark");
   };
 
   return (
-    <div className={`flex h-screen text-black dark:text-white bg-gray-100 dark:bg-gray-900`}>
+    <div
+      className={`flex h-screen text-black dark:text-white bg-gray-100 dark:bg-gray-900`}
+    >
       {/* Left sidebar - Chat list */}
       <div className="w-96 border-r border-gray-200 dark:border-gray-800 flex flex-col">
         {/* Header */}
         <div className="p-3 border-b border-gray-200 dark:border-gray-800 flex items-center gap-2">
           {/* Menu button with dropdown */}
           <div className="relative">
-            <button 
+            <button
               onClick={toggleMenu}
               className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer"
             >
               <MdOutlineMenu size={20} />
             </button>
-            
+
             {/* Dropdown menu */}
             {isMenuOpen && (
               <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700 backdrop-blur-md">
@@ -121,7 +123,10 @@ export default function ChatListPage() {
               placeholder="Search"
               className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg focus:outline-none"
             />
-            <FiSearch size={16} className="absolute left-3 top-2.5 text-gray-500" />
+            <FiSearch
+              size={16}
+              className="absolute left-3 top-2.5 text-gray-500"
+            />
           </div>
           <button className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer">
             <FaRegEdit size={20} />
@@ -131,7 +136,10 @@ export default function ChatListPage() {
         {/* Chat list */}
         <div className="flex-1 overflow-y-auto">
           {chats.map((chat) => (
-            <div key={chat.id} className="border-b border-gray-200 dark:border-gray-800">
+            <div
+              key={chat.id}
+              className="border-b border-gray-200 dark:border-gray-800"
+            >
               <button className="w-full p-3 flex items-center gap-3 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors cursor-pointer">
                 {/* Avatar with online indicator */}
                 <div className="relative">
@@ -159,13 +167,17 @@ export default function ChatListPage() {
                     </div>
                   </div>
                   <div className="flex justify-start items-center min-w-0">
-                    <p className="text-sm text-gray-500 truncate text-left grow pr-1">{chat.lastMessage}</p>
+                    <p className="text-sm text-gray-500 truncate text-left grow pr-1">
+                      {chat.lastMessage}
+                    </p>
                     {chat.unreadCount > 0 && (
                       <span className="bg-blue-500 text-xs rounded-full w-5 h-5 flex items-center justify-center px-2">
                         {chat.unreadCount}
                       </span>
                     )}
-                    {chat.isPinned && <TbPin size={16} className="text-gray-500 ml-0.5" />}
+                    {chat.isPinned && (
+                      <TbPin size={16} className="text-gray-500 ml-0.5" />
+                    )}
                   </div>
                 </div>
               </button>
@@ -176,7 +188,9 @@ export default function ChatListPage() {
 
       {/* Main content area */}
       <div className="flex-1 flex items-center justify-center bg-white dark:bg-gray-950">
-        <p className="text-gray-500 dark:text-gray-400">Select a chat to start messaging</p>
+        <p className="text-gray-500 dark:text-gray-400">
+          Select a chat to start messaging
+        </p>
       </div>
     </div>
   );

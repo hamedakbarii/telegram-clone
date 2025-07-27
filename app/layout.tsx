@@ -1,22 +1,23 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
-import './globals.css';
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
 
-import MantineWrapper from './mantine-wrapper';
+// import MantineWrapper from "./mantine-wrapper";
+import { MantineProvider } from "@mantine/core";
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
 });
 
 const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: 'Telegram Clone',
-  description: 'Chat UI project with Mantine and Next.js',
+  title: "Telegram Clone",
+  description: "Chat UI project with Mantine and Next.js",
   icons: {
     icon: "/assets/avatar/telegram.jpg",
   },
@@ -30,8 +31,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <MantineWrapper>{children}</MantineWrapper>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <MantineProvider theme={{ primaryColor: "blue" }}>
+          {children}
+        </MantineProvider>
       </body>
     </html>
   );
