@@ -38,7 +38,7 @@ export default function ChatListPage() {
           <div className="relative">
             <button
               onClick={toggleMenu}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer"
+              className="p-2 rounded-full hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer"
             >
               <MdOutlineMenu size={20} />
             </button>
@@ -47,35 +47,35 @@ export default function ChatListPage() {
             {isMenuOpen && (
               // <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700 backdrop-blur-md">
               <div className="fixed inset-0 z-10 mx-2.5 border-0" onClick={toggleMenu}>
-                < div className="py-1 absolute left-0 mt-2 w-56 bg-white/80 dark:bg-gray-800/80 rounded-md shadow-lg z-20 border border-gray-200 dark:border-gray-700 backdrop-blur-lg">
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                < div className="py-1 absolute left-0 mt-2 w-56 bg-[#212121dd] dark:bg-[#212121dd] rounded-2xl shadow-2xl z-20 border border-[#212121dd] dark:border-[#212121dd] backdrop-blur-md">
+                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
                     <CiSettings size={16} className="mr-2" />
                     User
                   </button>
-                  <hr className="w-full text-[#ffffffa1] h-2.5"/>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                     <FaPlus size={16} className="mr-2" />
-                     Add Account
+                  <hr className="w-full text-[#ffffffa1] h-2.5 opacity-5" />
+                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FaPlus size={16} className="mr-2" />
+                    Add Account
                   </button>
-                  <hr className="w-full text-[#ffffffa1] h-2.5"/>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                  <CiBookmark size={16} className="mr-2" />
+                  <hr className="w-full text-[#ffffffa1] h-2.5 opacity-5" />
+                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <CiBookmark size={16} className="mr-2" />
                     Save Message
-                    </button>
-                    <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                  <CiUser size={16} className="mr-2" />
+                  </button>
+                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <CiUser size={16} className="mr-2" />
                     Contact
-                    </button>
-                    <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                  </button>
+                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
                     My Stories
-                    </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                  </button>
+                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
                     <CiSettings size={16} className="mr-2" />
                     Settings
                   </button>
                   <button
                     onClick={toggleDarkMode}
-                    className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                    className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer"
                   >
                     {darkMode ? (
                       <>
@@ -89,49 +89,49 @@ export default function ChatListPage() {
                       </>
                     )}
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                  <BsQuestionCircleFill size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <BsQuestionCircleFill size={16} className="mr-2" />
                     Telegram Features
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                  <FaBug size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FaBug size={16} className="mr-2" />
                     Report A Bug
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                  <FaK size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FaK size={16} className="mr-2" />
                     Switch to K Version
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                  <FiPlusCircle size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FiPlusCircle size={16} className="mr-2" />
                     Install APP
                   </button>
 
-                  {/* <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-red-500">
+                  {/* <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] text-red-500">
                     <LuLogOut size={16} className="mr-2" />
                     Log Out
                   </button> */}
-                </div>
-                <div className="text-sm text-center text-neutral-200 py-2.5">
+                  <div className="text-sm text-center text-neutral-200 py-2.5">
                     <p>Telegram Web A 10.9.57</p>
                   </div>
+                </div>
               </div>
             )}
           </div>
 
           <div className="flex-1 relative cursor-text">
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg focus:outline-none"
-            />
-            <FiSearch
-              size={16}
-              className="absolute left-3 top-2.5 text-gray-500"
-            />
+              <input
+                type="text"
+                placeholder="Search"
+                className="w-full pl-10 pr-4 py-2 border-[#2d2d2d] dark:border-[#2d2d2d] bg-[#2d2d2d] dark:bg-[#2d2d2d] rounded-3xl focus:outline-none"
+              />
+              <FiSearch
+                size={16}
+                className="absolute left-3 top-2.5 text-gray-500"
+              />
           </div>
-          <button className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 cursor-pointer">
+          {/* <button className="p-2 rounded-full hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
             <FaRegEdit size={20} />
-          </button>
+          </button> */}
         </div>
 
         {/* Chat list */}
@@ -141,7 +141,7 @@ export default function ChatListPage() {
               key={chat.id}
               className="border-b border-gray-200 dark:border-gray-800"
             >
-              <button className="w-full p-3 flex items-center gap-3 hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+              <button className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] dark:hover:bg-[#151515] transition-colors cursor-pointer">
                 {/* Avatar with online indicator */}
                 <div className="relative">
                   <img
