@@ -4,13 +4,13 @@
 import React, { useState } from 'react';
 import { chats } from '@/lib/mocks/chat';
 import { FiMoon, FiPlusCircle, FiSearch } from 'react-icons/fi';
-import { MdOutlineMenu } from 'react-icons/md';
-import { FaPlus, FaRegEdit } from 'react-icons/fa';
+import { MdMotionPhotosOn, MdOutlineMenu } from 'react-icons/md';
+import { FaPlus, FaRegEdit, FaUserCircle } from 'react-icons/fa';
 import { TbPin } from 'react-icons/tb';
 import { IoSunnyOutline } from 'react-icons/io5';
 import { CiBookmark, CiSettings, CiUser } from 'react-icons/ci';
 import { LuLogOut } from 'react-icons/lu';
-import { BsQuestionCircleFill } from 'react-icons/bs';
+import { BsPlus, BsQuestionCircleFill } from 'react-icons/bs';
 import { FaBug, FaK } from 'react-icons/fa6';
 
 export default function ChatListPage() {
@@ -46,71 +46,79 @@ export default function ChatListPage() {
             {/* Dropdown menu */}
             {isMenuOpen && (
               // <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700 backdrop-blur-md">
-              <div className="fixed inset-0 z-10 mx-2.5 border-0" onClick={toggleMenu}>
-                < div className="py-1 absolute left-0 mt-2 w-56 bg-[#212121dd] dark:bg-[#212121dd] rounded-2xl shadow-2xl z-20 border border-[#212121dd] dark:border-[#212121dd] backdrop-blur-md">
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
-                    <CiSettings size={16} className="mr-2" />
+              <div
+                className={`fixed inset-0 z-10 mx-2.5 border-0 transition-opacity duration-200 ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  }`}
+                onClick={toggleMenu}
+              >
+                <div
+                  className={`py-1 absolute top-12 left-1.5 mt-2 w-56 bg-[#212121dd] dark:bg-[#212121dd] rounded-2xl shadow-2xl z-20 border border-[#212121dd] dark:border-[#212121dd] backdrop-blur-md overflow-hidden transition-all duration-200 ${isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
+                    }`}
+                >
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FaUserCircle size={20} className="mr-2" />
                     User
                   </button>
                   <hr className="w-full text-[#ffffffa1] h-2.5 opacity-5" />
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
-                    <FaPlus size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <BsPlus size={20} className="mr-2" />
                     Add Account
                   </button>
                   <hr className="w-full text-[#ffffffa1] h-2.5 opacity-5" />
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
-                    <CiBookmark size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <CiBookmark size={20} className="mr-2" />
                     Save Message
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
-                    <CiUser size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <CiUser size={20} className="mr-2" />
                     Contact
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <MdMotionPhotosOn size={20} className="mr-2" />
                     My Stories
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
-                    <CiSettings size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <CiSettings size={20} className="mr-2" />
                     Settings
                   </button>
                   <button
                     onClick={toggleDarkMode}
-                    className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer"
+                    className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer"
                   >
                     {darkMode ? (
                       <>
-                        <IoSunnyOutline size={16} className="mr-2" />
+                        <IoSunnyOutline size={20} className="mr-2" />
                         Light Mode
                       </>
                     ) : (
                       <>
-                        <FiMoon size={16} className="mr-2" />
+                        <FiMoon size={20} className="mr-2" />
                         Night Mode
                       </>
                     )}
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
-                    <BsQuestionCircleFill size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <BsQuestionCircleFill size={20} className="mr-2" />
                     Telegram Features
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
-                    <FaBug size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FaBug size={20} className="mr-2" />
                     Report A Bug
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
-                    <FaK size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FaK size={20} className="mr-2" />
                     Switch to K Version
                   </button>
-                  <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
-                    <FiPlusCircle size={16} className="mr-2" />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FiPlusCircle size={20} className="mr-2" />
                     Install APP
                   </button>
 
-                  {/* <button className="flex items-center px-4 py-2 text-sm w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] text-red-500">
-                    <LuLogOut size={16} className="mr-2" />
+                  {/* <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] text-red-500">
+                    <LuLogOut size={20} className="mr-2" />
                     Log Out
                   </button> */}
-                  <div className="text-sm text-center text-neutral-200 py-2.5">
+                  <div className="text-sm text-center text-[#aaaaaa] py-2.5 cursor-auto">
                     <p>Telegram Web A 10.9.57</p>
                   </div>
                 </div>
@@ -125,7 +133,7 @@ export default function ChatListPage() {
                 className="w-full pl-10 pr-4 py-2 border-[#2d2d2d] dark:border-[#2d2d2d] bg-[#2d2d2d] dark:bg-[#2d2d2d] rounded-3xl focus:outline-none"
               />
               <FiSearch
-                size={16}
+                size={20}
                 className="absolute left-3 top-2.5 text-gray-500"
               />
           </div>
@@ -177,7 +185,7 @@ export default function ChatListPage() {
                       </span>
                     )}
                     {chat.isPinned && (
-                      <TbPin size={16} className="text-gray-500 ml-0.5" />
+                      <TbPin size={20} className="text-gray-500 ml-0.5" />
                     )}
                   </div>
                 </div>
