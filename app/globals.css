@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+/* Smooth transitions for dark mode */
+@layer base {
+    body {
+        @apply transition-colors duration-200;
+    }
+}
+
+/* Custom scrollbar for dark mode */
+@layer utilities {
+    .scrollbar-dark::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .scrollbar-dark::-webkit-scrollbar-track {
+        @apply bg-gray-800;
+    }
+
+    .scrollbar-dark::-webkit-scrollbar-thumb {
+        @apply bg-gray-600 rounded-full;
+    }
+}

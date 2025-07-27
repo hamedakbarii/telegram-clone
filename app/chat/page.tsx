@@ -12,23 +12,18 @@ import { CiBookmark, CiSettings, CiUser } from 'react-icons/ci';
 import { LuLogOut } from 'react-icons/lu';
 import { BsPlus, BsQuestionCircleFill } from 'react-icons/bs';
 import { FaBug, FaK } from 'react-icons/fa6';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function ChatListPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle("dark");
-  };
-
   return (
     <div
-      className={`flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]`}
+      className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]"
     >
       {/* Left sidebar - Chat list */}
       <div className="w-96 border-r border-gray-200 dark:border-gray-800 flex flex-col">
@@ -81,22 +76,7 @@ export default function ChatListPage() {
                     <CiSettings size={20} className="mr-2" />
                     Settings
                   </button>
-                  <button
-                    onClick={toggleDarkMode}
-                    className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer"
-                  >
-                    {darkMode ? (
-                      <>
-                        <IoSunnyOutline size={20} className="mr-2" />
-                        Light Mode
-                      </>
-                    ) : (
-                      <>
-                        <FiMoon size={20} className="mr-2" />
-                        Night Mode
-                      </>
-                    )}
-                  </button>
+                    <ThemeToggle />
                   <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
                     <BsQuestionCircleFill size={20} className="mr-2" />
                     Telegram Features
@@ -196,7 +176,7 @@ export default function ChatListPage() {
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 flex items-center justify-center bg-white dark:bg-gray-950">
+      <div className="flex-1 flex items-center justify-center bg-white dark:bg-[#0F0F0F] bg-[url(/assets/image/chat-bg-br.png)] dark:bg-[url(/assets/image/chat-bg-pattern-dark.png)] relative before:content-[''] before:absolute before:inset-0 before:bg-[url('/your-image.svg')] before:bg-repeat before:bg-[top_right] bg-[length:510px_auto] before:mix-blend-overlay">
         <p className="text-gray-500 dark:text-gray-400">
           Select a chat to start messaging
         </p>

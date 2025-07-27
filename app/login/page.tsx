@@ -299,7 +299,7 @@ export default function LoginPage() {
         <div className="w-full max-w-sm mb-4 relative" ref={dropdownRef}>
           <div className="relative">
             <div className="relative border border-gray-300 rounded-lg bg-white px-4 py-3 mt-3">
-              <label className="absolute -top-2 left-3 bg-white px-1 text-xs text-gray-500">
+              <label className="absolute -top-2 left-3 bg-white dark px-1 text-xs text-gray-500">
                 Country
               </label>
               <button
@@ -307,7 +307,7 @@ export default function LoginPage() {
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="w-full flex items-center justify-between text-left text-sm bg-transparent border-none outline-none"
               >
-                <span>{selectedCountry?.name}</span>
+                <span className="text-black">{selectedCountry?.name}</span>
                 <svg className={`w-8 h-8 text-gray-500 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
@@ -322,7 +322,7 @@ export default function LoginPage() {
                     key={country.name}
                     type="button"
                     onClick={() => handleCountrySelect(country)}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none flex items-center justify-between text-sm"
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none flex items-center justify-between text-sm text-black"
                   >
                     <div className="flex items-center">
                       <img 
@@ -350,7 +350,7 @@ export default function LoginPage() {
               type="tel"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full border-none outline-none text-sm bg-transparent"
+              className="w-full text-black border-none outline-none text-sm bg-transparent"
               placeholder={selectedCountry?.code}
             />
           </div>
