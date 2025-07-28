@@ -12,8 +12,8 @@ export default function Page({ params }: Props) {
   const { chatId } = params
 
   return (
-    <div className="bg-white dark:bg-gray-700 p-4 min-h-screen">
-      page: {chatId}
+    <div className="bg-white dark:bg-blue-100 p-4 min-h-screen">
+      <p className='text-white dark:text-black'>page: {chatId}</p>
       <ThemeToggle />
     </div>
   )
