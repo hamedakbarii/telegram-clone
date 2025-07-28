@@ -1,11 +1,30 @@
 @import "tailwindcss";
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Smooth transitions for dark mode */
 @layer base {
     body {
         @apply transition-colors duration-200;
     }
 }
+
+:root, [data-theme="light"] {
+    --background: #ffffff;
+    --foreground: #000000;
+  }
+  
+  .dark, [data-theme="dark"] {
+    --background: #1a1a1a;
+    --foreground: #ffffff;
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
 
 /* Custom scrollbar for dark mode */
 @layer utilities {

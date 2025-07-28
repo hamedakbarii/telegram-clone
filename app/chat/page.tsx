@@ -26,9 +26,9 @@ export default function ChatListPage() {
       className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]"
     >
       {/* Left sidebar - Chat list */}
-      <div className="w-96 border-r border-gray-200 dark:border-gray-800 flex flex-col">
+      <div className="w-96 border-r border-transparent flex flex-col">
         {/* Header */}
-        <div className="p-3 border-b border-gray-200 dark:border-gray-800 flex items-center gap-2">
+        <div className="p-3 border-b border-transparent flex items-center gap-2">
           {/* Menu button with dropdown */}
           <div className="relative">
             <button
@@ -127,7 +127,7 @@ export default function ChatListPage() {
           {chats.map((chat) => (
             <div
               key={chat.id}
-              className="border-b border-gray-200 dark:border-gray-800"
+              className="border-b border-transparent"
             >
               <button className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] dark:hover:bg-[#151515] transition-colors cursor-pointer">
                 {/* Avatar with online indicator */}
