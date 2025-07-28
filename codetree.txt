@@ -3,22 +3,34 @@ Files Structure
 ================================================================
 app/
   chat/
+    [chatId]/
+      page.tsx
+    page.tsx
+  login/
     page.tsx
   globals.css
   layout.tsx
   page.tsx
+components/
+  ThemeToggle.tsx
+lib/
+  mocks/
+    chat.ts
 public/
   file.svg
   globe.svg
   next.svg
   vercel.svg
   window.svg
+store/
+  useAuthStore.ts
 .gitignore
 eslint.config.mjs
 next.config.ts
 package.json
 postcss.config.mjs
 README.md
+tailwind.config.ts
 tsconfig.json
 
 ================================================================
@@ -26,27 +38,694 @@ Repository Files
 ================================================================
 
 ================
+File: app/chat/[chatId]/page.tsx
+================
+// Path: app/chat/[chatId]/page.tsx
+import { ThemeToggle } from '@/components/ThemeToggle'
+import React from 'react'
+
+type Props = {
+  params: {
+    chatId: string
+  }
+}
+
+export default function Page({ params }: Props) {
+  const { chatId } = params
+
+  return (
+    <div className="bg-white dark:bg-slate-300 p-4 min-h-screen">
+      <p className='text-black dark:text-white'>page: {chatId}</p>
+      <ThemeToggle />
+    </div>
+  )
+}
+
+================
 File: app/chat/page.tsx
 ================
 // Path: app/chat/page.tsx
-import React from 'react'
+"use client";
 
-type Props = {}
+import React, { useState } from 'react';
+import { chats } from '@/lib/mocks/chat';
+import { FiMoon, FiPlusCircle, FiSearch } from 'react-icons/fi';
+import { MdMotionPhotosOn, MdOutlineMenu } from 'react-icons/md';
+import { FaPlus, FaRegEdit, FaUserCircle } from 'react-icons/fa';
+import { TbPin } from 'react-icons/tb';
+import { IoSunnyOutline } from 'react-icons/io5';
+import { CiBookmark, CiSettings, CiUser } from 'react-icons/ci';
+import { LuLogOut } from 'react-icons/lu';
+import { BsPlus, BsQuestionCircleFill } from 'react-icons/bs';
+import { FaBug, FaK } from 'react-icons/fa6';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
-export default function ChatListPage({}: Props) {
+export default function ChatListPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <div className="">Chat List</div>
-  )
+    <div
+      className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]"
+    >
+      {/* Left sidebar - Chat list */}
+      <div className="w-96 border-r border-transparent flex flex-col">
+        {/* Header */}
+        <div className="p-3 border-b border-transparent flex items-center gap-2">
+          {/* Menu button with dropdown */}
+          <div className="relative">
+            <button
+              onClick={toggleMenu}
+              className="p-2 rounded-full hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer"
+            >
+              <MdOutlineMenu size={20} />
+            </button>
+
+            {/* Dropdown menu */}
+            {isMenuOpen && (
+              // <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-gray-800 rounded-md shadow-lg z-10 border border-gray-200 dark:border-gray-700 backdrop-blur-md">
+              <div
+                className={`fixed inset-0 z-10 mx-2.5 border-0 transition-opacity duration-200 ${isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                  }`}
+                onClick={toggleMenu}
+              >
+                <div
+                  className={`py-1 absolute top-12 left-1.5 mt-2 w-56 bg-[#212121dd] dark:bg-[#212121dd] rounded-2xl shadow-2xl z-20 border border-[#212121dd] dark:border-[#212121dd] backdrop-blur-md overflow-hidden transition-all duration-200 ${isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-2 opacity-0'
+                    }`}
+                >
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FaUserCircle size={20} className="mr-2" />
+                    User
+                  </button>
+                  <hr className="w-full text-[#ffffffa1] h-2.5 opacity-5" />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <BsPlus size={20} className="mr-2" />
+                    Add Account
+                  </button>
+                  <hr className="w-full text-[#ffffffa1] h-2.5 opacity-5" />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <CiBookmark size={20} className="mr-2" />
+                    Save Message
+                  </button>
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <CiUser size={20} className="mr-2" />
+                    Contact
+                  </button>
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <MdMotionPhotosOn size={20} className="mr-2" />
+                    My Stories
+                  </button>
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <CiSettings size={20} className="mr-2" />
+                    Settings
+                  </button>
+                    <ThemeToggle />
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <BsQuestionCircleFill size={20} className="mr-2" />
+                    Telegram Features
+                  </button>
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FaBug size={20} className="mr-2" />
+                    Report A Bug
+                  </button>
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FaK size={20} className="mr-2" />
+                    Switch to K Version
+                  </button>
+                  <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+                    <FiPlusCircle size={20} className="mr-2" />
+                    Install APP
+                  </button>
+
+                  {/* <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] text-red-500">
+                    <LuLogOut size={20} className="mr-2" />
+                    Log Out
+                  </button> */}
+                  <div className="text-sm text-center text-[#aaaaaa] py-2.5 cursor-auto">
+                    <p>Telegram Web A 10.9.57</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="flex-1 relative cursor-text">
+              <input
+                type="text"
+                placeholder="Search"
+                className="w-full pl-10 pr-4 py-2 border-[#2d2d2d] dark:border-[#2d2d2d] bg-[#2d2d2d] dark:bg-[#2d2d2d] rounded-3xl focus:outline-none"
+              />
+              <FiSearch
+                size={20}
+                className="absolute left-3 top-2.5 text-gray-500"
+              />
+          </div>
+          {/* <button className="p-2 rounded-full hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
+            <FaRegEdit size={20} />
+          </button> */}
+        </div>
+
+        {/* Chat list */}
+        <div className="flex-1 overflow-y-auto">
+          {chats.map((chat) => (
+            <div
+              key={chat.id}
+              className="border-b border-transparent"
+            >
+              <button className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] dark:hover:bg-[#151515] transition-colors cursor-pointer">
+                {/* Avatar with online indicator */}
+                <div className="relative">
+                  <img
+                    src={chat.avatar}
+                    alt={chat.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  {chat.isOnline && (
+                    <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900"></div>
+                  )}
+                </div>
+
+                {/* Chat info */}
+                <div className="flex-1 min-w-0 text-left">
+                  <div className="flex justify-start items-center min-w-0">
+                    <div className="flex">
+                      <h3 className="font-medium truncate">{chat.name}</h3>
+                    </div>
+                    <div className="grow min-w-2"></div>
+                    <div className="flex mr-0.5">
+                      <span className="text-xs text-gray-100 whitespace-nowrap">
+                        {chat.lastMessageTime}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex justify-start items-center min-w-0">
+                    <p className="text-sm text-gray-500 truncate text-left grow pr-1">
+                      {chat.lastMessage}
+                    </p>
+                    {chat.unreadCount > 0 && (
+                      <span className="bg-blue-500 text-xs rounded-full w-5 h-5 flex items-center justify-center px-2">
+                        {chat.unreadCount}
+                      </span>
+                    )}
+                    {chat.isPinned && (
+                      <TbPin size={20} className="text-gray-500 ml-0.5" />
+                    )}
+                  </div>
+                </div>
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Main content area */}
+      <div className="flex-1 flex items-center justify-center bg-white dark:bg-[#0F0F0F] bg-[url(/assets/image/chat-bg-br.png)] dark:bg-[url(/assets/image/chat-bg-pattern-dark.png)] relative before:content-[''] before:absolute before:inset-0 before:bg-[url('/your-image.svg')] before:bg-repeat before:bg-[top_right] bg-[length:510px_auto] before:mix-blend-overlay">
+        <p className="text-gray-500 dark:text-gray-400">
+          Select a chat to start messaging
+        </p>
+      </div>
+    </div>
+  );
+}
+
+================
+File: app/login/page.tsx
+================
+// Path: app/login/page.tsx
+"use client";
+
+import React, { useState, useRef, useEffect } from "react";
+import { useStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
+
+const countries = [
+  { name: "Afghanistan", code: "+93", flag: "🇦🇫" },
+  { name: "Albania", code: "+355", flag: "🇦🇱" },
+  { name: "Algeria", code: "+213", flag: "🇩🇿" },
+  { name: "American Samoa", code: "+1684", flag: "🇦🇸" },
+  { name: "Andorra", code: "+376", flag: "🇦🇩" },
+  { name: "Angola", code: "+244", flag: "🇦🇴" },
+  { name: "Anguilla", code: "+1264", flag: "🇦🇮" },
+  { name: "Antigua & Barbuda", code: "+1268", flag: "🇦🇬" },
+  { name: "Argentina", code: "+54", flag: "🇦🇷" },
+  { name: "Armenia", code: "+374", flag: "🇦🇲" },
+  { name: "Australia", code: "+61", flag: "🇦🇺" },
+  { name: "Austria", code: "+43", flag: "🇦🇹" },
+  { name: "Azerbaijan", code: "+994", flag: "🇦🇿" },
+  { name: "Bahamas", code: "+1242", flag: "🇧🇸" },
+  { name: "Bahrain", code: "+973", flag: "🇧🇭" },
+  { name: "Bangladesh", code: "+880", flag: "🇧🇩" },
+  { name: "Barbados", code: "+1246", flag: "🇧🇧" },
+  { name: "Belarus", code: "+375", flag: "🇧🇾" },
+  { name: "Belgium", code: "+32", flag: "🇧🇪" },
+  { name: "Belize", code: "+501", flag: "🇧🇿" },
+  { name: "Benin", code: "+229", flag: "🇧🇯" },
+  { name: "Bermuda", code: "+1441", flag: "🇧🇲" },
+  { name: "Bhutan", code: "+975", flag: "🇧🇹" },
+  { name: "Bolivia", code: "+591", flag: "🇧🇴" },
+  { name: "Bosnia & Herzegovina", code: "+387", flag: "🇧🇦" },
+  { name: "Botswana", code: "+267", flag: "🇧🇼" },
+  { name: "Brazil", code: "+55", flag: "🇧🇷" },
+  { name: "British Virgin Islands", code: "+1284", flag: "🇻🇬" },
+  { name: "Brunei", code: "+673", flag: "🇧🇳" },
+  { name: "Bulgaria", code: "+359", flag: "🇧🇬" },
+  { name: "Burkina Faso", code: "+226", flag: "🇧🇫" },
+  { name: "Burundi", code: "+257", flag: "🇧🇮" },
+  { name: "Cambodia", code: "+855", flag: "🇰🇭" },
+  { name: "Cameroon", code: "+237", flag: "🇨🇲" },
+  { name: "Canada", code: "+1", flag: "🇨🇦" },
+  { name: "Cape Verde", code: "+238", flag: "🇨🇻" },
+  { name: "Cayman Islands", code: "+1345", flag: "🇰🇾" },
+  { name: "Central African Republic", code: "+236", flag: "🇨🇫" },
+  { name: "Chad", code: "+235", flag: "🇹🇩" },
+  { name: "Chile", code: "+56", flag: "🇨🇱" },
+  { name: "China", code: "+86", flag: "🇨🇳" },
+  { name: "Colombia", code: "+57", flag: "🇨🇴" },
+  { name: "Comoros", code: "+269", flag: "🇰🇲" },
+  { name: "Congo", code: "+242", flag: "🇨🇬" },
+  { name: "Congo (DRC)", code: "+243", flag: "🇨🇩" },
+  { name: "Cook Islands", code: "+682", flag: "🇨🇰" },
+  { name: "Costa Rica", code: "+506", flag: "🇨🇷" },
+  { name: "Croatia", code: "+385", flag: "🇭🇷" },
+  { name: "Cuba", code: "+53", flag: "🇨🇺" },
+  { name: "Cyprus", code: "+357", flag: "🇨🇾" },
+  { name: "Czech Republic", code: "+420", flag: "🇨🇿" },
+  { name: "Denmark", code: "+45", flag: "🇩🇰" },
+  { name: "Djibouti", code: "+253", flag: "🇩🇯" },
+  { name: "Dominica", code: "+1767", flag: "🇩🇲" },
+  { name: "Dominican Republic", code: "+1", flag: "🇩🇴" },
+  { name: "Ecuador", code: "+593", flag: "🇪🇨" },
+  { name: "Egypt", code: "+20", flag: "🇪🇬" },
+  { name: "El Salvador", code: "+503", flag: "🇸🇻" },
+  { name: "Equatorial Guinea", code: "+240", flag: "🇬🇶" },
+  { name: "Eritrea", code: "+291", flag: "🇪🇷" },
+  { name: "Estonia", code: "+372", flag: "🇪🇪" },
+  { name: "Ethiopia", code: "+251", flag: "🇪🇹" },
+  { name: "Fiji", code: "+679", flag: "🇫🇯" },
+  { name: "Finland", code: "+358", flag: "🇫🇮" },
+  { name: "France", code: "+33", flag: "🇫🇷" },
+  { name: "French Guiana", code: "+594", flag: "🇬🇫" },
+  { name: "French Polynesia", code: "+689", flag: "🇵🇫" },
+  { name: "Gabon", code: "+241", flag: "🇬🇦" },
+  { name: "Gambia", code: "+220", flag: "🇬🇲" },
+  { name: "Georgia", code: "+995", flag: "🇬🇪" },
+  { name: "Germany", code: "+49", flag: "🇩🇪" },
+  { name: "Ghana", code: "+233", flag: "🇬🇭" },
+  { name: "Gibraltar", code: "+350", flag: "🇬🇮" },
+  { name: "Greece", code: "+30", flag: "🇬🇷" },
+  { name: "Greenland", code: "+299", flag: "🇬🇱" },
+  { name: "Grenada", code: "+1473", flag: "🇬🇩" },
+  { name: "Guadeloupe", code: "+590", flag: "🇬🇵" },
+  { name: "Guam", code: "+1671", flag: "🇬🇺" },
+  { name: "Guatemala", code: "+502", flag: "🇬🇹" },
+  { name: "Guernsey", code: "+44", flag: "🇬🇬" },
+  { name: "Guinea", code: "+224", flag: "🇬🇳" },
+  { name: "Guinea-Bissau", code: "+245", flag: "🇬🇼" },
+  { name: "Guyana", code: "+592", flag: "🇬🇾" },
+  { name: "Haiti", code: "+509", flag: "🇭🇹" },
+  { name: "Honduras", code: "+504", flag: "🇭🇳" },
+  { name: "Hong Kong", code: "+852", flag: "🇭🇰" },
+  { name: "Hungary", code: "+36", flag: "🇭🇺" },
+  { name: "Iceland", code: "+354", flag: "🇮🇸" },
+  { name: "India", code: "+91", flag: "🇮🇳" },
+  { name: "Indonesia", code: "+62", flag: "🇮🇩" },
+  { name: "Iran", code: "+98", flag: "🇮🇷" },
+  { name: "Iraq", code: "+964", flag: "🇮🇶" },
+  { name: "Ireland", code: "+353", flag: "🇮🇪" },
+  { name: "Isle of Man", code: "+44", flag: "🇮🇲" },
+  { name: "Israel", code: "+972", flag: "🇮🇱" },
+  { name: "Italy", code: "+39", flag: "🇮🇹" },
+  { name: "Jamaica", code: "+1876", flag: "🇯🇲" },
+  { name: "Japan", code: "+81", flag: "🇯🇵" },
+  { name: "Jersey", code: "+44", flag: "🇯🇪" },
+  { name: "Jordan", code: "+962", flag: "🇯🇴" },
+  { name: "Kazakhstan", code: "+7", flag: "🇰🇿" },
+  { name: "Kenya", code: "+254", flag: "🇰🇪" },
+  { name: "Kiribati", code: "+686", flag: "🇰🇮" },
+  { name: "Kuwait", code: "+965", flag: "🇰🇼" },
+  { name: "Kyrgyzstan", code: "+996", flag: "🇰🇬" },
+  { name: "Laos", code: "+856", flag: "🇱🇦" },
+  { name: "Latvia", code: "+371", flag: "🇱🇻" },
+  { name: "Lebanon", code: "+961", flag: "🇱🇧" },
+  { name: "Lesotho", code: "+266", flag: "🇱🇸" },
+  { name: "Liberia", code: "+231", flag: "🇱🇷" },
+  { name: "Libya", code: "+218", flag: "🇱🇾" },
+  { name: "Liechtenstein", code: "+423", flag: "🇱🇮" },
+  { name: "Lithuania", code: "+370", flag: "🇱🇹" },
+  { name: "Luxembourg", code: "+352", flag: "🇱🇺" },
+  { name: "Macau", code: "+853", flag: "🇲🇴" },
+  { name: "North Macedonia", code: "+389", flag: "🇲🇰" },
+  { name: "Madagascar", code: "+261", flag: "🇲🇬" },
+  { name: "Malawi", code: "+265", flag: "🇲🇼" },
+  { name: "Malaysia", code: "+60", flag: "🇲🇾" },
+  { name: "Maldives", code: "+960", flag: "🇲🇻" },
+  { name: "Mali", code: "+223", flag: "🇲🇱" },
+  { name: "Malta", code: "+356", flag: "🇲🇹" },
+  { name: "Marshall Islands", code: "+692", flag: "🇲🇭" },
+  { name: "Martinique", code: "+596", flag: "🇲🇶" },
+  { name: "Mauritania", code: "+222", flag: "🇲🇷" },
+  { name: "Mauritius", code: "+230", flag: "🇲🇺" },
+  { name: "Mexico", code: "+52", flag: "🇲🇽" },
+  { name: "Micronesia", code: "+691", flag: "🇫🇲" },
+  { name: "Moldova", code: "+373", flag: "🇲🇩" },
+  { name: "Monaco", code: "+377", flag: "🇲🇨" },
+  { name: "Mongolia", code: "+976", flag: "🇲🇳" },
+  { name: "Montenegro", code: "+382", flag: "🇲🇪" },
+  { name: "Montserrat", code: "+1664", flag: "🇲🇸" },
+  { name: "Morocco", code: "+212", flag: "🇲🇦" },
+  { name: "Mozambique", code: "+258", flag: "🇲🇿" },
+  { name: "Myanmar", code: "+95", flag: "🇲🇲" },
+  { name: "Namibia", code: "+264", flag: "🇳🇦" },
+  { name: "Nauru", code: "+674", flag: "🇳🇷" },
+  { name: "Nepal", code: "+977", flag: "🇳🇵" },
+  { name: "Netherlands", code: "+31", flag: "🇳🇱" },
+  { name: "New Caledonia", code: "+687", flag: "🇳🇨" },
+  { name: "New Zealand", code: "+64", flag: "🇳🇿" },
+  { name: "Nicaragua", code: "+505", flag: "🇳🇮" },
+  { name: "Niger", code: "+227", flag: "🇳🇪" },
+  { name: "Nigeria", code: "+234", flag: "🇳🇬" },
+  { name: "Niue", code: "+683", flag: "🇳🇺" },
+  { name: "Norfolk Island", code: "+672", flag: "🇳🇫" },
+  { name: "North Korea", code: "+850", flag: "🇰🇵" },
+  { name: "Northern Mariana Islands", code: "+1670", flag: "🇲🇵" },
+  { name: "Norway", code: "+47", flag: "🇳🇴" },
+  { name: "Oman", code: "+968", flag: "🇴🇲" },
+  { name: "Pakistan", code: "+92", flag: "🇵🇰" },
+  { name: "Palau", code: "+680", flag: "🇵🇼" },
+  { name: "Palestine", code: "+970", flag: "🇵🇸" },
+  { name: "Panama", code: "+507", flag: "🇵🇦" },
+  { name: "Papua New Guinea", code: "+675", flag: "🇵🇬" },
+  { name: "Paraguay", code: "+595", flag: "🇵🇾" },
+  { name: "Peru", code: "+51", flag: "🇵🇪" },
+  { name: "Philippines", code: "+63", flag: "🇵🇭" },
+  { name: "Poland", code: "+48", flag: "🇵🇱" },
+  { name: "Portugal", code: "+351", flag: "🇵🇹" },
+  { name: "Puerto Rico", code: "+1", flag: "🇵🇷" },
+  { name: "Qatar", code: "+974", flag: "🇶🇦" },
+  { name: "Romania", code: "+40", flag: "🇷🇴" },
+  { name: "Russia", code: "+7", flag: "🇷🇺" },
+  { name: "Rwanda", code: "+250", flag: "🇷🇼" },
+  { name: "Saint Barthélemy", code: "+590", flag: "🇧🇱" },
+  { name: "Saint Helena", code: "+290", flag: "🇸🇭" },
+  { name: "Saint Kitts and Nevis", code: "+1869", flag: "🇰🇳" },
+  { name: "Saint Lucia", code: "+1758", flag: "🇱🇨" },
+  { name: "Saint Martin", code: "+590", flag: "🇲🇫" },
+  { name: "Saint Pierre and Miquelon", code: "+508", flag: "🇵🇲" },
+  { name: "Saint Vincent and the Grenadines", code: "+1784", flag: "🇻🇨" },
+  { name: "Samoa", code: "+685", flag: "🇼🇸" },
+  { name: "San Marino", code: "+378", flag: "🇸🇲" },
+  { name: "São Tomé and Príncipe", code: "+239", flag: "🇸🇹" },
+  { name: "Saudi Arabia", code: "+966", flag: "🇸🇦" },
+  { name: "Senegal", code: "+221", flag: "🇸🇳" },
+  { name: "Serbia", code: "+381", flag: "🇷🇸" },
+  { name: "Seychelles", code: "+248", flag: "🇸🇨" },
+  { name: "Sierra Leone", code: "+232", flag: "🇸🇱" },
+  { name: "Singapore", code: "+65", flag: "🇸🇬" },
+  { name: "Sint Maarten", code: "+1721", flag: "🇸🇽" },
+  { name: "Slovakia", code: "+421", flag: "🇸🇰" },
+  { name: "Slovenia", code: "+386", flag: "🇸🇮" },
+  { name: "Solomon Islands", code: "+677", flag: "🇸🇧" },
+  { name: "Somalia", code: "+252", flag: "🇸🇴" },
+  { name: "South Africa", code: "+27", flag: "🇿🇦" },
+  { name: "South Korea", code: "+82", flag: "🇰🇷" },
+  { name: "South Sudan", code: "+211", flag: "🇸🇸" },
+  { name: "Spain", code: "+34", flag: "🇪🇸" },
+  { name: "Sri Lanka", code: "+94", flag: "🇱🇰" },
+  { name: "Sudan", code: "+249", flag: "🇸🇩" },
+  { name: "Suriname", code: "+597", flag: "🇸🇷" },
+  { name: "Swaziland", code: "+268", flag: "🇸🇿" },
+  { name: "Sweden", code: "+46", flag: "🇸🇪" },
+  { name: "Switzerland", code: "+41", flag: "🇨🇭" },
+  { name: "Syria", code: "+963", flag: "🇸🇾" },
+  { name: "Taiwan", code: "+886", flag: "🇹🇼" },
+  { name: "Tajikistan", code: "+992", flag: "🇹🇯" },
+  { name: "Tanzania", code: "+255", flag: "🇹🇿" },
+  { name: "Thailand", code: "+66", flag: "🇹🇭" },
+  { name: "Timor-Leste", code: "+670", flag: "🇹🇱" },
+  { name: "Togo", code: "+228", flag: "🇹🇬" },
+  { name: "Tokelau", code: "+690", flag: "🇹🇰" },
+  { name: "Tonga", code: "+676", flag: "🇹🇴" },
+  { name: "Trinidad and Tobago", code: "+1868", flag: "🇹🇹" },
+  { name: "Tunisia", code: "+216", flag: "🇹🇳" },
+  { name: "Turkey", code: "+90", flag: "🇹🇷" },
+  { name: "Turkmenistan", code: "+993", flag: "🇹🇲" },
+  { name: "Turks and Caicos Islands", code: "+1649", flag: "🇹🇨" },
+  { name: "Tuvalu", code: "+688", flag: "🇹🇻" },
+  { name: "Uganda", code: "+256", flag: "🇺🇬" },
+  { name: "Ukraine", code: "+380", flag: "🇺🇦" },
+  { name: "United Arab Emirates", code: "+971", flag: "🇦🇪" },
+  { name: "United Kingdom", code: "+44", flag: "🇬🇧" },
+  { name: "United States", code: "+1", flag: "🇺🇸" },
+  { name: "Uruguay", code: "+598", flag: "🇺🇾" },
+  { name: "Uzbekistan", code: "+998", flag: "🇺🇿" },
+  { name: "Vanuatu", code: "+678", flag: "🇻🇺" },
+  { name: "Vatican City", code: "+39", flag: "🇻🇦" },
+  { name: "Venezuela", code: "+58", flag: "🇻🇪" },
+  { name: "Vietnam", code: "+84", flag: "🇻🇳" },
+  { name: "Wallis and Futuna", code: "+681", flag: "🇼🇫" },
+  { name: "Western Sahara", code: "+212", flag: "🇪🇭" },
+  { name: "Yemen", code: "+967", flag: "🇾🇪" },
+  { name: "Zambia", code: "+260", flag: "🇿🇲" },
+  { name: "Zimbabwe", code: "+263", flag: "🇿🇼" },
+];
+
+export default function LoginPage() {
+  const [selectedCountry, setSelectedCountry] = useState(
+    countries.find((c) => c.name === "Iran")
+  );
+  const [phone, setPhone] = useState("");
+  const [countryCode, setCountryCode] = useState("+98");
+  const [keepSignedIn, setKeepSignedIn] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const login = useStore((state) => state.login);
+  const router = useRouter();
+
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
+  // Login Function
+  const internationalPhoneRegex = /^\d{7,15}$/;
+  const handleLogin = () => {
+    if (!phone.trim()) return alert("Please Enter Phone Number");
+
+    if (!internationalPhoneRegex.test(phone)) {
+      return alert("Phone Numebr Is Not Valid");
+    }
+
+    login({ country: countryCode, phone });
+    router.push("/chat");
+  };
+
+  const handleCountrySelect = (country: (typeof countries)[0]) => {
+    setSelectedCountry(country);
+    setCountryCode(country.code);
+    setIsDropdownOpen(false);
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="w-full max-w-md bg-white rounded-none shadow-none p-8 flex flex-col justify-center items-center">
+        <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mb-6">
+          <img
+            src="assets/avatar/telegram.jpg"
+            alt="Telegram icon"
+            className="rounded-full w-32 my-4"
+          />
+        </div>
+
+        <h1 className="text-2xl font-semibold text-center text-black mb-2">
+          Telegram
+        </h1>
+
+        <p className="text-sm text-gray-500 text-center mb-8 leading-relaxed">
+          Please confirm your country code and enter your
+          <br />
+          phone number.
+        </p>
+
+        {/* Country Selector */}
+        <div className="w-full max-w-sm mb-4 relative" ref={dropdownRef}>
+          <div className="relative">
+            <div className="relative border border-gray-300 rounded-lg bg-white px-4 py-3 mt-3">
+              <label className="absolute -top-2 left-3 bg-white dark px-1 text-xs text-gray-500">
+                Country
+              </label>
+              <button
+                type="button"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full flex items-center justify-between text-left text-sm bg-transparent border-none outline-none"
+              >
+                <span className="text-black">{selectedCountry?.name}</span>
+                <svg
+                  className={`w-8 h-8 text-gray-500 transition-transform ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* Dropdown */}
+            {isDropdownOpen && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-y-auto z-50">
+                {countries.map((country) => (
+                  <button
+                    key={country.name}
+                    type="button"
+                    onClick={() => handleCountrySelect(country)}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-50 focus:bg-gray-50 focus:outline-none flex items-center justify-between text-sm text-black"
+                  >
+                    <div className="flex items-center">
+                      <img
+                        src={`https://emojicdn.elk.sh/${country.flag}?style=apple`}
+                        alt={country.name}
+                        className="mr-3 w-8 h-8"
+                      />
+                      <span>{country.name}</span>
+                    </div>
+                    <span className="text-gray-500 text-xs">
+                      {country.code}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Phone Number Input */}
+        <div className="w-full max-w-sm mb-6">
+          <div className="relative border-2 border-blue-500 rounded-xl bg-white px-5 py-4 mt-3">
+            <label className="absolute -top-2 left-3 bg-white px-1 text-xs text-blue-500 font-medium">
+              Your phone number
+            </label>
+            <div className="flex justify-center items-center gap-2">
+              <span className="text-sm">{countryCode}</span>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full text-black border-none outline-none text-sm bg-transparent"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleLogin();
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Keep me signed in checkbox */}
+        <div className="flex items-center mb-8">
+          <div className="relative">
+            <input
+              type="checkbox"
+              id="keepSignedIn"
+              checked={keepSignedIn}
+              onChange={(e) => setKeepSignedIn(e.target.checked)}
+              className="sr-only"
+            />
+            <div
+              onClick={() => setKeepSignedIn(!keepSignedIn)}
+              className={`w-5 h-5 rounded border-2 cursor-pointer flex items-center justify-center ${
+                keepSignedIn
+                  ? "bg-blue-500 border-blue-500"
+                  : "bg-white border-gray-300"
+              }`}
+            >
+              {keepSignedIn && (
+                <svg
+                  className="w-3 h-3 text-white"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              )}
+            </div>
+          </div>
+          <label
+            htmlFor="keepSignedIn"
+            className="ml-3 text-sm text-black cursor-pointer"
+          >
+            Keep me signed in
+          </label>
+        </div>
+
+        <button
+          onClick={handleLogin}
+          className="w-full bg-[#30A2E7] hover:bg-[#218ccd] text-white font-semibold my-4 py-2 rounded-md transition cursor-pointer"
+        >
+          Login
+        </button>
+
+        <button
+          type="button"
+          className="text-blue-400 text-sm font-medium cursor-pointer hover:text-blue-500 transition-colors"
+          onClick={() => {
+            alert("Sorry! This is for test");
+          }}
+        >
+          LOG IN BY QR CODE
+        </button>
+      </div>
+    </div>
+  );
 }
 
 ================
 File: app/globals.css
 ================
+/* app/globals.css */
 @import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-white text-black;
+}
+
+[data-mode="dark"] body {
+  @apply bg-gray-900 text-white;
+}
 
 ================
 File: app/layout.tsx
 ================
+// Path: app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -62,8 +741,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Create Next App",
-  description: "Generated by create next app",
+  title: "Telegram Clone",
+  description: "Chat UI project with Mantine and Next.js",
+  icons: {
+    icon: "/assets/avatar/telegram.jpg",
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
@@ -74,9 +757,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-900 text-black dark:text-white`}
       >
-        {children}
+          {children}
       </body>
     </html>
   );
@@ -85,9 +768,139 @@ export default function RootLayout({
 ================
 File: app/page.tsx
 ================
+"use client";
+
+import { useStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 export default function Home() {
-  return <div className="">Home page</div>;
+  const user = useStore((state) => state.user);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.push("login");
+    }
+  }, [user]);
+
+  return;
 }
+
+================
+File: components/ThemeToggle.tsx
+================
+// components/ThemeToggle.tsx
+"use client";
+
+import { useEffect, useState } from "react";
+import { FiMoon } from "react-icons/fi";
+import { IoSunnyOutline } from "react-icons/io5";
+
+export function ThemeToggle() {
+  const [theme, setTheme] = useState<"light" | "dark" | null>(null);
+
+  // Load saved or system-preferred theme on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
+
+    setTheme(initialTheme);
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(initialTheme);
+  }, []);
+
+  // Persist and apply theme
+  useEffect(() => {
+    if (theme) {
+      localStorage.setItem("theme", theme);
+      document.documentElement.classList.remove("light", "dark");
+      document.documentElement.classList.add(theme);
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === "light" ? "dark" : "light"));
+  };
+
+  if (!theme) return null;
+
+  return (
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="flex items-center justify-between px-4 py-2 text-sm font-medium transition duration-300 w-full cursor-pointer select-none"
+    >
+      <button
+        onClick={toggleTheme}
+        className="flex items-center gap-2"
+        aria-label={`Toggle ${theme === "light" ? "dark" : "light"} mode`}
+      >
+        {theme === "light" ? <FiMoon size={20} /> : <IoSunnyOutline size={20} />}
+        {theme === "light" ? "Dark Mode" : "Light Mode"}
+      </button>
+
+      <label className="relative inline-flex items-center cursor-pointer">
+        <input
+          type="checkbox"
+          checked={theme === "dark"}
+          onChange={toggleTheme}
+          className="sr-only peer"
+        />
+        <div className="w-9 h-5 bg-gray-200 dark:bg-gray-700 rounded-full peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-purple-500 peer-checked:bg-[#8774E1] dark:peer-checked:bg-[#8774E1] after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border after:border-gray-300 dark:after:border-gray-600 after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full" />
+      </label>
+    </div>
+  );
+}
+
+================
+File: lib/mocks/chat.ts
+================
+// Path: lib/mocks/chat.ts
+export const chats = [
+  {
+    id: 1,
+    name: "Belami",
+    lastMessage: "سفارش با موفقیت ثبت شد ✅",
+    lastMessageTime: "12:30 PM",
+    unreadCount: 0,
+    avatar: "assets/avatar/belami.jpg",
+    isOnline: true,
+    isPinned: true,
+  },
+  {
+    id: 2,
+    name: "Hamed Akbari",
+    lastMessage: "Salam Pesar",
+    lastMessageTime: "11:15 AM",
+    unreadCount: 3,
+    avatar: "assets/avatar/hamed.jpg",
+    isOnline: false,
+    isPinned: true,
+  },
+  {
+    id: 3,
+    name: "Telegram",
+    lastMessage:
+      "Login code: 46619. Do not give this code to anyone, even if they say they are from Telegram!",
+    lastMessageTime: "Yesterday",
+    unreadCount: 2,
+    avatar: "assets/avatar/telegram.jpg",
+    isOnline: false,
+    isPinned: false,
+  },
+  {
+    id: 4,
+    name: "Amir Rahemi",
+    lastMessage:
+      "Login code: 46619. Do not give this code to anyone, even if they say they are from Telegram!",
+    lastMessageTime: "Yesterday",
+    unreadCount: 2,
+    avatar: "assets/avatar/amir.jpg",
+    isOnline: false,
+    isPinned: false,
+  },
+];
 
 ================
 File: public/file.svg
@@ -113,6 +926,28 @@ File: public/vercel.svg
 File: public/window.svg
 ================
 <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+
+================
+File: store/useAuthStore.ts
+================
+import { create } from "zustand";
+
+interface User {
+  country: string;
+  phone: string;
+}
+
+interface StoreState {
+  user: User | null;
+  login: (user: User) => void;
+  logout: () => void;
+}
+
+export const useStore = create<StoreState>((set) => ({
+  user: null,
+  login: (user) => set({ user }),
+  logout: () => set({ user: null }),
+}));
 
 ================
 File: .gitignore
@@ -204,12 +1039,12 @@ File: package.json
     "lint": "next lint"
   },
   "dependencies": {
-    "@mantine/core": "^8.2.1",
-    "@mantine/hooks": "^8.2.1",
-    "@mantine/notifications": "^8.2.1",
     "next": "15.4.4",
+    "next-themes": "^0.4.6",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-icons": "^5.5.0",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -282,6 +1117,70 @@ File: README.md
    - Scheduled Messages
    - Reactions & Polls
    - Lock Telegram
+   - Skeleton for loading
+
+================
+File: tailwind.config.ts
+================
+// tailwind.config.ts
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  darkMode: ['selector', '[data-mode="dark"]'],
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./components/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    colors: {
+      transparent: 'transparent',
+      current: 'currentColor',
+      'white': '#ffffff',
+      'black': '#000000',
+      'slate': {
+        50: '#f8fafc',
+        100: '#f1f5f9',
+        200: '#e2e8f0',
+        300: '#cbd5e1',
+        400: '#94a3b8',
+        500: '#64748b',
+        600: '#475569',
+        655: '#4E5C89',
+        700: '#334155',
+        800: '#1e293b',
+        900: '#0f172a',
+        950: '#020617',
+        960: '#090909',
+        965: '#111111',
+      },
+      'gray': {
+        100: '#353535',
+        500: '#6b7280',
+        600: '#4b5563',
+        800: '#021500',
+      },
+      'green': {
+        100: '#58BB71',
+        700: '#0B2A13',
+      },
+      'red': {
+        100: '#E92C55',
+        200: '#E93131',
+        250: '#ED6464',
+        600: '#350E0C',
+      },
+      'blue': {
+        100: '#9bddff',
+        200: '#00A5FF',
+        250: '#ED6464',
+        600: '#350E0C',
+      },
+    },
+  },
+  plugins: [],
+};
+
+export default config;
 
 ================
 File: tsconfig.json
@@ -306,10 +1205,12 @@ File: tsconfig.json
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "*": ["next-themes"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "tailwind.config.ts"],
   "exclude": ["node_modules"]
 }
