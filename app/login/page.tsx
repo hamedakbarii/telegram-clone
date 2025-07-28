@@ -268,8 +268,14 @@ export default function LoginPage() {
     };
   }, [isDropdownOpen]);
 
+  // Login Function
+  const internationalPhoneRegex = /^\d{7,15}$/;
   const handleLogin = () => {
-    if (!phone.trim()) return alert("لطفاً شماره تلفن را وارد کنید");
+    if (!phone.trim()) return alert("Please Enter Phone Number");
+
+    if (!internationalPhoneRegex.test(phone)) {
+      return alert("Phone Numebr Is Not Valid");
+    }
 
     login({ country: countryCode, phone });
     router.push("/chat");
@@ -365,13 +371,16 @@ export default function LoginPage() {
             <label className="absolute -top-2 left-3 bg-white px-1 text-xs text-blue-500 font-medium">
               Your phone number
             </label>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full text-black border-none outline-none text-sm bg-transparent"
-              placeholder={selectedCountry?.code}
-            />
+            <div className="flex justify-center items-center gap-2">
+              <span className="text-sm">{countryCode}</span>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full text-black border-none outline-none text-sm bg-transparent"
+                // placeholder={selectedCountry?.code}
+              />
+            </div>
           </div>
         </div>
 
