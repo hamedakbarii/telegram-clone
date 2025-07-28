@@ -378,7 +378,9 @@ export default function LoginPage() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="w-full text-black border-none outline-none text-sm bg-transparent"
-                // placeholder={selectedCountry?.code}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleLogin();
+                }}
               />
             </div>
           </div>
