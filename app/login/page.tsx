@@ -244,6 +244,7 @@ export default function LoginPage() {
   const [countryCode, setCountryCode] = useState("+98");
   const [keepSignedIn, setKeepSignedIn] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoading, setIsloading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const login = useStore((state) => state.login);
   const router = useRouter();
@@ -270,6 +271,7 @@ export default function LoginPage() {
 
   // Login Function
   const internationalPhoneRegex = /^\d{7,15}$/;
+
   const handleLogin = () => {
     if (!phone.trim()) return alert("Please Enter Phone Number");
 
@@ -277,8 +279,13 @@ export default function LoginPage() {
       return alert("Phone Numebr Is Not Valid");
     }
 
-    login({ country: countryCode, phone });
-    router.push("/chat");
+    setIsloading(true);
+
+    setTimeout(() => {
+      login({ country: countryCode, phone });
+      router.push("/chat");
+      setIsloading(false);
+    }, 2000);
   };
 
   const handleCountrySelect = (country: (typeof countries)[0]) => {
@@ -288,7 +295,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 relative">
       <div className="w-full max-w-md bg-white rounded-none shadow-none p-8 flex flex-col justify-center items-center">
         <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mb-6">
           <img
@@ -427,6 +434,7 @@ export default function LoginPage() {
           </label>
         </div>
 
+        {/* Login Button */}
         <button
           onClick={handleLogin}
           className="w-full bg-[#30A2E7] hover:bg-[#218ccd] text-white font-semibold my-4 py-2 rounded-md transition cursor-pointer"
@@ -434,6 +442,7 @@ export default function LoginPage() {
           Login
         </button>
 
+        {/* QR Code Login */}
         <button
           type="button"
           className="text-blue-400 text-sm font-medium cursor-pointer hover:text-blue-500 transition-colors"
@@ -444,6 +453,14 @@ export default function LoginPage() {
           LOG IN BY QR CODE
         </button>
       </div>
+
+      {isLoading && (
+        <div className="fixed inset-0 z-50 bg-white/30 backdrop-blur-sm flex items-center justify-center">
+          <div className="text-lg text-blue-600 font-semibold animate-pulse">
+            Loading...
+          </div>
+        </div>
+      )}
     </div>
   );
 }
