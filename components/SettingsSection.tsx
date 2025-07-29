@@ -20,7 +20,8 @@ export default function SettingsSection({ items }: SettingsSectionProps) {
       {items.map((item, index) => (
         <button
           key={index}
-          className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors"
+          className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors cursor-pointer"
+          onClick={() => alert("Sorry! This is for test")}
         >
           <div className="flex items-center gap-3">
             <item.icon 

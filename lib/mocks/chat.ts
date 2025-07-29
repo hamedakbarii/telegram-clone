@@ -1,14 +1,27 @@
 // Path: lib/mocks/chat.ts
 export const chats = [
   {
+    id: 0,
+    name: "Archived Chats",
+    lastMessage: "Pavel Durov, BotFather, FoxNews",
+    lastMessageTime: "12:30 PM",
+    unreadCount: 189,
+    avatar: "assets/avatar/archive.jpeg",
+    isOnline: false,
+    isPinned: false,
+    messageStatus: false,
+    isArchive: null,
+  },
+  {
     id: 1,
     name: "Belami",
     lastMessage: "سفارش با موفقیت ثبت شد ✅",
     lastMessageTime: "12:30 PM",
     unreadCount: 0,
     avatar: "assets/avatar/belami.jpg",
-    isOnline: true,
-    isPinned: true,
+    isOnline: null,
+    isPinned: null,
+    messageStatus: false,
   },
   {
     id: 2,
@@ -18,7 +31,8 @@ export const chats = [
     unreadCount: 3,
     avatar: "assets/avatar/hamed.jpg",
     isOnline: false,
-    isPinned: true,
+    isPinned: null,
+    messageStatus: false,
   },
   {
     id: 3,
@@ -30,6 +44,7 @@ export const chats = [
     avatar: "assets/avatar/telegram.jpg",
     isOnline: false,
     isPinned: false,
+    messageStatus: false,
   },
   {
     id: 4,
@@ -41,5 +56,34 @@ export const chats = [
     avatar: "assets/avatar/amir.jpg",
     isOnline: false,
     isPinned: false,
+    messageStatus: false,
+  },
+  {
+    id: 5,
+    name: "Save Message",
+    lastMessage:
+      "Anbari",
+    lastMessageTime: "Mon",
+    unreadCount: 0,
+    avatar: "assets/avatar/save-message.jpeg",
+    isOnline: false,
+    isPinned: false,
+    messageStatus: "succeeded",
+  },
+  {
+    id: 6,
+    name: "eldràcu",
+    lastMessage:
+      "امیدوارم همیشه چمن های گیت هابتون با پول سبز باشه",
+    lastMessageTime: "Jul 27",
+    unreadCount: 0,
+    avatar: "assets/avatar/eldracu.jpeg",
+    isOnline: false,
+    isPinned: false,
+    messageStatus: "read",
+    // messageStatus
+    // Succeeded ✓
+    // Read ✓✓
+    // null
   },
 ];

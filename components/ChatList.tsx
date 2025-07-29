@@ -2,7 +2,6 @@
 "use client";
 
 import React from "react";
-import { TbPin } from "react-icons/tb";
 import ChatItem from "./ChatItem";
 
 interface Chat {
@@ -14,18 +13,30 @@ interface Chat {
   unreadCount: number;
   isOnline: boolean;
   isPinned: boolean;
+  messageStatus: string;
+  isArchive: boolean;
+}
+
+interface SearchResult extends Chat {
+  matchType?: 'name' | 'message' | 'both';
+  relevanceScore?: number;
 }
 
 interface ChatListProps {
-  chats: Chat[];
+  chats: SearchResult[];
+  searchQuery?: string;
 }
 
-export default function ChatList({ chats }: ChatListProps) {
+export default function ChatList({ chats, searchQuery }: ChatListProps) {
   return (
-    <>
+    <div className="divide-y divide-transparent">
       {chats.map((chat) => (
-        <ChatItem key={chat.id} chat={chat} />
+        <ChatItem 
+          key={chat.id} 
+          chat={chat} 
+          searchQuery={searchQuery}
+        />
       ))}
-    </>
+    </div>
   );
 }

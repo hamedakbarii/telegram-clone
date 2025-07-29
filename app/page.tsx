@@ -14,11 +14,11 @@ export default function ChatListPage() {
   const user = useStore((state) => state.user);
   const router = useRouter();
 
-  useEffect(() => {
-    if (!user) {
-      router.push("login");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     router.push("login");
+  //   }
+  // }, [user]);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   
@@ -38,7 +38,8 @@ export default function ChatListPage() {
         handleUserClick={handleUserClick}
         handleBackToChats={handleBackToChats}
       />
-      <MainContent showUserProfile={showUserProfile} />
+      <MainContent />
+      {/* <MainContent showUserProfile={showUserProfile} /> */}
     </div>
   );
 }

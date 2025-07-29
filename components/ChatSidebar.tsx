@@ -1,7 +1,7 @@
 // Path: components/ChatSidebar.tsx
 "use client";
 
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { chats } from "@/lib/mocks/chat";
 import { FiArrowLeft } from "react-icons/fi";
 import { MdOutlineMenu } from "react-icons/md";
@@ -9,6 +9,25 @@ import SearchInput from "./SearchInput";
 import DropdownMenu from "./DropdownMenu";
 import UserProfile from "./UserProfile";
 import ChatList from "./ChatList";
+
+interface Chat {
+  id: number;
+  name: string;
+  avatar: string;
+  lastMessage: string;
+  lastMessageTime: string;
+  unreadCount: number;
+  isOnline: boolean;
+  isPinned: boolean;
+  messageStatus: string;
+  isArchive: boolean;
+}
+
+interface SearchResult extends Chat {
+  matchType: 'name' | 'message' | 'both';
+  relevanceScore: number;
+  messageStatus: string;
+}
 
 interface ChatSidebarProps {
   isMenuOpen: boolean;
@@ -18,6 +37,49 @@ interface ChatSidebarProps {
   handleBackToChats: () => void;
 }
 
+// Simple search function (you can replace this with the advanced one from searchUtils.ts)
+const searchChats = (chats: Chat[], query: string): SearchResult[] => {
+  if (!query.trim()) {
+    return chats.map(chat => ({ ...chat, matchType: 'name' as const, relevanceScore: 0 }));
+  }
+
+  const normalizedQuery = query.toLowerCase().trim();
+  const results = [];
+
+  for (const chat of chats) {
+    const nameMatch = chat.name.toLowerCase().includes(normalizedQuery);
+    const messageMatch = chat.lastMessage.toLowerCase().includes(normalizedQuery);
+    
+    if (nameMatch || messageMatch) {
+      let matchType: 'name' | 'message' | 'both' = 'message';
+      let relevanceScore = 0;
+      
+      if (nameMatch && messageMatch) {
+        matchType = 'both';
+        relevanceScore = 100;
+      } else if (nameMatch) {
+        matchType = 'name';
+        relevanceScore = 80;
+      } else {
+        matchType = 'message';
+        relevanceScore = 60;
+      }
+      
+      // Boost pinned chats
+      if (chat.isPinned) relevanceScore += 10;
+      if (chat.unreadCount > 0) relevanceScore += 5;
+      
+      results.push({
+        ...chat,
+        matchType,
+        relevanceScore
+      });
+    }
+  }
+
+  return results.sort((a, b) => b.relevanceScore - a.relevanceScore);
+};
+
 export default function ChatSidebar({
   isMenuOpen,
   showUserProfile,
@@ -25,6 +87,17 @@ export default function ChatSidebar({
   handleUserClick,
   handleBackToChats,
 }: ChatSidebarProps) {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter chats based on search query with enhanced search
+  const filteredChats = useMemo(() => {
+    return searchChats(chats, searchQuery);
+  }, [searchQuery]);
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
   return (
     <div className="w-96 border-r border-transparent flex flex-col">
       {/* Header */}
@@ -54,7 +127,10 @@ export default function ChatSidebar({
           />
         </div>
 
-        <SearchInput />
+        <SearchInput 
+          onSearch={handleSearch}
+          placeholder={showUserProfile ? "Search settings" : "Search chats"}
+        />
       </div>
 
       {/* Dynamic content area */}
@@ -62,7 +138,34 @@ export default function ChatSidebar({
         {showUserProfile ? (
           <UserProfile />
         ) : (
-          <ChatList chats={chats} />
+          <>
+            {/* Search Results Info */}
+            {searchQuery && (
+              <div className="p-3 border-b border-[#2d2d2d] bg-[#1a1a1a]">
+                <p className="text-sm text-gray-400">
+                  {filteredChats.length > 0 
+                    ? `Found ${filteredChats.length} chat${filteredChats.length !== 1 ? 's' : ''}`
+                    : 'No chats found'
+                  }
+                </p>
+              </div>
+            )}
+            
+            {/* Chat List */}
+            {filteredChats.length > 0 ? (
+              <ChatList chats={filteredChats} searchQuery={searchQuery} />
+            ) : searchQuery ? (
+              <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                <div className="text-4xl mb-4">🔍</div>
+                <p className="text-lg font-medium mb-2">No chats found</p>
+                <p className="text-sm text-center px-8">
+                  Try searching for a different name or message
+                </p>
+              </div>
+            ) : (
+              <ChatList chats={chats.map(chat => ({ ...chat, matchType: 'name' as const, relevanceScore: 0 }))} />
+            )}
+          </>
         )}
       </div>
     </div>

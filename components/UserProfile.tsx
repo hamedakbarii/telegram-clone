@@ -30,7 +30,7 @@ const settingsItems = [
 ];
 
 const additionalItems = [
-  { icon: FaStar, label: "My Stars", value: "0", iconColor: "text-yellow-500" },
+  { icon: FaStar, label: "My Stars", value: "69", iconColor: "text-yellow-500" },
   { icon: FaGift, label: "Send a Gift" },
 ];
 
