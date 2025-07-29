@@ -11,23 +11,25 @@ export default function ChatListPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
 
-  const user = useStore((state) => state.user);
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     router.push("login");
-  //   }
-  // }, [user]);
-
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  
+
   const handleUserClick = () => {
     setShowUserProfile(true);
     setIsMenuOpen(false);
   };
-  
+
   const handleBackToChats = () => setShowUserProfile(false);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("auth-storage");
+    if (storedUser) {
+      router.push("/");
+    } else {
+      router.push("login");
+    }
+  }, []);
 
   return (
     <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]">
@@ -38,8 +40,7 @@ export default function ChatListPage() {
         handleUserClick={handleUserClick}
         handleBackToChats={handleBackToChats}
       />
-      <MainContent />
-      {/* <MainContent showUserProfile={showUserProfile} /> */}
+      <MainContent showUserProfile={showUserProfile} />
     </div>
   );
 }

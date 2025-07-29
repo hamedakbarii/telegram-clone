@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface User {
   country: string;
@@ -11,8 +12,15 @@ interface StoreState {
   logout: () => void;
 }
 
-export const useStore = create<StoreState>((set) => ({
-  user: null,
-  login: (user) => set({ user }),
-  logout: () => set({ user: null }),
-}));
+export const useStore = create<StoreState>()(
+  persist(
+    (set) => ({
+      user: null,
+      login: (user) => set({ user }),
+      logout: () => set({ user: null }),
+    }),
+    {
+      name: "auth-storage",
+    }
+  )
+);
