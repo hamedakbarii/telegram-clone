@@ -1,6 +1,6 @@
 ##NEXTJS TELEGRAM TASKS
 
-- > [X] 1.LOGIN(local storage)
+> - [X] 1.LOGIN(local storage)
 
 - > [] 2.CHAT LIST
   > - Show Contacts & Chats (Also Archive Chat & Pin Message)
