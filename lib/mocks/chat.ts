@@ -9,7 +9,7 @@ export const chats = [
     avatar: "assets/avatar/archive.jpeg",
     isOnline: false,
     isPinned: false,
-    messageStatus: false,
+    messageStatus: null,
     isArchive: false,
   },
   {
@@ -21,7 +21,7 @@ export const chats = [
     avatar: "assets/avatar/belami.jpg",
     isOnline: null,
     isPinned: null,
-    messageStatus: false,
+    messageStatus: null,
   },
   {
     id: 2,
@@ -32,7 +32,7 @@ export const chats = [
     avatar: "assets/avatar/hamed.jpg",
     isOnline: false,
     isPinned: null,
-    messageStatus: false,
+    messageStatus: null,
   },
   {
     id: 3,
@@ -44,7 +44,7 @@ export const chats = [
     avatar: "assets/avatar/telegram.jpg",
     isOnline: false,
     isPinned: false,
-    messageStatus: false,
+    messageStatus: null,
   },
   {
     id: 4,
@@ -56,7 +56,7 @@ export const chats = [
     avatar: "assets/avatar/amir.jpg",
     isOnline: false,
     isPinned: false,
-    messageStatus: false,
+    messageStatus: null,
   },
   {
     id: 5,

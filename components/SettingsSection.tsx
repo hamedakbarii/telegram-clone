@@ -1,7 +1,7 @@
 // Path: components/SettingsSection.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 interface SettingsItem {
   icon: React.ComponentType<{ size: number; className?: string }>;
@@ -24,9 +24,9 @@ export default function SettingsSection({ items }: SettingsSectionProps) {
           onClick={() => alert("Sorry! This is for test")}
         >
           <div className="flex items-center gap-3">
-            <item.icon 
-              size={20} 
-              className={item.iconColor || "text-gray-400"} 
+            <item.icon
+              size={20}
+              className={item.iconColor || "text-gray-400"}
             />
             <span className="text-white">{item.label}</span>
           </div>
