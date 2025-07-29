@@ -2,7 +2,7 @@
 
 > - [X] 1.LOGIN(local storage)
 
-> - [] 2.CHAT LIST
+> - [x] 2.CHAT LIST
 >   - Show Contacts & Chats (Also Archive Chat & Pin Message)
 >   - Avatar
 >   - Last Message For That Chat
