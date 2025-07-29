@@ -281,11 +281,8 @@ export default function LoginPage() {
 
     setIsloading(true);
 
-    setTimeout(() => {
-      login({ country: countryCode, phone });
-      router.push("/chat");
-      setIsloading(false);
-    }, 2000);
+    login({ country: countryCode, phone });
+    router.push("/chat");
   };
 
   const handleCountrySelect = (country: (typeof countries)[0]) => {

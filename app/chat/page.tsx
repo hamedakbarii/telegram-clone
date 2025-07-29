@@ -1,20 +1,33 @@
 // Path: app/chat/page.tsx
 "use client";
 
-import React, { useState } from 'react';
-import { chats } from '@/lib/mocks/chat';
-import { FiMoon, FiPlusCircle, FiSearch, FiArrowLeft } from 'react-icons/fi';
-import { MdMotionPhotosOn, MdOutlineMenu } from 'react-icons/md';
-import { FaPlus, FaRegEdit, FaUserCircle, FaStar, FaGift } from 'react-icons/fa';
-import { TbPin } from 'react-icons/tb';
-import { IoSunnyOutline } from 'react-icons/io5';
-import { CiBookmark, CiSettings, CiUser } from 'react-icons/ci';
-import { LuLogOut } from 'react-icons/lu';
-import { BsPlus, BsQuestionCircleFill, BsPhone, BsShield, BsFolder, BsDisplay, BsGlobe, BsStars, BsChat } from 'react-icons/bs';
-import { FaBug, FaK } from 'react-icons/fa6';
-import { MdNotifications, MdStorage, MdSecurity, MdLanguage, MdHelpOutline, MdPrivacyTip } from 'react-icons/md';
-import { RiEmojiStickerLine, RiTicketLine } from 'react-icons/ri';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import React, { useState } from "react";
+import { chats } from "@/lib/mocks/chat";
+import { FiPlusCircle, FiSearch, FiArrowLeft } from "react-icons/fi";
+import {
+  MdMotionPhotosOn,
+  MdOutlineMenu,
+  MdNotifications,
+  MdStorage,
+  MdSecurity,
+  MdLanguage,
+  MdHelpOutline,
+  MdPrivacyTip,
+} from "react-icons/md";
+import { FaUserCircle, FaStar, FaGift } from "react-icons/fa";
+import { TbPin } from "react-icons/tb";
+import { CiBookmark, CiSettings, CiUser } from "react-icons/ci";
+import {
+  BsPlus,
+  BsQuestionCircleFill,
+  BsPhone,
+  BsFolder,
+  BsDisplay,
+  BsChat,
+} from "react-icons/bs";
+import { FaBug, FaK } from "react-icons/fa6";
+import { RiEmojiStickerLine } from "react-icons/ri";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function ChatListPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,27 +71,33 @@ export default function ChatListPage() {
                 onClick={toggleMenu}
               >
                 <div className="py-1 absolute top-12 left-1.5 mt-2 w-56 bg-[#212121dd] dark:bg-[#212121dd] rounded-2xl shadow-2xl z-20 border border-[#212121dd] backdrop-blur-md overflow-hidden transition-all duration-200 translate-y-0 opacity-100">
-                  <button 
+                  <button
                     onClick={handleUserClick}
                     className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer"
                   >
                     <FaUserCircle size={20} className="mr-2" />
                     User
                   </button>
+
                   <hr className="w-full text-[#ffffffa1] h-2.5 opacity-5" />
+
                   <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
                     <BsPlus size={20} className="mr-2" />
                     Add Account
                   </button>
+
                   <hr className="w-full text-[#ffffffa1] h-2.5 opacity-5" />
+
                   <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
                     <CiBookmark size={20} className="mr-2" />
                     Save Message
                   </button>
+
                   <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
                     <CiUser size={20} className="mr-2" />
                     Contact
                   </button>
+
                   <button className="flex items-center px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer">
                     <MdMotionPhotosOn size={20} className="mr-2" />
                     My Stories
@@ -118,7 +137,10 @@ export default function ChatListPage() {
               placeholder="Search"
               className="w-full pl-10 pr-4 py-2 border-[#2d2d2d] dark:border-[#2d2d2d] bg-[#2d2d2d] dark:bg-[#2d2d2d] rounded-3xl focus:outline-none"
             />
-            <FiSearch size={20} className="absolute left-3 top-2.5 text-gray-500" />
+            <FiSearch
+              size={20}
+              className="absolute left-3 top-2.5 text-gray-500"
+            />
           </div>
         </div>
 
@@ -149,7 +171,7 @@ export default function ChatListPage() {
                       <p className="text-white">+98 939 222 3333</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-3 text-gray-300">
                     <span className="text-lg text-gray-500">@</span>
                     <div>
@@ -157,18 +179,18 @@ export default function ChatListPage() {
                       <p className="text-white">@amiriii01</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-3 text-gray-300">
                     <span className="text-lg text-gray-500">ⓘ</span>
                     <div>
                       <p className="text-sm text-gray-400">Bio</p>
                       <p className="text-white flex items-center gap-1">
-                        NEXTJS DEVELOPER 
+                        NEXTJS DEVELOPER
                         <span className="text-blue-400">✓</span>
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-3 text-gray-300">
                     <span className="text-lg text-gray-500">📅</span>
                     <div>
@@ -188,32 +210,34 @@ export default function ChatListPage() {
                       <CiSettings size={20} className="text-gray-400" />
                       <span className="text-white">General Settings</span>
                     </button>
-                    
+
                     <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <BsDisplay size={20} className="text-gray-400" />
-                      <span className="text-white">Animations and Performance</span>
+                      <span className="text-white">
+                        Animations and Performance
+                      </span>
                     </button>
-                    
+
                     <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <MdNotifications size={20} className="text-gray-400" />
                       <span className="text-white">Notifications</span>
                     </button>
-                    
+
                     <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <MdStorage size={20} className="text-gray-400" />
                       <span className="text-white">Data and Storage</span>
                     </button>
-                    
+
                     <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <MdSecurity size={20} className="text-gray-400" />
                       <span className="text-white">Privacy and Security</span>
                     </button>
-                    
+
                     <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <BsFolder size={20} className="text-gray-400" />
                       <span className="text-white">Chat Folders</span>
                     </button>
-                    
+
                     <button className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <div className="flex items-center gap-3">
                         <BsDisplay size={20} className="text-gray-400" />
@@ -221,7 +245,7 @@ export default function ChatListPage() {
                       </div>
                       <span className="text-sm text-gray-400">11</span>
                     </button>
-                    
+
                     <button className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <div className="flex items-center gap-3">
                         <MdLanguage size={20} className="text-gray-400" />
@@ -229,7 +253,7 @@ export default function ChatListPage() {
                       </div>
                       <span className="text-sm text-gray-400">English</span>
                     </button>
-                    
+
                     <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <RiEmojiStickerLine size={20} className="text-gray-400" />
                       <span className="text-white">Stickers and Emoji</span>
@@ -247,7 +271,7 @@ export default function ChatListPage() {
                       </div>
                       <span className="text-sm text-gray-400">0</span>
                     </button>
-                    
+
                     <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <FaGift size={20} className="text-gray-400" />
                       <span className="text-white">Send a Gift</span>
@@ -262,12 +286,12 @@ export default function ChatListPage() {
                       <BsChat size={20} className="text-gray-400" />
                       <span className="text-white">Ask a Question</span>
                     </button>
-                    
+
                     <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <MdHelpOutline size={20} className="text-gray-400" />
                       <span className="text-white">Telegram FAQ</span>
                     </button>
-                    
+
                     <button className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors">
                       <MdPrivacyTip size={20} className="text-gray-400" />
                       <span className="text-white">Privacy Policy</span>
@@ -327,7 +351,9 @@ export default function ChatListPage() {
       {/* Main content area */}
       <div className="flex-1 flex items-center justify-center bg-white dark:bg-[#0F0F0F] bg-[url(/assets/image/chat-bg-br.png)] dark:bg-[url(/assets/image/chat-bg-pattern-dark.png)]">
         <p className="text-gray-500 dark:text-gray-400">
-          {showUserProfile ? "User profile view" : "Select a chat to start messaging"}
+          {showUserProfile
+            ? "User profile view"
+            : "Select a chat to start messaging"}
         </p>
       </div>
     </div>
