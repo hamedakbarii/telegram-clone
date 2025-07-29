@@ -18,7 +18,7 @@ interface Chat {
 }
 
 interface SearchResult extends Chat {
-  matchType?: 'name' | 'message' | 'both';
+  matchType?: "name" | "message" | "both";
   relevanceScore?: number;
 }
 
@@ -31,11 +31,7 @@ export default function ChatList({ chats, searchQuery }: ChatListProps) {
   return (
     <div className="divide-y divide-transparent">
       {chats.map((chat) => (
-        <ChatItem 
-          key={chat.id} 
-          chat={chat} 
-          searchQuery={searchQuery}
-        />
+        <ChatItem key={chat.id} chat={chat} searchQuery={searchQuery} />
       ))}
     </div>
   );

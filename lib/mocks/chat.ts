@@ -10,7 +10,7 @@ export const chats = [
     isOnline: false,
     isPinned: false,
     messageStatus: false,
-    isArchive: null,
+    isArchive: false,
   },
   {
     id: 1,
@@ -61,8 +61,7 @@ export const chats = [
   {
     id: 5,
     name: "Save Message",
-    lastMessage:
-      "Anbari",
+    lastMessage: "Anbari",
     lastMessageTime: "Mon",
     unreadCount: 0,
     avatar: "assets/avatar/save-message.jpeg",
@@ -73,8 +72,7 @@ export const chats = [
   {
     id: 6,
     name: "eldràcu",
-    lastMessage:
-      "امیدوارم همیشه چمن های گیت هابتون با پول سبز باشه",
+    lastMessage: "امیدوارم همیشه چمن های گیت هابتون با پول سبز باشه",
     lastMessageTime: "Jul 27",
     unreadCount: 0,
     avatar: "assets/avatar/eldracu.jpeg",

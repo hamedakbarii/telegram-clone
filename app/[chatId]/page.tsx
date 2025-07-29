@@ -1,20 +1,20 @@
 // Path: app/chat/[chatId]/page.tsx
-import { ThemeToggle } from '@/components/ThemeToggle'
-import React from 'react'
+import { ThemeToggle } from "@/components/ThemeToggle";
+import React from "react";
 
 type Props = {
   params: {
-    chatId: string
-  }
-}
+    chatId: string;
+  };
+};
 
 export default function Page({ params }: Props) {
-  const { chatId } = params
+  const { chatId } = params;
 
   return (
     <div className="bg-white dark:bg-slate-300 p-4 min-h-screen">
-      <p className='text-black dark:text-white'>page: {chatId}</p>
+      <p className="text-black dark:text-white">page: {chatId}</p>
       <ThemeToggle />
     </div>
-  )
+  );
 }
