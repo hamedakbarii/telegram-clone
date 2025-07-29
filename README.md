@@ -2,21 +2,21 @@
 
 > - [X] 1.LOGIN(local storage)
 
-- > [] 2.CHAT LIST
-  > - Show Contacts & Chats (Also Archive Chat & Pin Message)
-  > - Avatar
-  > - Last Message For That Chat
-  > - UserName
-  > - Date or Time
-  > - Per message don't seen
-  > - Search Bar
-  > - Menu Bar
-  >   - Show Profile
-  >   - Contacts
-  >   - Saved Messages
-  >   - Settings
-  >   - Night Mode
-  >   - Copy Right 
+> - [] 2.CHAT LIST
+>   - Show Contacts & Chats (Also Archive Chat & Pin Message)
+>   - Avatar
+>   - Last Message For That Chat
+>   - UserName
+>   - Date or Time
+>   - Per message don't seen
+>   - Search Bar
+>   - Menu Bar
+>   - Show Profile
+>   - Contacts
+>   - Saved Messages
+>   - Settings
+>   - Night Mode
+>   - Copy Right 
 
 - > [] 3.MAIN CHAT (CHAT PAGE)
   >- Chat Header
