@@ -10,7 +10,9 @@ import MainContent from "@/components/MainContent";
 export default function ChatListPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
+  const user = useStore((state) => state.user);
   const router = useRouter();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -23,13 +25,22 @@ export default function ChatListPage() {
   const handleBackToChats = () => setShowUserProfile(false);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("auth-storage");
-    if (storedUser) {
-      router.push("/");
+    // Check if user is authenticated using the Zustand store
+    if (!user) {
+      router.push("/login");
     } else {
-      router.push("login");
+      setIsLoading(false);
     }
-  }, []);
+  }, [user, router]);
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#FEFEFF] dark:bg-[#202021]">
+        <div className="text-gray-500 dark:text-gray-400">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]">

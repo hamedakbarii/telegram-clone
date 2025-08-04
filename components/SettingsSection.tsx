@@ -1,5 +1,6 @@
 // Path: components/SettingsSection.tsx
 
+import { useStore } from "@/store/useAuthStore";
 import React from "react";
 
 interface SettingsItem {
@@ -14,6 +15,13 @@ interface SettingsSectionProps {
 }
 
 export default function SettingsSection({ items }: SettingsSectionProps) {
+  const logOut = useStore((state) => state.logout);
+
+  const logOutHandler = () => {
+    console.log("logOut Clicked");
+    logOut();
+  };
+
   return (
     <div className="mb-2">
       {items.map((item, index) => (
@@ -22,7 +30,7 @@ export default function SettingsSection({ items }: SettingsSectionProps) {
           className="w-full flex items-center justify-between gap-3 px-4 py-3 hover:bg-[#2d2d2d] transition-colors cursor-pointer"
           onClick={
             item.label === "Logout"
-              ? () => console.log("Logout clicked")
+              ? logOutHandler
               : () => alert("Sorry! This is for test")
           }
         >
