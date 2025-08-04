@@ -3,15 +3,10 @@
 
 import React from "react";
 import { FiPlusCircle } from "react-icons/fi";
-import {
-  MdMotionPhotosOn,
-} from "react-icons/md";
+import { MdMotionPhotosOn } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import { CiBookmark, CiSettings, CiUser } from "react-icons/ci";
-import {
-  BsPlus,
-  BsQuestionCircleFill,
-} from "react-icons/bs";
+import { BsPlus, BsQuestionCircleFill } from "react-icons/bs";
 import { FaBug, FaK } from "react-icons/fa6";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -23,12 +18,26 @@ interface DropdownMenuProps {
 
 const menuItems = [
   { icon: FaUserCircle, label: "User", action: "user" },
-  { icon: BsPlus, label: "Add Account", action: "add_account", separator: true },
-  { icon: CiBookmark, label: "Save Message", action: "save_message", separator: true },
+  {
+    icon: BsPlus,
+    label: "Add Account",
+    action: "add_account",
+    separator: true,
+  },
+  {
+    icon: CiBookmark,
+    label: "Save Message",
+    action: "save_message",
+    separator: true,
+  },
   { icon: CiUser, label: "Contact", action: "contact" },
   { icon: MdMotionPhotosOn, label: "My Stories", action: "stories" },
   { icon: CiSettings, label: "Settings", action: "settings" },
-  { icon: BsQuestionCircleFill, label: "Telegram Features", action: "features" },
+  {
+    icon: BsQuestionCircleFill,
+    label: "Telegram Features",
+    action: "features",
+  },
   { icon: FaBug, label: "Report A Bug", action: "bug" },
   { icon: FaK, label: "Switch to K Version", action: "k_version" },
   { icon: FiPlusCircle, label: "Install APP", action: "install" },
@@ -68,10 +77,10 @@ export default function DropdownMenu({
             </button>
           </React.Fragment>
         ))}
-        
+
         <hr className="w-full text-[#ffffffa1] h-2.5 opacity-5" />
         <ThemeToggle />
-        
+
         <div className="text-sm text-center text-[#aaaaaa] py-2.5 cursor-auto">
           <p>Telegram Web A 10.9.57</p>
         </div>

@@ -9,9 +9,9 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-export default function SearchInput({ 
-  onSearch, 
-  placeholder = "Search" 
+export default function SearchInput({
+  onSearch,
+  placeholder = "Search",
 }: SearchInputProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -28,7 +28,7 @@ export default function SearchInput({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Escape') {
+    if (e.key === "Escape") {
       clearSearch();
     }
   };
@@ -44,18 +44,18 @@ export default function SearchInput({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         className={`w-full pl-10 pr-10 py-2 border-[#2d2d2d] dark:border-[#2d2d2d] bg-[#2d2d2d] dark:bg-[#2d2d2d] rounded-3xl focus:outline-none transition-all duration-200 ${
-          isFocused ? 'ring-2 ring-blue-500/50' : ''
+          isFocused ? "ring-2 ring-blue-500/50" : ""
         }`}
       />
-      
+
       {/* Search Icon */}
       <FiSearch
         size={20}
         className={`absolute left-3 top-2.5 transition-colors duration-200 ${
-          isFocused || searchQuery ? 'text-blue-400' : 'text-gray-500'
+          isFocused || searchQuery ? "text-blue-400" : "text-gray-500"
         }`}
       />
-      
+
       {/* Clear Button */}
       {searchQuery && (
         <button

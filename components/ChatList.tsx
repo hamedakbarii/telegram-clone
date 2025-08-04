@@ -11,10 +11,10 @@ interface Chat {
   lastMessage: string;
   lastMessageTime: string;
   unreadCount: number;
-  isOnline: boolean;
-  isPinned: boolean;
-  messageStatus: string;
-  isArchive: boolean;
+  isOnline: boolean | null;
+  isPinned: boolean | null;
+  messageStatus: string | null;
+  isArchive?: boolean;
 }
 
 interface SearchResult extends Chat {

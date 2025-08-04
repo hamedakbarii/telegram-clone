@@ -11,7 +11,9 @@ export function ThemeToggle() {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const systemPrefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     const initialTheme = savedTheme || (systemPrefersDark ? "dark" : "light");
     setTheme(initialTheme);
   }, []);
@@ -20,13 +22,13 @@ export function ThemeToggle() {
     if (theme) {
       // Set both class and data-theme attribute for maximum compatibility
       document.documentElement.className = theme;
-      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem("theme", theme);
     }
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === "light" ? "dark" : "light");
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
   const handleClick = (e: React.MouseEvent) => {
@@ -45,8 +47,8 @@ export function ThemeToggle() {
   }
 
   return (
-    <div 
-      onClick={handleClick} 
+    <div
+      onClick={handleClick}
       className="flex items-center justify-between px-4 py-2 text-sm font-medium transition duration-300 w-full text-left hover:bg-[#151515] dark:hover:bg-[#151515] cursor-pointer"
     >
       <button
@@ -61,10 +63,13 @@ export function ThemeToggle() {
         {theme === "light" ? "Dark Mode" : "Light Mode"}
       </button>
       {/* Toggle Button */}
-      <label className="inline-flex items-center cursor-pointer" onClick={(e) => e.stopPropagation()}> 
-        <input 
-          type="checkbox" 
-          checked={theme === "dark"} 
+      <label
+        className="inline-flex items-center cursor-pointer"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <input
+          type="checkbox"
+          checked={theme === "dark"}
           onChange={handleInputChange}
           className="sr-only peer"
         />

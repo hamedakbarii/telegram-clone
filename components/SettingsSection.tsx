@@ -1,7 +1,6 @@
 // Path: components/SettingsSection.tsx
-"use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 
 interface SettingsItem {
   icon: React.ComponentType<{ size: number; className?: string }>;

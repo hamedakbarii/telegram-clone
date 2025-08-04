@@ -15,7 +15,9 @@ export default function MainContent({ showUserProfile }: MainContentProps) {
           ? "User profile view"
           : "Select a chat to start messaging"}
       </p> */}
-      <p className="text-gray-500 dark:text-gray-400">Select a chat to start messaging</p>
+      <p className="text-gray-500 dark:text-gray-400">
+        Select a chat to start messaging
+      </p>
     </div>
   );
 }

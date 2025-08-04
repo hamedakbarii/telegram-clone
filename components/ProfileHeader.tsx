@@ -22,7 +22,12 @@ const contactInfo = [
       <span className="text-white flex items-center gap-1">
         NEXTJS DEVELOPER
         <span className="text-blue-400">
-          <img src="https://emojicdn.elk.sh/%F0%9F%90%A2" width={25} height={25} alt="🐢" />
+          <img
+            src="https://emojicdn.elk.sh/%F0%9F%90%A2"
+            width={25}
+            height={25}
+            alt="🐢"
+          />
         </span>
       </span>
     ),
@@ -46,16 +51,16 @@ export default function ProfileHeader() {
         />
         <div className="absolute bottom-0 right-0 w-6 h-6 bg-green-500 rounded-full border-2 border-[#1a1a1a]"></div>
       </div>
-      
+
       <h2 className="text-xl font-semibold text-white mb-1">Amir.</h2>
       <p className="text-sm text-gray-400 mb-4">last seen just now</p>
 
       {/* Contact Info */}
       <div className="space-y-3 text-left">
         {contactInfo.map((info, index) => (
-          <div 
-            key={index} 
-            className="flex items-center gap-3 text-gray-300 cursor-pointer" 
+          <div
+            key={index}
+            className="flex items-center gap-3 text-gray-300 cursor-pointer"
             onClick={() => alert("Sorry! This is for test")}
           >
             {info.icon}

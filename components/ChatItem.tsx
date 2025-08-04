@@ -13,10 +13,10 @@ interface Chat {
   lastMessage: string;
   lastMessageTime: string;
   unreadCount: number;
-  isOnline: boolean;
-  isPinned: boolean;
-  messageStatus: string;
-  isArchive: boolean;
+  isOnline: boolean | null;
+  isPinned: boolean | null;
+  messageStatus: string | null;
+  isArchive?: boolean;
 }
 
 interface SearchResult extends Chat {
@@ -68,7 +68,7 @@ export default function ChatItem({ chat, searchQuery }: ChatItemProps) {
             alt={chat.name}
             className="w-12 h-12 rounded-full object-cover"
           />
-          {chat.isOnline && (
+          {chat.isOnline === true && (
             <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900"></div>
           )}
         </div>

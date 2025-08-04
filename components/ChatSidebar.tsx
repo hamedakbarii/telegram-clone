@@ -17,16 +17,15 @@ interface Chat {
   lastMessage: string;
   lastMessageTime: string;
   unreadCount: number;
-  isOnline: boolean;
-  isPinned: boolean;
-  messageStatus: string;
-  isArchive: boolean;
+  isOnline: boolean | null;
+  isPinned: boolean | null;
+  messageStatus: string | null;
+  isArchive?: boolean;
 }
 
 interface SearchResult extends Chat {
-  matchType: 'name' | 'message' | 'both';
+  matchType: "name" | "message" | "both";
   relevanceScore: number;
-  messageStatus: string;
 }
 
 interface ChatSidebarProps {
@@ -40,7 +39,11 @@ interface ChatSidebarProps {
 // Simple search function (you can replace this with the advanced one from searchUtils.ts)
 const searchChats = (chats: Chat[], query: string): SearchResult[] => {
   if (!query.trim()) {
-    return chats.map(chat => ({ ...chat, matchType: 'name' as const, relevanceScore: 0 }));
+    return chats.map((chat) => ({
+      ...chat,
+      matchType: "name" as const,
+      relevanceScore: 0,
+    }));
   }
 
   const normalizedQuery = query.toLowerCase().trim();
@@ -48,31 +51,33 @@ const searchChats = (chats: Chat[], query: string): SearchResult[] => {
 
   for (const chat of chats) {
     const nameMatch = chat.name.toLowerCase().includes(normalizedQuery);
-    const messageMatch = chat.lastMessage.toLowerCase().includes(normalizedQuery);
-    
+    const messageMatch = chat.lastMessage
+      .toLowerCase()
+      .includes(normalizedQuery);
+
     if (nameMatch || messageMatch) {
-      let matchType: 'name' | 'message' | 'both' = 'message';
+      let matchType: "name" | "message" | "both" = "message";
       let relevanceScore = 0;
-      
+
       if (nameMatch && messageMatch) {
-        matchType = 'both';
+        matchType = "both";
         relevanceScore = 100;
       } else if (nameMatch) {
-        matchType = 'name';
+        matchType = "name";
         relevanceScore = 80;
       } else {
-        matchType = 'message';
+        matchType = "message";
         relevanceScore = 60;
       }
-      
+
       // Boost pinned chats
       if (chat.isPinned) relevanceScore += 10;
       if (chat.unreadCount > 0) relevanceScore += 5;
-      
+
       results.push({
         ...chat,
         matchType,
-        relevanceScore
+        relevanceScore,
       });
     }
   }
@@ -127,7 +132,7 @@ export default function ChatSidebar({
           />
         </div>
 
-        <SearchInput 
+        <SearchInput
           onSearch={handleSearch}
           placeholder={showUserProfile ? "Search settings" : "Search chats"}
         />
@@ -143,14 +148,15 @@ export default function ChatSidebar({
             {searchQuery && (
               <div className="p-3 border-b border-[#2d2d2d] bg-[#1a1a1a]">
                 <p className="text-sm text-gray-400">
-                  {filteredChats.length > 0 
-                    ? `Found ${filteredChats.length} chat${filteredChats.length !== 1 ? 's' : ''}`
-                    : 'No chats found'
-                  }
+                  {filteredChats.length > 0
+                    ? `Found ${filteredChats.length} chat${
+                        filteredChats.length !== 1 ? "s" : ""
+                      }`
+                    : "No chats found"}
                 </p>
               </div>
             )}
-            
+
             {/* Chat List */}
             {filteredChats.length > 0 ? (
               <ChatList chats={filteredChats} searchQuery={searchQuery} />
@@ -163,7 +169,13 @@ export default function ChatSidebar({
                 </p>
               </div>
             ) : (
-              <ChatList chats={chats.map(chat => ({ ...chat, matchType: 'name' as const, relevanceScore: 0 }))} />
+              <ChatList
+                chats={chats.map((chat) => ({
+                  ...chat,
+                  matchType: "name" as const,
+                  relevanceScore: 0,
+                }))}
+              />
             )}
           </>
         )}
