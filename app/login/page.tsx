@@ -282,7 +282,7 @@ export default function LoginPage() {
     setIsloading(true);
 
     login({ country: countryCode, phone });
-    router.push("/");
+    router.push("/chats");
   };
 
   const handleCountrySelect = (country: (typeof countries)[0]) => {
