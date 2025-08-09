@@ -65,7 +65,7 @@ export default function ChatItem({ chat, searchQuery }: ChatItemProps) {
   return (
     <div
       className="border-b border-transparent"
-      onClick={() => router.push(`/chat/${chat.id}`)}
+      onClick={() => router.push(`/chats/${chat.id}`)}
     >
       <button className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] dark:hover:bg-[#151515] transition-colors cursor-pointer">
         <div className="relative">
