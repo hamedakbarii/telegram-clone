@@ -34,6 +34,9 @@ interface ChatSidebarProps {
   toggleMenu: () => void;
   handleUserClick: () => void;
   handleBackToChats: () => void;
+  onChatSelect?: (chatId: string) => void; // Added for navigation
+  onBackToChatList?: () => void; // Added for navigation
+  currentPath?: string; // Added to track current route
 }
 
 // Simple search function (you can replace this with the advanced one from searchUtils.ts)
@@ -91,6 +94,9 @@ export default function ChatSidebar({
   toggleMenu,
   handleUserClick,
   handleBackToChats,
+  onChatSelect, // Added
+  onBackToChatList, // Added
+  currentPath = '/chats' // Added with default
 }: ChatSidebarProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -101,6 +107,13 @@ export default function ChatSidebar({
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
+  };
+
+  // Handle chat click for navigation
+  const handleChatClick = (chatId: number) => {
+    if (onChatSelect) {
+      onChatSelect(chatId.toString());
+    }
   };
 
   return (
@@ -159,7 +172,11 @@ export default function ChatSidebar({
 
             {/* Chat List */}
             {filteredChats.length > 0 ? (
-              <ChatList chats={filteredChats} searchQuery={searchQuery} />
+              <ChatList 
+                chats={filteredChats} 
+                searchQuery={searchQuery}
+                onChatClick={handleChatClick}
+              />
             ) : searchQuery ? (
               <div className="flex flex-col items-center justify-center h-64 text-gray-500">
                 <div className="text-4xl mb-4">🔍</div>
@@ -175,6 +192,7 @@ export default function ChatSidebar({
                   matchType: "name" as const,
                   relevanceScore: 0,
                 }))}
+                onChatClick={handleChatClick}
               />
             )}
           </>

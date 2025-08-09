@@ -28,6 +28,7 @@ interface SearchResult extends Chat {
 interface ChatItemProps {
   chat: SearchResult;
   searchQuery?: string;
+  onChatClick?: (chatId: number) => void; // Added this prop
 }
 
 // Function to highlight matching text
@@ -59,13 +60,23 @@ const highlightText = (text: string, query: string): React.ReactElement => {
   );
 };
 
-export default function ChatItem({ chat, searchQuery }: ChatItemProps) {
+export default function ChatItem({ chat, searchQuery, onChatClick }: ChatItemProps) {
   const router = useRouter();
+
+  const handleClick = () => {
+    // Use the onChatClick prop if provided (for smooth transitions from layout)
+    // Otherwise fall back to direct router navigation
+    if (onChatClick) {
+      onChatClick(chat.id);
+    } else {
+      router.push(`/chats/${chat.id}`);
+    }
+  };
 
   return (
     <div
       className="border-b border-transparent"
-      onClick={() => router.push(`/chats/${chat.id}`)}
+      onClick={handleClick}
     >
       <button className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] dark:hover:bg-[#151515] transition-colors cursor-pointer">
         <div className="relative">

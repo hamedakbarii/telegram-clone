@@ -25,6 +25,7 @@ interface SearchResult extends Chat {
 interface ChatListProps {
   chats: SearchResult[];
   searchQuery?: string;
+  onChatClick?: (chatId: number) => void;
 }
 
 export default function ChatList({ chats, searchQuery }: ChatListProps) {

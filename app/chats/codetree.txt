@@ -1,0 +1,140 @@
+================================================================
+Files Structure
+================================================================
+[chatId]/
+  page.tsx
+layout.tsx
+page.tsx
+
+================================================================
+Repository Files
+================================================================
+
+================
+File: [chatId]/page.tsx
+================
+"use client";
+
+import React, { JSX, useState } from "react";
+import ChatSidebar from "@/components/ChatSidebar";
+import { useParams } from "next/navigation";
+
+type Params = {
+  chatId: string; // required, not optional
+};
+
+export default function SingleChat(): JSX.Element {
+  const params = useParams() as Params;
+  const { chatId } = params;
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showUserProfile, setShowUserProfile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleUserClick = () => {
+    setShowUserProfile(true);
+    setIsMenuOpen(false);
+  };
+
+  const handleBackToChats = () => setShowUserProfile(false);
+
+  return (
+    <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]">
+      <h1 className="text-3xl font-bold">Chat ID: {chatId}</h1>
+    </div>
+  );
+}
+
+================
+File: layout.tsx
+================
+// app/chats/layout.tsx
+"use client";
+
+import React, { useState } from "react";
+import ChatSidebar from "@/components/ChatSidebar";
+
+export default function ChatsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showUserProfile, setShowUserProfile] = useState(false);
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const handleUserClick = () => {
+    setShowUserProfile(true);
+    setIsMenuOpen(false);
+  };
+  const handleBackToChats = () => setShowUserProfile(false);
+
+  return (
+    <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]">
+      <ChatSidebar
+        isMenuOpen={isMenuOpen}
+        showUserProfile={showUserProfile}
+        toggleMenu={toggleMenu}
+        handleUserClick={handleUserClick}
+        handleBackToChats={handleBackToChats}
+      />
+      <main className="flex-grow">{children}</main>
+    </div>
+  );
+}
+
+================
+File: page.tsx
+================
+// Path: app/chats/page.tsx
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
+import ChatSidebar from "@/components/ChatSidebar";
+import MainContent from "@/components/MainContent";
+
+export default function ChatListPage() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showUserProfile, setShowUserProfile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const user = useStore((state) => state.user);
+  const router = useRouter();
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const handleUserClick = () => {
+    setShowUserProfile(true);
+    setIsMenuOpen(false);
+  };
+
+  const handleBackToChats = () => setShowUserProfile(false);
+
+  useEffect(() => {
+    // Check if user is authenticated using the Zustand store
+    if (!user) {
+      router.push("/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [user, router]);
+
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-[#FEFEFF] dark:bg-[#202021]">
+        <div className="text-gray-500 dark:text-gray-400">Loading...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]">
+      <MainContent showUserProfile={showUserProfile} />
+    </div>
+  );
+}
