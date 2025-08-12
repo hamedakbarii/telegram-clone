@@ -2,11 +2,22 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
+  const user = useStore((state) => state.user);
+  const storedUser = localStorage.getItem("auth-storage");
+  const router = useRouter();
 
-  return (
-    <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]">
-    </div>
-  );
+  useEffect(() => {
+    if (storedUser) {
+      console.log("storedUser: " + storedUser);
+      router.push("chats");
+    } else {
+      router.push("login");
+    }
+  }, []);
+
+  return <></>;
 }
