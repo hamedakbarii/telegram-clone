@@ -1,6 +1,7 @@
 // Path: components/SettingsSection.tsx
 
 import { useStore } from "@/store/useAuthStore";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface SettingsItem {
@@ -16,10 +17,12 @@ interface SettingsSectionProps {
 
 export default function SettingsSection({ items }: SettingsSectionProps) {
   const logOut = useStore((state) => state.logout);
+  const router = useRouter();
 
   const logOutHandler = () => {
     console.log("logOut Clicked");
     logOut();
+    router.push("login");
   };
 
   return (
