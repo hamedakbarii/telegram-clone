@@ -60,7 +60,7 @@ export const chats = [
   },
   {
     id: 5,
-    name: "Save Message",
+    name: "Saved Messages",
     lastMessage: "Anbari",
     lastMessageTime: "Mon",
     unreadCount: 0,

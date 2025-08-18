@@ -9,6 +9,7 @@ import { CiBookmark, CiSettings, CiUser } from "react-icons/ci";
 import { BsPlus, BsQuestionCircleFill } from "react-icons/bs";
 import { FaBug, FaK } from "react-icons/fa6";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useRouter } from "next/navigation";
 
 interface DropdownMenuProps {
   isMenuOpen: boolean;
@@ -26,7 +27,7 @@ const menuItems = [
   },
   {
     icon: CiBookmark,
-    label: "Save Message",
+    label: "Saved Messages",
     action: "save_message",
     separator: true,
   },
@@ -50,9 +51,15 @@ export default function DropdownMenu({
 }: DropdownMenuProps) {
   if (!isMenuOpen) return null;
 
+  const router = useRouter();
+
   const handleMenuItemClick = (action: string) => {
     if (action === "user") {
       handleUserClick();
+    } else if (action === "save_message") {
+      router.push("/chats/5");
+    } else {
+      alert("Sorry! This is for test.");
     }
     // Add other action handlers here
   };
