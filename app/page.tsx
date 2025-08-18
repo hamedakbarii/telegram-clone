@@ -15,7 +15,7 @@ export default function HomePage() {
       console.log("storedUser: " + storedUser);
       router.push("chats");
     } else {
-      router.push("login");
+      router.push("/login");
     }
   }, []);
 

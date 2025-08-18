@@ -16,9 +16,9 @@ type Params = {
 interface Message {
   id: string;
   text: string;
-  sender: 'user' | 'ai';
+  sender: "user" | "ai";
   timestamp: Date;
-  status?: 'sent' | 'delivered' | 'read' | 'succeeded' | null;
+  status?: "sent" | "delivered" | "read" | "succeeded" | null;
   isEdited?: boolean;
 }
 
@@ -61,18 +61,18 @@ export default function SingleChat(): JSX.Element {
   // Load chat info and messages
   const loadChatMessages = async (chatId: string) => {
     setIsLoading(true);
-    
+
     const chatIdNum = parseInt(chatId);
-    
+
     // Get chat info from your mock data
-    const chat = chats.find(c => c.id === chatIdNum);
+    const chat = chats.find((c) => c.id === chatIdNum);
     if (chat) {
       setChatInfo({
         id: chat.id,
         name: chat.name,
         avatar: chat.avatar,
         isOnline: chat.isOnline,
-        lastSeen: chat.id === 2 ? "last seen recently" : undefined
+        lastSeen: chat.id === 2 ? "last seen recently" : undefined,
       });
     }
 
@@ -86,12 +86,12 @@ export default function SingleChat(): JSX.Element {
 
       // Simple welcome message for all chats
       const welcomeMessage: Message = {
-        id: '1',
+        id: "1",
         text: `Hello! Welcome to chat with ${chat.name}. How can I help you today?`,
-        sender: 'ai',
+        sender: "ai",
         timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
       };
-      
+
       setMessages([welcomeMessage]);
       setIsLoading(false);
     }, 300);
@@ -103,27 +103,27 @@ export default function SingleChat(): JSX.Element {
     const newMessage: Message = {
       id: Date.now().toString(),
       text: inputMessage,
-      sender: 'user',
+      sender: "user",
       timestamp: new Date(),
-      status: 'sent'
+      status: "sent",
     };
 
-    setMessages(prev => [...prev, newMessage]);
+    setMessages((prev) => [...prev, newMessage]);
     setInputMessage("");
 
     // Simulate delivery and read status updates
     setTimeout(() => {
-      setMessages(prev => 
-        prev.map(msg => 
-          msg.id === newMessage.id ? { ...msg, status: 'delivered' } : msg
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === newMessage.id ? { ...msg, status: "delivered" } : msg
         )
       );
     }, 500);
 
     setTimeout(() => {
-      setMessages(prev => 
-        prev.map(msg => 
-          msg.id === newMessage.id ? { ...msg, status: 'read' } : msg
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === newMessage.id ? { ...msg, status: "read" } : msg
         )
       );
     }, 1500);
@@ -133,15 +133,15 @@ export default function SingleChat(): JSX.Element {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         text: getRandomAIResponse(),
-        sender: 'ai',
-        timestamp: new Date()
+        sender: "ai",
+        timestamp: new Date(),
       };
-      setMessages(prev => [...prev, aiResponse]);
+      setMessages((prev) => [...prev, aiResponse]);
     }, 2000);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -149,13 +149,13 @@ export default function SingleChat(): JSX.Element {
 
   const renderMessageStatus = (status: string | null | undefined) => {
     switch (status) {
-      case 'sent':
+      case "sent":
         return <BsCheck className="w-4 h-4 text-gray-300" />;
-      case 'delivered':
+      case "delivered":
         return <BsCheckAll className="w-4 h-4 text-gray-300" />;
-      case 'read':
+      case "read":
         return <BsCheckAll className="w-4 h-4 text-blue-400" />;
-      case 'succeeded':
+      case "succeeded":
         return <BsCheck className="w-4 h-4 text-green-400" />;
       default:
         return null;
@@ -163,16 +163,16 @@ export default function SingleChat(): JSX.Element {
   };
 
   const formatTime = (timestamp: Date) => {
-    return timestamp.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
+    return timestamp.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
     });
   };
 
   const isUrl = (text: string) => {
     try {
-      new URL(text.split('\n')[0]);
+      new URL(text.split("\n")[0]);
       return true;
     } catch {
       return false;
@@ -180,12 +180,12 @@ export default function SingleChat(): JSX.Element {
   };
 
   const renderMessage = (message: Message) => {
-    if (message.sender === 'user' && isUrl(message.text)) {
-      const lines = message.text.split('\n');
+    if (message.sender === "user" && isUrl(message.text)) {
+      const lines = message.text.split("\n");
       const url = lines[0];
-      const title = lines[2] || 'Google';
-      const description = lines[3] || '';
-      
+      const title = lines[2] || "Google";
+      const description = lines[3] || "";
+
       return (
         <div className="bg-purple-500 text-white rounded-2xl p-3 max-w-sm">
           <div className="bg-white/10 rounded-lg p-3 mb-2">
@@ -209,21 +209,21 @@ export default function SingleChat(): JSX.Element {
     }
 
     return (
-      <div className={`rounded-2xl p-3 max-w-sm ${
-        message.sender === 'user'
-          ? 'bg-purple-500 text-white'
-          : 'bg-gray-700 text-white'
-      }`}>
+      <div
+        className={`rounded-2xl p-3 max-w-sm ${
+          message.sender === "user"
+            ? "bg-purple-500 text-white"
+            : "bg-gray-700 text-white"
+        }`}
+      >
         <div className="break-words">{message.text}</div>
         <div className="flex items-center justify-between mt-1">
           <div className="flex items-center gap-1 text-xs opacity-70">
             <span>{formatTime(message.timestamp)}</span>
             {message.isEdited && <span>edited</span>}
           </div>
-          {message.sender === 'user' && (
-            <div className="ml-2">
-              {renderMessageStatus(message.status)}
-            </div>
+          {message.sender === "user" && (
+            <div className="ml-2">{renderMessageStatus(message.status)}</div>
           )}
         </div>
       </div>
@@ -243,7 +243,10 @@ export default function SingleChat(): JSX.Element {
   }
 
   return (
-    <div className="flex flex-col h-full bg-[#101010] text-white" dir="ltr">
+    <div
+      className="flex flex-col h-full bg-[#101010] bg-[url(/assets/image/chat-bg-br.png)] dark:bg-[url(/assets/image/chat-bg-pattern-dark.png)] text-white"
+      dir="ltr"
+    >
       {/* Chat Header */}
       <div className="flex items-center justify-between p-4 bg-gray-800 border-b border-gray-700">
         <div className="flex items-center gap-3 cursor-pointer">
@@ -255,11 +258,11 @@ export default function SingleChat(): JSX.Element {
           <div>
             <h1 className="text-lg font-medium">{chatInfo?.name}</h1>
             <p className="text-sm text-gray-400">
-              {chatInfo?.isOnline ? 'online' : chatInfo?.lastSeen || 'offline'}
+              {chatInfo?.isOnline ? "online" : chatInfo?.lastSeen || "offline"}
             </p>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-4">
           <button className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer">
             <FaSearch className="w-5 h-5 text-gray-400" />
@@ -282,11 +285,15 @@ export default function SingleChat(): JSX.Element {
               Today
             </span>
           </div>
-          
+
           {messages.map((message, index) => {
-            const showTime = index === 0 || 
-              Math.abs(message.timestamp.getTime() - messages[index - 1].timestamp.getTime()) > 300000; // 5 minutes
-            
+            const showTime =
+              index === 0 ||
+              Math.abs(
+                message.timestamp.getTime() -
+                  messages[index - 1].timestamp.getTime()
+              ) > 300000; // 5 minutes
+
             return (
               <div key={message.id} className="space-y-1">
                 {showTime && (
@@ -296,7 +303,11 @@ export default function SingleChat(): JSX.Element {
                     </span>
                   </div>
                 )}
-                <div className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                <div
+                  className={`flex ${
+                    message.sender === "user" ? "justify-end" : "justify-start"
+                  }`}
+                >
                   {renderMessage(message)}
                 </div>
               </div>
@@ -320,11 +331,11 @@ export default function SingleChat(): JSX.Element {
               placeholder="Message"
               className="w-full p-3 pr-12 border-0 bg-[#212121] dark:bg-[#212121] rounded-2xl resize-none focus:outline-none text-white dark:text-white placeholder-[#a2acb4] dark:placeholder-[#a2acb4]"
               rows={1}
-              style={{ maxHeight: '120px', minHeight: '44px' }}
+              style={{ maxHeight: "120px", minHeight: "44px" }}
               onInput={(e) => {
                 const target = e.target as HTMLTextAreaElement;
-                target.style.height = 'auto';
-                target.style.height = target.scrollHeight + 'px';
+                target.style.height = "auto";
+                target.style.height = target.scrollHeight + "px";
               }}
             />
 
@@ -338,11 +349,12 @@ export default function SingleChat(): JSX.Element {
           <div className="relative w-10 h-10">
             {/* Voice/Mic Button */}
             <button
-              className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 rounded-full transition-all duration-200 ease-in-out transform ${inputMessage.trim()
-                  ? 'opacity-0 scale-75 rotate-45'
-                  : 'opacity-100 scale-100 rotate-0'
-                }`}
-              disabled={inputMessage.trim() !== ''}
+              className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 rounded-full transition-all duration-200 ease-in-out transform ${
+                inputMessage.trim()
+                  ? "opacity-0 scale-75 rotate-45"
+                  : "opacity-100 scale-100 rotate-0"
+              }`}
+              disabled={inputMessage.trim() !== ""}
             >
               <FaMicrophone className="w-6 h-6 text-white" />
             </button>
@@ -351,10 +363,11 @@ export default function SingleChat(): JSX.Element {
             <button
               onClick={handleSendMessage}
               disabled={!inputMessage.trim()}
-              className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-0 disabled:cursor-not-allowed rounded-full transition-all duration-200 ease-in-out transform ${inputMessage.trim()
-                  ? 'opacity-100 scale-100 rotate-0'
-                  : 'opacity-0 scale-75 -rotate-45'
-                }`}
+              className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-0 disabled:cursor-not-allowed rounded-full transition-all duration-200 ease-in-out transform ${
+                inputMessage.trim()
+                  ? "opacity-100 scale-100 rotate-0"
+                  : "opacity-0 scale-75 -rotate-45"
+              }`}
             >
               <IoSend className="w-6 h-6 text-white" />
             </button>
