@@ -15,6 +15,7 @@ interface DropdownMenuProps {
   isMenuOpen: boolean;
   toggleMenu: () => void;
   handleUserClick: () => void;
+  handleContactClick?: () => void; // Added this prop
 }
 
 const menuItems = [
@@ -48,6 +49,7 @@ export default function DropdownMenu({
   isMenuOpen,
   toggleMenu,
   handleUserClick,
+  handleContactClick, // Added this prop
 }: DropdownMenuProps) {
   if (!isMenuOpen) return null;
 
@@ -58,6 +60,11 @@ export default function DropdownMenu({
       handleUserClick();
     } else if (action === "save_message") {
       router.push("/chats/5");
+    } else if (action === "contact") {
+      // Handle contact click
+      if (handleContactClick) {
+        handleContactClick();
+      }
     } else {
       alert("Sorry! This is for test.");
     }

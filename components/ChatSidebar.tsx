@@ -9,6 +9,7 @@ import SearchInput from "./SearchInput";
 import DropdownMenu from "./DropdownMenu";
 import UserProfile from "./UserProfile";
 import ChatList from "./ChatList";
+import ContactList from "./ContactList";
 
 interface Chat {
   id: number;
@@ -34,9 +35,9 @@ interface ChatSidebarProps {
   toggleMenu: () => void;
   handleUserClick: () => void;
   handleBackToChats: () => void;
-  onChatSelect?: (chatId: string) => void; // Added for navigation
-  onBackToChatList?: () => void; // Added for navigation
-  currentPath?: string; // Added to track current route
+  onChatSelect?: (chatId: string) => void;
+  onBackToChatList?: () => void;
+  currentPath?: string;
 }
 
 // Simple search function (you can replace this with the advanced one from searchUtils.ts)
@@ -94,11 +95,12 @@ export default function ChatSidebar({
   toggleMenu,
   handleUserClick,
   handleBackToChats,
-  onChatSelect, // Added
-  onBackToChatList, // Added
-  currentPath = '/chats' // Added with default
+  onChatSelect,
+  onBackToChatList,
+  currentPath = '/chats'
 }: ChatSidebarProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [showContacts, setShowContacts] = useState(false); // Added state for contacts
 
   // Filter chats based on search query with enhanced search
   const filteredChats = useMemo(() => {
@@ -115,6 +117,75 @@ export default function ChatSidebar({
       onChatSelect(chatId.toString());
     }
   };
+
+  // Handle contact click
+  const handleContactClick = () => {
+    setShowContacts(true);
+    toggleMenu(); // Close the dropdown menu
+  };
+
+  // Handle back from contacts
+  const handleBackFromContacts = () => {
+    setShowContacts(false);
+  };
+
+  // Determine which view to show
+  const getCurrentView = () => {
+    if (showContacts) {
+      return <ContactList onBackToChats={handleBackFromContacts} />;
+    } else if (showUserProfile) {
+      return <UserProfile />;
+    } else {
+      // Default chat list view
+      return (
+        <>
+          {/* Search Results Info */}
+          {searchQuery && (
+            <div className="p-3 border-b border-[#2d2d2d] bg-[#1a1a1a]">
+              <p className="text-sm text-gray-400">
+                {filteredChats.length > 0
+                  ? `Found ${filteredChats.length} chat${
+                      filteredChats.length !== 1 ? "s" : ""
+                    }`
+                  : "No chats found"}
+              </p>
+            </div>
+          )}
+
+          {/* Chat List */}
+          {filteredChats.length > 0 ? (
+            <ChatList 
+              chats={filteredChats} 
+              searchQuery={searchQuery}
+              onChatClick={handleChatClick}
+            />
+          ) : searchQuery ? (
+            <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+              <div className="text-4xl mb-4">🔍</div>
+              <p className="text-lg font-medium mb-2">No chats found</p>
+              <p className="text-sm text-center px-8">
+                Try searching for a different name or message
+              </p>
+            </div>
+          ) : (
+            <ChatList
+              chats={chats.map((chat) => ({
+                ...chat,
+                matchType: "name" as const,
+                relevanceScore: 0,
+              }))}
+              onChatClick={handleChatClick}
+            />
+          )}
+        </>
+      );
+    }
+  };
+
+  // If showing contacts, return the contact view directly
+  if (showContacts) {
+    return <ContactList onBackToChats={handleBackFromContacts} />;
+  }
 
   return (
     <div className="w-96 border-r border-transparent flex flex-col">
@@ -142,6 +213,7 @@ export default function ChatSidebar({
             isMenuOpen={isMenuOpen}
             toggleMenu={toggleMenu}
             handleUserClick={handleUserClick}
+            handleContactClick={handleContactClick} // Pass the contact handler
           />
         </div>
 
@@ -153,50 +225,7 @@ export default function ChatSidebar({
 
       {/* Dynamic content area */}
       <div className="flex-1 overflow-y-auto">
-        {showUserProfile ? (
-          <UserProfile />
-        ) : (
-          <>
-            {/* Search Results Info */}
-            {searchQuery && (
-              <div className="p-3 border-b border-[#2d2d2d] bg-[#1a1a1a]">
-                <p className="text-sm text-gray-400">
-                  {filteredChats.length > 0
-                    ? `Found ${filteredChats.length} chat${
-                        filteredChats.length !== 1 ? "s" : ""
-                      }`
-                    : "No chats found"}
-                </p>
-              </div>
-            )}
-
-            {/* Chat List */}
-            {filteredChats.length > 0 ? (
-              <ChatList 
-                chats={filteredChats} 
-                searchQuery={searchQuery}
-                onChatClick={handleChatClick}
-              />
-            ) : searchQuery ? (
-              <div className="flex flex-col items-center justify-center h-64 text-gray-500">
-                <div className="text-4xl mb-4">🔍</div>
-                <p className="text-lg font-medium mb-2">No chats found</p>
-                <p className="text-sm text-center px-8">
-                  Try searching for a different name or message
-                </p>
-              </div>
-            ) : (
-              <ChatList
-                chats={chats.map((chat) => ({
-                  ...chat,
-                  matchType: "name" as const,
-                  relevanceScore: 0,
-                }))}
-                onChatClick={handleChatClick}
-              />
-            )}
-          </>
-        )}
+        {getCurrentView()}
       </div>
     </div>
   );
