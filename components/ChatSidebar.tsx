@@ -213,6 +213,7 @@ export default function ChatSidebar({
             isMenuOpen={isMenuOpen}
             toggleMenu={toggleMenu}
             handleUserClick={handleUserClick}
+            handleSettingClick={handleUserClick}
             handleContactClick={handleContactClick} // Pass the contact handler
           />
         </div>

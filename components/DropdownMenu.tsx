@@ -15,6 +15,7 @@ interface DropdownMenuProps {
   isMenuOpen: boolean;
   toggleMenu: () => void;
   handleUserClick: () => void;
+  handleSettingClick: () => void;
   handleContactClick?: () => void; // Added this prop
 }
 
@@ -49,6 +50,7 @@ export default function DropdownMenu({
   isMenuOpen,
   toggleMenu,
   handleUserClick,
+  handleSettingClick,
   handleContactClick, // Added this prop
 }: DropdownMenuProps) {
   if (!isMenuOpen) return null;
@@ -64,6 +66,10 @@ export default function DropdownMenu({
       // Handle contact click
       if (handleContactClick) {
         handleContactClick();
+      }
+    } else if (action === "settings") {
+        if (handleUserClick) {
+        handleUserClick();
       }
     } else {
       alert("Sorry! This is for test.");
