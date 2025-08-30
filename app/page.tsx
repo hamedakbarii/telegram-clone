@@ -1,7 +1,7 @@
 // Path: app/page.tsx
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 // import { useStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 

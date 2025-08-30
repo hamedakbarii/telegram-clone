@@ -96,9 +96,9 @@ export default function ChatSidebar({
   handleUserClick,
   handleBackToChats,
   onChatSelect,
-  onBackToChatList,
-  currentPath = '/chats'
-}: ChatSidebarProps) {
+}: // onBackToChatList,
+// currentPath = '/chats'
+ChatSidebarProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showContacts, setShowContacts] = useState(false); // Added state for contacts
 
@@ -154,8 +154,8 @@ export default function ChatSidebar({
 
           {/* Chat List */}
           {filteredChats.length > 0 ? (
-            <ChatList 
-              chats={filteredChats} 
+            <ChatList
+              chats={filteredChats}
               searchQuery={searchQuery}
               onChatClick={handleChatClick}
             />
@@ -188,7 +188,7 @@ export default function ChatSidebar({
   }
 
   return (
-    <div className="w-96 border-r border-transparent flex flex-col">
+    <div className="w-full md:w-96 border-r border-transparent flex flex-col">
       {/* Header */}
       <div className="p-3 border-b border-transparent flex items-center gap-2">
         {/* Back button for user profile or Menu button */}
@@ -225,9 +225,7 @@ export default function ChatSidebar({
       </div>
 
       {/* Dynamic content area */}
-      <div className="flex-1 overflow-y-auto">
-        {getCurrentView()}
-      </div>
+      <div className="flex-1 overflow-y-auto">{getCurrentView()}</div>
     </div>
   );
 }

@@ -244,7 +244,7 @@ export default function SingleChat(): JSX.Element {
 
   return (
     <div
-      className="flex flex-col h-full bg-[#101010] bg-[url(/assets/image/chat-bg-br.png)] dark:bg-[url(/assets/image/chat-bg-pattern-dark.png)] text-white"
+      className="w-full flex flex-col h-screen bg-[#101010] bg-[url(/assets/image/chat-bg-br.png)] dark:bg-[url(/assets/image/chat-bg-pattern-dark.png)] text-white"
       dir="ltr"
     >
       {/* Chat Header */}
