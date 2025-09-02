@@ -1,8 +1,9 @@
+// path: app/chats/[chatId]/page.tsx
 "use client";
 
-import React, { JSX, useState, useEffect } from "react";
-import { useParams } from "next/navigation";
-import { IoSend, IoCall } from "react-icons/io5";
+import React, { JSX, useState, useEffect, useRef } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { IoSend, IoCall, IoArrowBack } from "react-icons/io5";
 import { FaRegSmile, FaSearch } from "react-icons/fa";
 import { FaMicrophone, FaPaperclip } from "react-icons/fa6";
 import { HiDotsVertical } from "react-icons/hi";
@@ -32,12 +33,47 @@ interface ChatInfo {
 
 export default function SingleChat(): JSX.Element {
   const params = useParams() as Params;
+  const router = useRouter();
   const { chatId } = params;
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [chatInfo, setChatInfo] = useState<ChatInfo | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Check if mobile
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Handle back navigation
+  const handleBackToChats = () => {
+    router.push('/chats');
+  };
 
   // Random AI responses
   const getRandomAIResponse = () => {
@@ -48,7 +84,7 @@ export default function SingleChat(): JSX.Element {
       "That sounds great! What's next?",
       "I see. Is there anything else you'd like to discuss?",
       "Noted! Let me know if you need any assistance.",
-      "سلام! چطور می‌تونم کمکتون کنم؟",
+      "سلام! چطور می‌توونم کمکتون کنم؟",
       "باشه، فهمیدم. چیز دیگه‌ای هم هست؟",
       "عالیه! ادامه بدید.",
       "حله، گرفتم. چیز دیگه‌ای می‌خواید؟",
@@ -248,8 +284,18 @@ export default function SingleChat(): JSX.Element {
       dir="ltr"
     >
       {/* Chat Header */}
-      <div className="flex items-center justify-between p-4 bg-gray-800 border-b border-gray-700">
+      <div className="flex items-center justify-between p-4 bg-[#212121] border-b border-[#212121]">
         <div className="flex items-center gap-3 cursor-pointer">
+          {/* Back button for mobile */}
+          {isMobile && (
+            <button 
+              onClick={handleBackToChats}
+              className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer mr-2"
+            >
+              <IoArrowBack className="w-5 h-5 text-gray-400" />
+            </button>
+          )}
+          
           <img
             src={chatInfo?.avatar || "/api/placeholder/40/40"}
             alt={chatInfo?.name}
@@ -270,9 +316,53 @@ export default function SingleChat(): JSX.Element {
           <button className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer">
             <IoCall className="w-5 h-5 text-gray-400" />
           </button>
-          <button className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer">
-            <HiDotsVertical className="w-5 h-5 text-gray-400" />
-          </button>
+          
+          {/* Three-dot menu button */}
+          <div className="relative" ref={menuRef}>
+            <button 
+              className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <HiDotsVertical className="w-5 h-5 text-gray-400" />
+            </button>
+            
+            {/* Menu dropdown */}
+            {isMenuOpen && (
+              <div className="absolute right-0 top-12 w-56 bg-[#212121] rounded-lg shadow-lg z-50 border border-gray-700 overflow-hidden">
+                <div className="py-1">
+                  <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+                    <span className="icon mr-3">✏️</span>
+                    Edit
+                  </button>
+                  <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+                    <span className="icon mr-3">🎥</span>
+                    Video Call
+                  </button>
+                  <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+                    <span className="icon mr-3">🔇</span>
+                    Mute...
+                  </button>
+                  <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+                    <span className="icon mr-3">☑️</span>
+                    Select messages
+                  </button>
+                  <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+                    <span className="icon mr-3">🎁</span>
+                    Send a Gift
+                  </button>
+                  <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+                    <span className="icon mr-3">🚫</span>
+                    Block user
+                  </button>
+                  <div className="border-t border-gray-700 my-1"></div>
+                  <button className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-700 flex items-center">
+                    <span className="icon mr-3">🗑️</span>
+                    Delete chat
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
