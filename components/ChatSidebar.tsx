@@ -1,7 +1,7 @@
 // Path: components/ChatSidebar.tsx
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { chats } from "@/lib/mocks/chat";
 import { FiArrowLeft } from "react-icons/fi";
 import { MdOutlineMenu } from "react-icons/md";
@@ -101,6 +101,7 @@ export default function ChatSidebar({
 }: ChatSidebarProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [showContacts, setShowContacts] = useState(false); // Added state for contacts
+  const [isMobile, setIsMobile] = useState(false);
 
   // Filter chats based on search query with enhanced search
   const filteredChats = useMemo(() => {
@@ -182,13 +183,24 @@ export default function ChatSidebar({
     }
   };
 
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
   // If showing contacts, return the contact view directly
   if (showContacts) {
     return <ContactList onBackToChats={handleBackFromContacts} />;
   }
 
   return (
-    <div className="w-96 border-r border-transparent flex flex-col">
+    <div className={`${isMobile ? 'w-full' : 'w-96'} border-r border-transparent flex flex-col`}>
       {/* Header */}
       <div className="p-3 border-b border-transparent flex items-center gap-2">
         {/* Back button for user profile or Menu button */}
