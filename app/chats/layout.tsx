@@ -86,7 +86,7 @@ export default function ChatsLayout({
   return (
     <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]">
       {/* ChatSidebar - conditionally rendered based on responsive logic */}
-      <div className={`${shouldShowSidebar() ? 'block' : 'hidden'} ${isMobile ? 'w-full' : 'w-80'}`}>
+      <div className={`${shouldShowSidebar() ? 'block' : 'hidden'} ${isMobile ? 'w-full' : 'w-96'}`}>
         <ChatSidebar
           isMenuOpen={isMenuOpen}
           showUserProfile={showUserProfile}
