@@ -4,6 +4,7 @@
 import React, { useState, useMemo } from "react";
 import { contacts } from "@/lib/mocks/contact";
 import { FiSearch, FiX } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 
 interface ContactListProps {
   onBackToChats: () => void;
@@ -42,25 +43,27 @@ const getInitials = (name: string): string => {
 // Function to generate a consistent color based on name
 const getAvatarColor = (name: string): string => {
   const colors = [
-    'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-red-500', 
+    'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-red-500',
     'bg-purple-500', 'bg-pink-500', 'bg-indigo-500', 'bg-teal-500',
     'bg-orange-500', 'bg-cyan-500'
   ];
-  
+
   const nameHash = name.split('').reduce((hash, char) => {
     return char.charCodeAt(0) + ((hash << 5) - hash);
   }, 0);
-  
+
   return colors[Math.abs(nameHash) % colors.length];
 };
 
 export default function ContactList({ onBackToChats }: ContactListProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
+  const router = useRouter();
+
   // Filter contacts based on search query
   const filteredContacts = useMemo(() => {
     if (!searchQuery.trim()) return contacts;
-    
+
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -85,7 +88,7 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
           className="p-2 rounded-full hover:bg-[#151515] cursor-pointer"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
           </svg>
         </button>
 
@@ -103,9 +106,8 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
           {/* Search Icon */}
           <FiSearch
             size={20}
-            className={`absolute left-3 top-2.5 transition-colors duration-200 ${
-              searchQuery ? "text-blue-400" : "text-gray-500"
-            }`}
+            className={`absolute left-3 top-2.5 transition-colors duration-200 ${searchQuery ? "text-blue-400" : "text-gray-500"
+              }`}
           />
 
           {/* Clear Button */}
@@ -127,9 +129,8 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
           <div className="p-3 border-b border-[#2d2d2d] bg-[#1a1a1a]">
             <p className="text-sm text-gray-400">
               {filteredContacts.length > 0
-                ? `Found ${filteredContacts.length} contact${
-                    filteredContacts.length !== 1 ? "s" : ""
-                  }`
+                ? `Found ${filteredContacts.length} contact${filteredContacts.length !== 1 ? "s" : ""
+                }`
                 : "No contacts found"}
             </p>
           </div>
@@ -142,13 +143,28 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
               <div
                 key={contact.id}
                 className="border-b border-transparent"
-                onClick={() => alert(`Starting chat with ${contact.name}`)}
+                onClick={() => router.push(contact.chatUrl)}
               >
                 <button className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] transition-colors cursor-pointer">
                   {/* Avatar */}
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${getAvatarColor(contact.name)}`}>
-                    {getInitials(contact.name)}
-                  </div>
+                  {contact.avatar && !contact.avatar.endsWith("/avatar/") ? (
+                    <div>
+                      <img
+                        src={contact.avatar}
+                        alt={contact.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${getAvatarColor(
+                        contact.name
+                      )}`}
+                    >
+                      {getInitials(contact.name)}
+                    </div>
+                  )}
+
 
                   {/* Contact Info */}
                   <div className="flex-1 min-w-0 text-left">
