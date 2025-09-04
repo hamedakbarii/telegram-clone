@@ -1,7 +1,7 @@
 // app/chats/layout.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import ChatSidebar from "@/components/ChatSidebar";
 
@@ -35,20 +35,20 @@ export default function ChatsLayout({
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  
+
   const handleUserClick = () => {
     setShowUserProfile(true);
     setIsMenuOpen(false);
   };
-  
+
   const handleBackToChats = () => setShowUserProfile(false);
 
   // Handle smooth chat navigation
   const handleChatSelect = (chatId: string) => {
     if (pathname === `/chats/${chatId}`) return; // Already on this chat
-    
+
     setIsTransitioning(true);
-    
+
     // Add a small delay for the wink effect
     setTimeout(() => {
       router.push(`/chats/${chatId}`);
@@ -60,12 +60,12 @@ export default function ChatsLayout({
 
   // Handle back to main chats page
   const handleBackToChatList = () => {
-    if (pathname === '/chats') return; // Already on main page
-    
+    if (pathname === "/chats") return; // Already on main page
+
     setIsTransitioning(true);
-    
+
     setTimeout(() => {
-      router.push('/chats');
+      router.push("/chats");
       setTimeout(() => {
         setIsTransitioning(false);
       }, 100);
