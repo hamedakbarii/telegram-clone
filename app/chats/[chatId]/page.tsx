@@ -513,10 +513,18 @@ export default function SingleChat(): JSX.Element {
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer">
+            <button
+              className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
+              onClick={() =>
+                alert("Sorry! Search feature is not available yet.")
+              }
+            >
               <FaSearch className="w-5 h-5 text-gray-400" />
             </button>
-            <button className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer">
+            <button
+              className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
+              onClick={() => alert("Sorry! Call feature is not available yet.")}
+            >
               <IoCall className="w-5 h-5 text-gray-400" />
             </button>
 
@@ -533,44 +541,92 @@ export default function SingleChat(): JSX.Element {
               {isMenuOpen && (
                 <div className="absolute right-0 top-12 w-56 bg-[#212121] rounded-lg shadow-lg z-50 border border-gray-700 overflow-hidden">
                   <div className="py-1">
-                    <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+                    <button
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center"
+                      onClick={() =>
+                        alert("Sorry! Edit feature is not available yet.")
+                      }
+                    >
                       <span className="icon mr-3 text-[#AAAAAA] text-2xl">
                         <FiEdit2 />
                       </span>
                       Edit
                     </button>
-                    <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+
+                    <button
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center"
+                      onClick={() =>
+                        alert("Sorry! Video Call feature is not available yet.")
+                      }
+                    >
                       <span className="icon mr-3 text-[#AAAAAA] text-2xl">
                         <HiOutlineVideoCamera />
                       </span>
                       Video Call
                     </button>
-                    <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+
+                    <button
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center"
+                      onClick={() =>
+                        alert("Sorry! Mute feature is not available yet.")
+                      }
+                    >
                       <span className="icon mr-3 text-[#AAAAAA] text-2xl">
                         <BiVolumeMute />
                       </span>
                       Mute...
                     </button>
-                    <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+
+                    <button
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center"
+                      onClick={() =>
+                        alert(
+                          "Sorry! Select messages feature is not available yet."
+                        )
+                      }
+                    >
                       <span className="icon mr-3 text-[#AAAAAA] text-2xl">
                         <FaRegCheckCircle />
                       </span>
                       Select messages
                     </button>
-                    <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+
+                    <button
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center"
+                      onClick={() =>
+                        alert(
+                          "Sorry! Send a Gift feature is not available yet."
+                        )
+                      }
+                    >
                       <span className="icon mr-3 text-[#AAAAAA] text-2xl">
                         <FiGift />
                       </span>
                       Send a Gift
                     </button>
-                    <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+
+                    <button
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center"
+                      onClick={() =>
+                        alert("Sorry! Block user feature is not available yet.")
+                      }
+                    >
                       <span className="icon mr-3 text-[#AAAAAA] text-2xl">
                         <IoHandRightOutline />
                       </span>
                       Block user
                     </button>
+
                     <div className="border-t border-gray-700 my-1 text-red-500"></div>
-                    <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+
+                    <button
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center"
+                      onClick={() =>
+                        alert(
+                          "Sorry! Delete chat feature is not available yet."
+                        )
+                      }
+                    >
                       <span className="icon mr-3 text-[#AAAAAA] text-2xl">
                         <MdDeleteOutline />
                       </span>
