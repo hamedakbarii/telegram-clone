@@ -3,15 +3,18 @@
 
 import React, { JSX, useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { IoSend, IoCall, IoArrowBack, IoClose } from "react-icons/io5";
-import { FaRegSmile, FaSearch, FaUser } from "react-icons/fa";
+import { IoSend, IoCall, IoArrowBack, IoClose, IoHandRightOutline } from "react-icons/io5";
+import { FaRegCheckCircle, FaRegSmile, FaSearch, FaUser } from "react-icons/fa";
 import { FaMicrophone, FaPaperclip } from "react-icons/fa6";
-import { HiDotsVertical } from "react-icons/hi";
+import { HiDotsVertical, HiOutlineVideoCamera } from "react-icons/hi";
 import { BsCheck, BsCheckAll } from "react-icons/bs";
 import { chats } from "@/lib/mocks/chat";
-import { MdAlternateEmail } from "react-icons/md";
+import { MdAlternateEmail, MdDeleteOutline } from "react-icons/md";
 import { LuInfo } from "react-icons/lu";
 import { IoIosNotificationsOutline } from "react-icons/io";
+import { FiEdit2, FiGift } from "react-icons/fi";
+import { BiVolumeMute } from "react-icons/bi";
+import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
 
 type Params = {
   chatId: string;
@@ -47,6 +50,12 @@ export default function SingleChat(): JSX.Element {
   const [isMobile, setIsMobile] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  const handleEmojiClick = (emojiData: EmojiClickData) => {
+    setInputMessage((prev) => prev + emojiData.emoji);
+  };
 
   // Check if mobile
   useEffect(() => {
@@ -308,6 +317,7 @@ export default function SingleChat(): JSX.Element {
               alt={chatInfo?.name}
               className="w-10 h-10 rounded-full object-cover"
             />
+
             <div>
               <h1 className="text-lg font-medium">{chatInfo?.name}</h1>
               <p className="text-sm text-gray-400">
@@ -338,32 +348,32 @@ export default function SingleChat(): JSX.Element {
                 <div className="absolute right-0 top-12 w-56 bg-[#212121] rounded-lg shadow-lg z-50 border border-gray-700 overflow-hidden">
                   <div className="py-1">
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3">✏️</span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><FiEdit2 /></span>
                       Edit
                     </button>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3">🎥</span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><HiOutlineVideoCamera /></span>
                       Video Call
                     </button>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3">🔇</span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><BiVolumeMute /></span>
                       Mute...
                     </button>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3">☑️</span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><FaRegCheckCircle /></span>
                       Select messages
                     </button>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3">🎁</span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><FiGift /></span>
                       Send a Gift
                     </button>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3">🚫</span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><IoHandRightOutline /></span>
                       Block user
                     </button>
-                    <div className="border-t border-gray-700 my-1"></div>
-                    <button className="w-full px-4 py-2 text-left text-sm text-red-500 hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3">🗑️</span>
+                    <div className="border-t border-gray-700 my-1 text-red-500"></div>
+                    <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><MdDeleteOutline /></span>
                       Delete chat
                     </button>
                   </div>
@@ -436,9 +446,23 @@ export default function SingleChat(): JSX.Element {
               />
 
               {/* Emoji button inside input */}
-              <button className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors">
+              <button
+                onClick={() => setShowEmojiPicker((prev) => !prev)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors"
+              >
                 <FaRegSmile className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               </button>
+
+              {/* Emoji Picker */}
+              {showEmojiPicker && (
+                <div className="absolute bottom-14 right-0 z-50">
+                  <EmojiPicker
+                    onEmojiClick={handleEmojiClick}
+                    theme={Theme.DARK} 
+                    lazyLoadEmojis
+                  />
+                </div>
+              )}
             </div>
 
             {/* Animated Send/Voice Button */}
