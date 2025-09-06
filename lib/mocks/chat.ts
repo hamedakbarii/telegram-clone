@@ -10,6 +10,9 @@ export const chats = [
     isOnline: false,
     isPinned: false,
     messageStatus: null,
+    number:"",
+    userName: "",
+    bio: "",
     isArchive: false,
   },
   {
@@ -22,6 +25,9 @@ export const chats = [
     isOnline: null,
     isPinned: null,
     messageStatus: null,
+    number:"",
+    userName: "",
+    bio: "",
   },
   {
     id: 2,
@@ -33,6 +39,9 @@ export const chats = [
     isOnline: false,
     isPinned: null,
     messageStatus: null,
+    number:"",
+    userName: "",
+    bio: "",
   },
   {
     id: 3,
@@ -45,6 +54,9 @@ export const chats = [
     isOnline: false,
     isPinned: false,
     messageStatus: null,
+    number:"",
+    userName: "",
+    bio: "",
   },
   {
     id: 4,
@@ -57,6 +69,9 @@ export const chats = [
     isOnline: false,
     isPinned: false,
     messageStatus: null,
+    number:"",
+    userName: "",
+    bio: "",
   },
   {
     id: 5,
@@ -68,6 +83,9 @@ export const chats = [
     isOnline: false,
     isPinned: false,
     messageStatus: "succeeded",
+    number:"",
+    userName: "",
+    bio: "",
   },
   {
     id: 6,
@@ -79,6 +97,9 @@ export const chats = [
     isOnline: false,
     isPinned: false,
     messageStatus: "read",
+    number:"",
+    userName: "",
+    bio: "",
     // messageStatus
     // Succeeded ✓
     // Read ✓✓

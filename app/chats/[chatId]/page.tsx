@@ -9,6 +9,7 @@ import { FaMicrophone, FaPaperclip } from "react-icons/fa6";
 import { HiDotsVertical, HiOutlineVideoCamera } from "react-icons/hi";
 import { BsCheck, BsCheckAll } from "react-icons/bs";
 import { chats } from "@/lib/mocks/chat";
+import { messages as mockMessages, Message as MockMessage } from "@/lib/mocks/message";
 import { MdAlternateEmail, MdDeleteOutline } from "react-icons/md";
 import { LuInfo } from "react-icons/lu";
 import { IoIosNotificationsOutline } from "react-icons/io";
@@ -93,7 +94,23 @@ export default function SingleChat(): JSX.Element {
     setShowUserInfo(!showUserInfo);
   };
 
-  // Random AI responses
+  // Convert mock messages to our component's message format
+  const convertMockMessages = (mockMessages: MockMessage[], chatIdNum: number): Message[] => {
+    return mockMessages
+      .filter(msg => msg.chatId === chatIdNum)
+      .map(msg => ({
+        id: msg.id.toString(),
+        text: msg.text,
+        sender: msg.isOwnMessage ? "user" : "ai",
+        timestamp: new Date(),
+        status: msg.status === 'succeeded' ? 'succeeded' : 
+                msg.status === 'read' ? 'read' : 
+                'delivered',
+        isEdited: false
+      }));
+  };
+
+  // Random AI responses with multiple options
   const getRandomAIResponse = () => {
     const responses = [
       "That's interesting! Tell me more.",
@@ -108,6 +125,18 @@ export default function SingleChat(): JSX.Element {
       "حله، گرفتم. چیز دیگه‌ای می‌خواید؟",
       "ممنون که اشتراک گذاشتید.",
       "جالبه! بیشتر توضیح بدید.",
+      "Hi baby! 😊",
+      "I love you! ❤️",
+      "You're the best! 🌟",
+      "How was your day?",
+      "What are you up to?",
+      "Thinking of you! 💭",
+      "You make me smile! 😄",
+      "Miss you! 💕",
+      "Can't wait to see you! ⏳",
+      "You're amazing! ✨",
+      "Sending hugs! 🤗",
+      "You're my favorite person! 🥰"
     ];
     return responses[Math.floor(Math.random() * responses.length)];
   };
@@ -130,7 +159,7 @@ export default function SingleChat(): JSX.Element {
       });
     }
 
-    // Simulate API call - Simple welcome message for all chats
+    // Simulate API call - Use mock messages for the chat
     setTimeout(() => {
       if (!chat) {
         setMessages([]);
@@ -138,15 +167,9 @@ export default function SingleChat(): JSX.Element {
         return;
       }
 
-      // Simple welcome message for all chats
-      const welcomeMessage: Message = {
-        id: "1",
-        text: `Hello! Welcome to chat with ${chat.name}. How can I help you today?`,
-        sender: "ai",
-        timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-      };
-
-      setMessages([welcomeMessage]);
+      // Get messages from mock data
+      const chatMessages = convertMockMessages(mockMessages, chatIdNum);
+      setMessages(chatMessages);
       setIsLoading(false);
     }, 300);
   };
@@ -180,18 +203,23 @@ export default function SingleChat(): JSX.Element {
           msg.id === newMessage.id ? { ...msg, status: "read" } : msg
         )
       );
-    }, 1500);
 
-    // Generate random AI response after 2 seconds
-    setTimeout(() => {
-      const aiResponse: Message = {
-        id: (Date.now() + 1).toString(),
-        text: getRandomAIResponse(),
-        sender: "ai",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, aiResponse]);
-    }, 2000);
+      // Don't generate AI response for Saved Messages (chat ID 5)
+      const chatIdNum = parseInt(chatId);
+      if (chatIdNum === 5) return;
+
+      // Generate random AI response after 1-3 seconds for other chats
+      const delay = 1000 + Math.random() * 2000;
+      setTimeout(() => {
+        const aiResponse: Message = {
+          id: (Date.now() + 1).toString(),
+          text: getRandomAIResponse(),
+          sender: "ai",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, aiResponse]);
+      }, delay);
+    }, 1500);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
