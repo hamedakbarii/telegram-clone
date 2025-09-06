@@ -692,6 +692,7 @@ export default function SingleChat(): JSX.Element {
 
             {/* List Item */}
 
+            {chatInfo?.number ? (
             <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
               <div className="mr-3 p-2">
                 <IoCall className="w-5 h-5 text-gray-400" />
@@ -701,7 +702,9 @@ export default function SingleChat(): JSX.Element {
                 <span className="text-sm font-medium text-gray-400">Phone</span>
               </div>
             </div>
+            ) : ""}
 
+            {chatInfo?.userName ? (
             <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
               <div className="mr-3 p-2">
                 <MdAlternateEmail className="w-5 h-5 text-gray-400" />
@@ -711,17 +714,20 @@ export default function SingleChat(): JSX.Element {
                 <span className="text-sm font-medium text-gray-400">Username</span>
               </div>
             </div>
+            ) : ""}
 
-            <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
-              <div className="mr-3 p-2">
-                <LuInfo className="w-5 h-5 text-gray-400" />
+            {chatInfo?.bio ? (
+              <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
+                <div className="mr-3 p-2">
+                  <LuInfo className="w-5 h-5 text-gray-400" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-white">{chatInfo?.bio}</span>
+                  <span className="text-sm font-medium text-gray-400">Bio</span>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm text-white">{chatInfo?.bio}</span>
-                <span className="text-sm font-medium text-gray-400">Bio</span>
-              </div>
-            </div>
-
+            ) : ""}
+            
             <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
               <div className="mr-3 p-2">
                 <IoIosNotificationsOutline className="w-5 h-5 text-gray-400" />
