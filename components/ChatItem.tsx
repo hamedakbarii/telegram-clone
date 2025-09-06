@@ -60,7 +60,11 @@ const highlightText = (text: string, query: string): React.ReactElement => {
   );
 };
 
-export default function ChatItem({ chat, searchQuery, onChatClick }: ChatItemProps) {
+export default function ChatItem({
+  chat,
+  searchQuery,
+  onChatClick,
+}: ChatItemProps) {
   const router = useRouter();
 
   const handleClick = () => {
@@ -68,16 +72,15 @@ export default function ChatItem({ chat, searchQuery, onChatClick }: ChatItemPro
     // Otherwise fall back to direct router navigation
     if (onChatClick) {
       onChatClick(chat.id);
+    } else if (chat.id === 0) {
+      alert("Sorry! Archived chats are not available yet.");
     } else {
       router.push(`/chats/${chat.id}`);
     }
   };
 
   return (
-    <div
-      className="border-b border-transparent"
-      onClick={handleClick}
-    >
+    <div className="border-b border-transparent" onClick={handleClick}>
       <button className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] dark:hover:bg-[#151515] transition-colors cursor-pointer">
         <div className="relative">
           <img

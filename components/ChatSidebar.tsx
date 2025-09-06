@@ -189,9 +189,9 @@ ChatSidebarProps) {
     };
 
     checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
+    window.addEventListener("resize", checkIsMobile);
 
-    return () => window.removeEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
   // If showing contacts, return the contact view directly
@@ -200,7 +200,11 @@ ChatSidebarProps) {
   }
 
   return (
-    <div className={`${isMobile ? 'w-full' : 'w-96'} border-r border-transparent flex flex-col`}>
+    <div
+      className={`${
+        isMobile ? "w-full" : "w-96"
+      } border-r border-transparent flex flex-col`}
+    >
       {/* Header */}
       <div className="p-3 border-b border-transparent flex items-center gap-2">
         {/* Back button for user profile or Menu button */}
