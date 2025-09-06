@@ -25,8 +25,8 @@ export const chats = [
     isOnline: null,
     isPinned: null,
     messageStatus: null,
-    number:"",
-    userName: "",
+    number:"+98 937 000 0000",
+    userName: "Belami",
     bio: "",
   },
   {
@@ -39,9 +39,9 @@ export const chats = [
     isOnline: false,
     isPinned: null,
     messageStatus: null,
-    number:"",
-    userName: "",
-    bio: "",
+    number:"+98 937 000 0000",
+    userName: "hamed",
+    bio: "Developer | Pro Figher",
   },
   {
     id: 3,
@@ -54,7 +54,7 @@ export const chats = [
     isOnline: false,
     isPinned: false,
     messageStatus: null,
-    number:"",
+    number:"42777",
     userName: "",
     bio: "",
   },
@@ -69,8 +69,8 @@ export const chats = [
     isOnline: false,
     isPinned: false,
     messageStatus: null,
-    number:"",
-    userName: "",
+    number:"+98 937 000 0000",
+    userName: "amiri",
     bio: "",
   },
   {
@@ -97,9 +97,9 @@ export const chats = [
     isOnline: false,
     isPinned: false,
     messageStatus: "read",
-    number:"",
-    userName: "",
-    bio: "",
+    number:"+98 937 000 0000",
+    userName: "eldracu",
+    bio: "eldràcu",
     // messageStatus
     // Succeeded ✓
     // Read ✓✓

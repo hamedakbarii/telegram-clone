@@ -36,6 +36,10 @@ interface ChatInfo {
   avatar: string;
   isOnline: boolean | null;
   lastSeen?: string;
+  isTyping?: boolean;
+  numer: number;
+  userName: string;
+  bio: string;
 }
 
 export default function SingleChat(): JSX.Element {
@@ -50,9 +54,20 @@ export default function SingleChat(): JSX.Element {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+
+  // Auto-scroll to bottom when messages change
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isTyping]);
 
   const handleEmojiClick = (emojiData: EmojiClickData) => {
     setInputMessage((prev) => prev + emojiData.emoji);
@@ -61,7 +76,7 @@ export default function SingleChat(): JSX.Element {
   // Check if mobile
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768); // md breakpoint
+      setIsMobile(window.innerWidth < 768);
     };
 
     checkIsMobile();
@@ -102,7 +117,7 @@ export default function SingleChat(): JSX.Element {
         id: msg.id.toString(),
         text: msg.text,
         sender: msg.isOwnMessage ? "user" : "ai",
-        timestamp: new Date(),
+        timestamp: new Date(Date.now() - Math.random() * 100000000), // Random recent time
         status: msg.status === 'succeeded' ? 'succeeded' : 
                 msg.status === 'read' ? 'read' : 
                 'delivered',
@@ -110,9 +125,96 @@ export default function SingleChat(): JSX.Element {
       }));
   };
 
-  // Random AI responses with multiple options
-  const getRandomAIResponse = () => {
-    const responses = [
+  // Get chat-specific responses
+  const getChatSpecificResponse = (chatIdNum: number, userMessage: string) => {
+    const chat = chats.find(c => c.id === chatIdNum);
+    const chatName = chat?.name || "";
+    
+    // Check if message contains questions
+    const hasQuestion = /^(hi|hello|hey|سلام|چطوری|how|what|when|where|why|who|is|are|do|does|did|can|could|will|would)/i.test(userMessage);
+    
+    // Check if message is short (likely a quick response)
+    const isShortMessage = userMessage.split(' ').length < 5;
+    
+    if (chatName.includes("Telegram")) {
+      const responses = [
+        "This is an automated message from Telegram.",
+        "Your login code is 123456. Don't share it with anyone.",
+        "New feature update: Voice messages 2.0 is now available!",
+        "Telegram Premium now includes 4GB file uploads.",
+        "Security alert: New login detected. Was this you?",
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    } 
+    else if (chatName.includes("Belami")) {
+      const responses = [
+        "سفارش شما در حال پردازش است.",
+        "از خرید شما متشکریم!",
+        "محصول مورد نظر شما موجود شد.",
+        "پیگیری سفارش: 123456",
+        "آیا از خدمات ما راضی هستید؟",
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+    else if (chatName.includes("Hamed")) {
+      const responses = [
+        "پسرم چطوری؟",
+        "فامیل ها سلام رسوندن.",
+        "بیا خونه ما مهمون داریم.",
+        "پدرت رو دیدی؟",
+        "امشب شام چی درست کنم؟",
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+    else if (chatName.includes("Amir")) {
+      const responses = [
+        "Hey, did you finish the project?",
+        "When can we meet to discuss the details?",
+        "I sent you the files, did you get them?",
+        "Let me know if you need any help.",
+        "Check out this new framework I found!",
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+    else if (chatName.includes("eldràcu")) {
+      const responses = [
+        "همیشه سلامت باشی رفیق!",
+        "چطوری کاری که گفتم انجام شد؟",
+        "یادت نره فردا قراره بریم فوتسال.",
+        "پروژه جدیدم رو دیدی؟ نظرت چیه؟",
+        "امیدوارم همیشه چمن های گیت هابتون با پول سبز باشه",
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+    
+    // Default contextual responses
+    if (hasQuestion) {
+      const questionResponses = [
+        "That's a good question!",
+        "I'm not sure, what do you think?",
+        "Let me think about that...",
+        "I'd need more information to answer that.",
+        "Why do you ask?"
+      ];
+      return questionResponses[Math.floor(Math.random() * questionResponses.length)];
+    }
+    
+    if (isShortMessage) {
+      const shortResponses = [
+        "Okay!",
+        "Got it.",
+        "Thanks!",
+        "Nice!",
+        "Cool! 😎",
+        "Interesting...",
+        "I see.",
+        "Understandable."
+      ];
+      return shortResponses[Math.floor(Math.random() * shortResponses.length)];
+    }
+    
+    // Generic responses
+    const genericResponses = [
       "That's interesting! Tell me more.",
       "I understand. How can I help you with that?",
       "Thanks for sharing that with me.",
@@ -125,8 +227,8 @@ export default function SingleChat(): JSX.Element {
       "حله، گرفتم. چیز دیگه‌ای می‌خواید؟",
       "ممنون که اشتراک گذاشتید.",
       "جالبه! بیشتر توضیح بدید.",
-      "Hi baby! 😊",
-      "I love you! ❤️",
+      "Hi there! 😊",
+      "I appreciate your message!",
       "You're the best! 🌟",
       "How was your day?",
       "What are you up to?",
@@ -138,7 +240,7 @@ export default function SingleChat(): JSX.Element {
       "Sending hugs! 🤗",
       "You're my favorite person! 🥰"
     ];
-    return responses[Math.floor(Math.random() * responses.length)];
+    return genericResponses[Math.floor(Math.random() * genericResponses.length)];
   };
 
   // Load chat info and messages
@@ -156,10 +258,14 @@ export default function SingleChat(): JSX.Element {
         avatar: chat.avatar,
         isOnline: chat.isOnline,
         lastSeen: chat.id === 2 ? "last seen recently" : undefined,
+        number: chat.number,
+        userName: chat.userName,
+        bio: chat.bio,
       });
     }
 
-    // Simulate API call - Use mock messages for the chat
+    // Simulate API call with variable delay
+    const delay = 300 + Math.random() * 700; // 300-1000ms for more realistic loading
     setTimeout(() => {
       if (!chat) {
         setMessages([]);
@@ -169,9 +275,13 @@ export default function SingleChat(): JSX.Element {
 
       // Get messages from mock data
       const chatMessages = convertMockMessages(mockMessages, chatIdNum);
+      
+      // Sort messages by timestamp
+      chatMessages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+      
       setMessages(chatMessages);
       setIsLoading(false);
-    }, 300);
+    }, delay);
   };
 
   const handleSendMessage = () => {
@@ -208,12 +318,16 @@ export default function SingleChat(): JSX.Element {
       const chatIdNum = parseInt(chatId);
       if (chatIdNum === 5) return;
 
-      // Generate random AI response after 1-3 seconds for other chats
-      const delay = 1000 + Math.random() * 2000;
+      // Simulate typing indicator
+      setIsTyping(true);
+      
+      // Generate random AI response after variable delay (1-4 seconds)
+      const delay = 1000 + Math.random() * 3000;
       setTimeout(() => {
+        setIsTyping(false);
         const aiResponse: Message = {
           id: (Date.now() + 1).toString(),
-          text: getRandomAIResponse(),
+          text: getChatSpecificResponse(chatIdNum, inputMessage),
           sender: "ai",
           timestamp: new Date(),
         };
@@ -245,11 +359,22 @@ export default function SingleChat(): JSX.Element {
   };
 
   const formatTime = (timestamp: Date) => {
-    return timestamp.toLocaleTimeString("en-US", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
+    const now = new Date();
+    const messageTime = new Date(timestamp);
+    const diffInHours = (now.getTime() - messageTime.getTime()) / (1000 * 60 * 60);
+    
+    if (diffInHours < 24) {
+      return messageTime.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+    } else {
+      return messageTime.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+    }
   };
 
   const isUrl = (text: string) => {
@@ -349,7 +474,7 @@ export default function SingleChat(): JSX.Element {
             <div>
               <h1 className="text-lg font-medium">{chatInfo?.name}</h1>
               <p className="text-sm text-gray-400">
-                {chatInfo?.isOnline ? "online" : chatInfo?.lastSeen || "offline"}
+                {isTyping ? "typing..." : chatInfo?.isOnline ? "online" : chatInfo?.lastSeen || "offline"}
               </p>
             </div>
           </div>
@@ -447,6 +572,21 @@ export default function SingleChat(): JSX.Element {
                 </div>
               );
             })}
+            
+            {/* Typing indicator */}
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="bg-gray-700 text-white rounded-2xl p-3 max-w-sm">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            <div ref={messagesEndRef} />
           </div>
         </div>
 
@@ -557,7 +697,7 @@ export default function SingleChat(): JSX.Element {
                 <IoCall className="w-5 h-5 text-gray-400" />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm text-white">+98 937 000 0000</span>
+                <span className="text-sm text-white">{chatInfo?.number}</span>
                 <span className="text-sm font-medium text-gray-400">Phone</span>
               </div>
             </div>
@@ -567,7 +707,7 @@ export default function SingleChat(): JSX.Element {
                 <MdAlternateEmail className="w-5 h-5 text-gray-400" />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm text-white">@amiri</span>
+                <span className="text-sm text-white">@{chatInfo?.userName}</span>
                 <span className="text-sm font-medium text-gray-400">Username</span>
               </div>
             </div>
@@ -577,7 +717,7 @@ export default function SingleChat(): JSX.Element {
                 <LuInfo className="w-5 h-5 text-gray-400" />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm text-white">Developer</span>
+                <span className="text-sm text-white">{chatInfo?.bio}</span>
                 <span className="text-sm font-medium text-gray-400">Bio</span>
               </div>
             </div>
