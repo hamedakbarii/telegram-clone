@@ -3,13 +3,22 @@
 
 import React, { JSX, useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { IoSend, IoCall, IoArrowBack, IoClose, IoHandRightOutline } from "react-icons/io5";
+import {
+  IoSend,
+  IoCall,
+  IoArrowBack,
+  IoClose,
+  IoHandRightOutline,
+} from "react-icons/io5";
 import { FaRegCheckCircle, FaRegSmile, FaSearch, FaUser } from "react-icons/fa";
 import { FaMicrophone, FaPaperclip } from "react-icons/fa6";
 import { HiDotsVertical, HiOutlineVideoCamera } from "react-icons/hi";
 import { BsCheck, BsCheckAll } from "react-icons/bs";
 import { chats } from "@/lib/mocks/chat";
-import { messages as mockMessages, Message as MockMessage } from "@/lib/mocks/message";
+import {
+  messages as mockMessages,
+  Message as MockMessage,
+} from "@/lib/mocks/message";
 import { MdAlternateEmail, MdDeleteOutline } from "react-icons/md";
 import { LuInfo } from "react-icons/lu";
 import { IoIosNotificationsOutline } from "react-icons/io";
@@ -37,7 +46,7 @@ interface ChatInfo {
   isOnline: boolean | null;
   lastSeen?: string;
   isTyping?: boolean;
-  numer: number;
+  number: number;
   userName: string;
   bio: string;
 }
@@ -80,9 +89,9 @@ export default function SingleChat(): JSX.Element {
     };
 
     checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
+    window.addEventListener("resize", checkIsMobile);
 
-    return () => window.removeEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
   // Close menu when clicking outside
@@ -101,7 +110,7 @@ export default function SingleChat(): JSX.Element {
 
   // Handle back navigation
   const handleBackToChats = () => {
-    router.push('/chats');
+    router.push("/chats");
   };
 
   // Toggle user info panel
@@ -110,32 +119,41 @@ export default function SingleChat(): JSX.Element {
   };
 
   // Convert mock messages to our component's message format
-  const convertMockMessages = (mockMessages: MockMessage[], chatIdNum: number): Message[] => {
+  const convertMockMessages = (
+    mockMessages: MockMessage[],
+    chatIdNum: number
+  ): Message[] => {
     return mockMessages
-      .filter(msg => msg.chatId === chatIdNum)
-      .map(msg => ({
+      .filter((msg) => msg.chatId === chatIdNum)
+      .map((msg) => ({
         id: msg.id.toString(),
         text: msg.text,
         sender: msg.isOwnMessage ? "user" : "ai",
         timestamp: new Date(Date.now() - Math.random() * 100000000), // Random recent time
-        status: msg.status === 'succeeded' ? 'succeeded' : 
-                msg.status === 'read' ? 'read' : 
-                'delivered',
-        isEdited: false
+        status:
+          msg.status === "succeeded"
+            ? "succeeded"
+            : msg.status === "read"
+            ? "read"
+            : "delivered",
+        isEdited: false,
       }));
   };
 
   // Get chat-specific responses
   const getChatSpecificResponse = (chatIdNum: number, userMessage: string) => {
-    const chat = chats.find(c => c.id === chatIdNum);
+    const chat = chats.find((c) => c.id === chatIdNum);
     const chatName = chat?.name || "";
-    
+
     // Check if message contains questions
-    const hasQuestion = /^(hi|hello|hey|سلام|چطوری|how|what|when|where|why|who|is|are|do|does|did|can|could|will|would)/i.test(userMessage);
-    
+    const hasQuestion =
+      /^(hi|hello|hey|سلام|چطوری|how|what|when|where|why|who|is|are|do|does|did|can|could|will|would)/i.test(
+        userMessage
+      );
+
     // Check if message is short (likely a quick response)
-    const isShortMessage = userMessage.split(' ').length < 5;
-    
+    const isShortMessage = userMessage.split(" ").length < 5;
+
     if (chatName.includes("Telegram")) {
       const responses = [
         "This is an automated message from Telegram.",
@@ -145,8 +163,7 @@ export default function SingleChat(): JSX.Element {
         "Security alert: New login detected. Was this you?",
       ];
       return responses[Math.floor(Math.random() * responses.length)];
-    } 
-    else if (chatName.includes("Belami")) {
+    } else if (chatName.includes("Belami")) {
       const responses = [
         "سفارش شما در حال پردازش است.",
         "از خرید شما متشکریم!",
@@ -155,8 +172,7 @@ export default function SingleChat(): JSX.Element {
         "آیا از خدمات ما راضی هستید؟",
       ];
       return responses[Math.floor(Math.random() * responses.length)];
-    }
-    else if (chatName.includes("Hamed")) {
+    } else if (chatName.includes("Hamed")) {
       const responses = [
         "پسرم چطوری؟",
         "فامیل ها سلام رسوندن.",
@@ -165,8 +181,7 @@ export default function SingleChat(): JSX.Element {
         "امشب شام چی درست کنم؟",
       ];
       return responses[Math.floor(Math.random() * responses.length)];
-    }
-    else if (chatName.includes("Amir")) {
+    } else if (chatName.includes("Amir")) {
       const responses = [
         "Hey, did you finish the project?",
         "When can we meet to discuss the details?",
@@ -175,8 +190,7 @@ export default function SingleChat(): JSX.Element {
         "Check out this new framework I found!",
       ];
       return responses[Math.floor(Math.random() * responses.length)];
-    }
-    else if (chatName.includes("eldràcu")) {
+    } else if (chatName.includes("eldràcu")) {
       const responses = [
         "همیشه سلامت باشی رفیق!",
         "چطوری کاری که گفتم انجام شد؟",
@@ -186,7 +200,7 @@ export default function SingleChat(): JSX.Element {
       ];
       return responses[Math.floor(Math.random() * responses.length)];
     }
-    
+
     // Default contextual responses
     if (hasQuestion) {
       const questionResponses = [
@@ -194,11 +208,13 @@ export default function SingleChat(): JSX.Element {
         "I'm not sure, what do you think?",
         "Let me think about that...",
         "I'd need more information to answer that.",
-        "Why do you ask?"
+        "Why do you ask?",
       ];
-      return questionResponses[Math.floor(Math.random() * questionResponses.length)];
+      return questionResponses[
+        Math.floor(Math.random() * questionResponses.length)
+      ];
     }
-    
+
     if (isShortMessage) {
       const shortResponses = [
         "Okay!",
@@ -208,11 +224,11 @@ export default function SingleChat(): JSX.Element {
         "Cool! 😎",
         "Interesting...",
         "I see.",
-        "Understandable."
+        "Understandable.",
       ];
       return shortResponses[Math.floor(Math.random() * shortResponses.length)];
     }
-    
+
     // Generic responses
     const genericResponses = [
       "That's interesting! Tell me more.",
@@ -238,9 +254,11 @@ export default function SingleChat(): JSX.Element {
       "Can't wait to see you! ⏳",
       "You're amazing! ✨",
       "Sending hugs! 🤗",
-      "You're my favorite person! 🥰"
+      "You're my favorite person! 🥰",
     ];
-    return genericResponses[Math.floor(Math.random() * genericResponses.length)];
+    return genericResponses[
+      Math.floor(Math.random() * genericResponses.length)
+    ];
   };
 
   // Load chat info and messages
@@ -258,7 +276,7 @@ export default function SingleChat(): JSX.Element {
         avatar: chat.avatar,
         isOnline: chat.isOnline,
         lastSeen: chat.id === 2 ? "last seen recently" : undefined,
-        number: chat.number,
+        number: parseInt(chat.number),
         userName: chat.userName,
         bio: chat.bio,
       });
@@ -275,10 +293,12 @@ export default function SingleChat(): JSX.Element {
 
       // Get messages from mock data
       const chatMessages = convertMockMessages(mockMessages, chatIdNum);
-      
+
       // Sort messages by timestamp
-      chatMessages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
-      
+      chatMessages.sort(
+        (a, b) => a.timestamp.getTime() - b.timestamp.getTime()
+      );
+
       setMessages(chatMessages);
       setIsLoading(false);
     }, delay);
@@ -320,7 +340,7 @@ export default function SingleChat(): JSX.Element {
 
       // Simulate typing indicator
       setIsTyping(true);
-      
+
       // Generate random AI response after variable delay (1-4 seconds)
       const delay = 1000 + Math.random() * 3000;
       setTimeout(() => {
@@ -361,8 +381,9 @@ export default function SingleChat(): JSX.Element {
   const formatTime = (timestamp: Date) => {
     const now = new Date();
     const messageTime = new Date(timestamp);
-    const diffInHours = (now.getTime() - messageTime.getTime()) / (1000 * 60 * 60);
-    
+    const diffInHours =
+      (now.getTime() - messageTime.getTime()) / (1000 * 60 * 60);
+
     if (diffInHours < 24) {
       return messageTime.toLocaleTimeString("en-US", {
         hour: "2-digit",
@@ -417,10 +438,11 @@ export default function SingleChat(): JSX.Element {
 
     return (
       <div
-        className={`rounded-2xl p-3 max-w-sm ${message.sender === "user"
-          ? "bg-purple-500 text-white"
-          : "bg-gray-700 text-white"
-          }`}
+        className={`rounded-2xl p-3 max-w-sm ${
+          message.sender === "user"
+            ? "bg-purple-500 text-white"
+            : "bg-gray-700 text-white"
+        }`}
       >
         <div className="break-words">{message.text}</div>
         <div className="flex items-center justify-between mt-1">
@@ -451,10 +473,17 @@ export default function SingleChat(): JSX.Element {
   return (
     <div className="flex h-full bg-[#101010] text-white">
       {/* Main Chat Area */}
-      <div className={`flex flex-col h-full ${showUserInfo ? 'w-2/3' : 'w-full'} transition-all duration-300`}>
+      <div
+        className={`flex flex-col h-full ${
+          showUserInfo ? "w-2/3" : "w-full"
+        } transition-all duration-300`}
+      >
         {/* Chat Header */}
         <div className="flex items-center justify-between p-4 h-14 bg-[#212121] border-b border-[#212121]">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={toggleUserInfo}>
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={toggleUserInfo}
+          >
             {/* Back button for mobile */}
             {isMobile && (
               <button
@@ -474,7 +503,11 @@ export default function SingleChat(): JSX.Element {
             <div>
               <h1 className="text-lg font-medium">{chatInfo?.name}</h1>
               <p className="text-sm text-gray-400">
-                {isTyping ? "typing..." : chatInfo?.isOnline ? "online" : chatInfo?.lastSeen || "offline"}
+                {isTyping
+                  ? "typing..."
+                  : chatInfo?.isOnline
+                  ? "online"
+                  : chatInfo?.lastSeen || "offline"}
               </p>
             </div>
           </div>
@@ -501,32 +534,46 @@ export default function SingleChat(): JSX.Element {
                 <div className="absolute right-0 top-12 w-56 bg-[#212121] rounded-lg shadow-lg z-50 border border-gray-700 overflow-hidden">
                   <div className="py-1">
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><FiEdit2 /></span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl">
+                        <FiEdit2 />
+                      </span>
                       Edit
                     </button>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><HiOutlineVideoCamera /></span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl">
+                        <HiOutlineVideoCamera />
+                      </span>
                       Video Call
                     </button>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><BiVolumeMute /></span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl">
+                        <BiVolumeMute />
+                      </span>
                       Mute...
                     </button>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><FaRegCheckCircle /></span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl">
+                        <FaRegCheckCircle />
+                      </span>
                       Select messages
                     </button>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><FiGift /></span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl">
+                        <FiGift />
+                      </span>
                       Send a Gift
                     </button>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><IoHandRightOutline /></span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl">
+                        <IoHandRightOutline />
+                      </span>
                       Block user
                     </button>
                     <div className="border-t border-gray-700 my-1 text-red-500"></div>
                     <button className="w-full px-4 py-2 text-left text-sm hover:bg-gray-700 flex items-center">
-                      <span className="icon mr-3 text-[#AAAAAA] text-2xl"><MdDeleteOutline /></span>
+                      <span className="icon mr-3 text-[#AAAAAA] text-2xl">
+                        <MdDeleteOutline />
+                      </span>
                       Delete chat
                     </button>
                   </div>
@@ -551,7 +598,7 @@ export default function SingleChat(): JSX.Element {
                 index === 0 ||
                 Math.abs(
                   message.timestamp.getTime() -
-                  messages[index - 1].timestamp.getTime()
+                    messages[index - 1].timestamp.getTime()
                 ) > 300000; // 5 minutes
 
               return (
@@ -564,28 +611,37 @@ export default function SingleChat(): JSX.Element {
                     </div>
                   )}
                   <div
-                    className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"
-                      }`}
+                    className={`flex ${
+                      message.sender === "user"
+                        ? "justify-end"
+                        : "justify-start"
+                    }`}
                   >
                     {renderMessage(message)}
                   </div>
                 </div>
               );
             })}
-            
+
             {/* Typing indicator */}
             {isTyping && (
               <div className="flex justify-start">
                 <div className="bg-gray-700 text-white rounded-2xl p-3 max-w-sm">
                   <div className="flex space-x-1">
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    <div
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.2s" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.4s" }}
+                    ></div>
                   </div>
                 </div>
               </div>
             )}
-            
+
             <div ref={messagesEndRef} />
           </div>
         </div>
@@ -626,7 +682,7 @@ export default function SingleChat(): JSX.Element {
                 <div className="absolute bottom-14 right-0 z-50">
                   <EmojiPicker
                     onEmojiClick={handleEmojiClick}
-                    theme={Theme.DARK} 
+                    theme={Theme.DARK}
                     lazyLoadEmojis
                   />
                 </div>
@@ -637,10 +693,11 @@ export default function SingleChat(): JSX.Element {
             <div className="relative w-10 h-10">
               {/* Voice/Mic Button */}
               <button
-                className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 rounded-full transition-all duration-200 ease-in-out transform ${inputMessage.trim()
-                  ? "opacity-0 scale-75 rotate-45"
-                  : "opacity-100 scale-100 rotate-0"
-                  }`}
+                className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 rounded-full transition-all duration-200 ease-in-out transform ${
+                  inputMessage.trim()
+                    ? "opacity-0 scale-75 rotate-45"
+                    : "opacity-100 scale-100 rotate-0"
+                }`}
                 disabled={inputMessage.trim() !== ""}
               >
                 <FaMicrophone className="w-6 h-6 text-white" />
@@ -650,10 +707,11 @@ export default function SingleChat(): JSX.Element {
               <button
                 onClick={handleSendMessage}
                 disabled={!inputMessage.trim()}
-                className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-0 disabled:cursor-not-allowed rounded-full transition-all duration-200 ease-in-out transform ${inputMessage.trim()
-                  ? "opacity-100 scale-100 rotate-0"
-                  : "opacity-0 scale-75 -rotate-45"
-                  }`}
+                className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-0 disabled:cursor-not-allowed rounded-full transition-all duration-200 ease-in-out transform ${
+                  inputMessage.trim()
+                    ? "opacity-100 scale-100 rotate-0"
+                    : "opacity-0 scale-75 -rotate-45"
+                }`}
               >
                 <IoSend className="w-6 h-6 text-white" />
               </button>
@@ -685,7 +743,9 @@ export default function SingleChat(): JSX.Element {
                 />
                 <div className="absolute p-4 bottom-0 flex flex-col justify-end w-full min-h-[100px] text-white bg-gradient-to-t from-black/50 to-transparent">
                   <h3 className="text-xl font-bold">{chatInfo?.name}</h3>
-                  <p className="text-gray-400">{chatInfo?.isOnline ? "online" : "offline"}</p>
+                  <p className="text-gray-400">
+                    {chatInfo?.isOnline ? "online" : "offline"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -693,28 +753,38 @@ export default function SingleChat(): JSX.Element {
             {/* List Item */}
 
             {chatInfo?.number ? (
-            <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
-              <div className="mr-3 p-2">
-                <IoCall className="w-5 h-5 text-gray-400" />
+              <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
+                <div className="mr-3 p-2">
+                  <IoCall className="w-5 h-5 text-gray-400" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-white">{chatInfo?.number}</span>
+                  <span className="text-sm font-medium text-gray-400">
+                    Phone
+                  </span>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm text-white">{chatInfo?.number}</span>
-                <span className="text-sm font-medium text-gray-400">Phone</span>
-              </div>
-            </div>
-            ) : ""}
+            ) : (
+              ""
+            )}
 
             {chatInfo?.userName ? (
-            <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
-              <div className="mr-3 p-2">
-                <MdAlternateEmail className="w-5 h-5 text-gray-400" />
+              <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
+                <div className="mr-3 p-2">
+                  <MdAlternateEmail className="w-5 h-5 text-gray-400" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm text-white">
+                    @{chatInfo?.userName}
+                  </span>
+                  <span className="text-sm font-medium text-gray-400">
+                    Username
+                  </span>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-sm text-white">@{chatInfo?.userName}</span>
-                <span className="text-sm font-medium text-gray-400">Username</span>
-              </div>
-            </div>
-            ) : ""}
+            ) : (
+              ""
+            )}
 
             {chatInfo?.bio ? (
               <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
@@ -726,8 +796,10 @@ export default function SingleChat(): JSX.Element {
                   <span className="text-sm font-medium text-gray-400">Bio</span>
                 </div>
               </div>
-            ) : ""}
-            
+            ) : (
+              ""
+            )}
+
             <div className="flex items-center min-h-12 px-4 py-3 m-2 hover:bg-[#2C2C2C] cursor-pointer rounded-2xl">
               <div className="mr-3 p-2">
                 <IoIosNotificationsOutline className="w-5 h-5 text-gray-400" />
@@ -735,18 +807,12 @@ export default function SingleChat(): JSX.Element {
               <div className="flex flex-row justify-between w-full">
                 <span className="text-sm text-white">Notifications</span>
                 {/* Toggle Button */}
-                <label
-                  className="inline-flex items-center cursor-pointer"
-                >
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                  />
+                <label className="inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" />
                   <div className="relative w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-transparent dark:peer-focus:ring-transparent rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-[#8774E1] dark:peer-checked:bg-[#8774E1]"></div>
                 </label>
               </div>
             </div>
-
           </div>
         </div>
       )}

@@ -14,13 +14,13 @@ export default function ChatsLayout({
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  
+
   const pathname = usePathname();
   const router = useRouter();
 
   // Check if we're on a specific chat page
-  const isOnChatPage = pathname.startsWith('/chats/') && pathname !== '/chats';
-  const isOnMainChatList = pathname === '/chats';
+  const isOnChatPage = pathname.startsWith("/chats/") && pathname !== "/chats";
+  const isOnMainChatList = pathname === "/chats";
 
   // Handle window resize for responsive design
   useEffect(() => {
@@ -29,9 +29,9 @@ export default function ChatsLayout({
     };
 
     checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-    
-    return () => window.removeEventListener('resize', checkIsMobile);
+    window.addEventListener("resize", checkIsMobile);
+
+    return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
@@ -86,7 +86,11 @@ export default function ChatsLayout({
   return (
     <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]">
       {/* ChatSidebar - conditionally rendered based on responsive logic */}
-      <div className={`${shouldShowSidebar() ? 'block' : 'hidden'} ${isMobile ? 'w-full' : 'w-96'}`}>
+      <div
+        className={`${shouldShowSidebar() ? "block" : "hidden"} ${
+          isMobile ? "w-full" : "w-96"
+        }`}
+      >
         <ChatSidebar
           isMenuOpen={isMenuOpen}
           showUserProfile={showUserProfile}
@@ -98,17 +102,19 @@ export default function ChatsLayout({
           currentPath={pathname}
         />
       </div>
-      
+
       {/* Main content with transition effect */}
-      <main 
+      <main
         className={`transition-opacity duration-150 ${
-          isTransitioning ? 'opacity-0' : 'opacity-100'
+          isTransitioning ? "opacity-0" : "opacity-100"
         } ${
           // On mobile, when showing sidebar, hide main content
           // On desktop, always show main content alongside sidebar
-          isMobile 
-            ? (shouldShowSidebar() ? 'hidden' : 'flex-grow w-full')
-            : 'flex-grow'
+          isMobile
+            ? shouldShowSidebar()
+              ? "hidden"
+              : "flex-grow w-full"
+            : "flex-grow"
         }`}
       >
         {children}

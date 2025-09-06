@@ -1,14 +1,21 @@
 /* app/globals.css */
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  @apply bg-white text-black;
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-[data-mode="dark"] body {
-  @apply bg-gray-900 text-white;
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkslateblue;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #6b59c4;
 }

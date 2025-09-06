@@ -50,10 +50,9 @@ const helpItems = [
 export default function UserProfile() {
   return (
     <div className="h-[100vh] flex flex-col bg-[#1a1a1a] dark:bg-[#1a1a1a]">
-
       {/* Settings Menu */}
       <div className="flex-1">
-      <ProfileHeader />
+        <ProfileHeader />
         <div className="py-2">
           <SettingsSection items={settingsItems} />
 
