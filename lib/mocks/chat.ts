@@ -62,7 +62,7 @@ export const chats = [
     id: 4,
     name: "Amir Rahemi",
     lastMessage:
-      "Login code: 46619. Do not give this code to anyone, even if they say they are from Telegram!",
+      "Not yet, I need two more days",
     lastMessageTime: "Yesterday",
     unreadCount: 2,
     avatar: "http://localhost:3000/assets/avatar/amir.jpg",

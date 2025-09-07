@@ -706,7 +706,7 @@ export default function SingleChat(): JSX.Element {
         {/* Message Input Area */}
         <div className="p-4 border-0 bg-transparent backdrop-blur-sm">
           <div className="flex items-center gap-2">
-            <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+            <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors cursor-pointer" onClick={() => alert("Sorry! Send file feature is not available yet.")}>
               <FaPaperclip className="w-5 h-5 text-gray-500 dark:text-gray-400" />
             </button>
 
@@ -729,7 +729,7 @@ export default function SingleChat(): JSX.Element {
               {/* Emoji button inside input */}
               <button
                 onClick={() => setShowEmojiPicker((prev) => !prev)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors"
+                className="absolute cursor-pointer right-3 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full transition-colors"
               >
                 <FaRegSmile className="w-5 h-5 text-gray-500 dark:text-gray-400" />
               </button>
@@ -764,7 +764,7 @@ export default function SingleChat(): JSX.Element {
               <button
                 onClick={handleSendMessage}
                 disabled={!inputMessage.trim()}
-                className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-0 disabled:cursor-not-allowed rounded-full transition-all duration-200 ease-in-out transform ${
+                className={`cursor-pointer absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-0 disabled:cursor-not-allowed rounded-full transition-all duration-200 ease-in-out transform ${
                   inputMessage.trim()
                     ? "opacity-100 scale-100 rotate-0"
                     : "opacity-0 scale-75 -rotate-45"

@@ -101,7 +101,7 @@ export const messages: Message[] = [
     chatId: 2,
     senderId: 0, // current user
     senderName: "You",
-    text: "Salam Baba! Chetori?",
+    text: "Salam! Chetori?",
     timestamp: "11:12 AM",
     isOwnMessage: true,
     status: 'read',
