@@ -21,6 +21,7 @@ import { FiEdit2, FiGift } from "react-icons/fi";
 import { BiVolumeMute } from "react-icons/bi";
 import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
 import { formatPhoneNumber } from "@/lib/utils/formatPhone";
+import { getInitials, getAvatarColor } from "@/lib/utils/avatarUtils";
 import { useChatStore } from "@/store/useChatStore";
 import { useChatSimulation } from "@/lib/utils/chatSimulation";
 
@@ -81,6 +82,14 @@ export default function SingleChat(): JSX.Element {
   // Get data from store with real-time updates - only after client hydration
   const messages = isClient ? getChatMessages(parseInt(chatId)) : [];
   const chatInfo = isClient ? getChat(parseInt(chatId)) : null;
+
+  // Check if avatar is valid (not empty or incomplete URL)
+  const hasValidAvatar = (avatarUrl: string) => {
+    return avatarUrl && 
+           avatarUrl !== "" && 
+           avatarUrl !== "http://localhost:3000/assets/avatar/" &&
+           !avatarUrl.endsWith("assets/avatar/");
+  };
 
   // Auto-scroll to bottom when messages change
   const scrollToBottom = () => {
@@ -206,7 +215,7 @@ export default function SingleChat(): JSX.Element {
       return responses[Math.floor(Math.random() * responses.length)];
     } 
     
-    if (chatName.includes("eldrÃ  cu")) {
+    if (chatName.includes("eldrÃƒ  cu")) {
       const responses = [
         "همیشه سلامت باشی رفیق!",
         "چطوری کاری که گفتم انجام شد؟",
@@ -485,11 +494,42 @@ export default function SingleChat(): JSX.Element {
               </button>
             )}
 
-            <img
-              src={chatInfo?.avatar || "/api/placeholder/40/40"}
-              alt={chatInfo?.name}
-              className="w-10 h-10 rounded-full object-cover"
-            />
+            {/* Avatar with fallback to initials */}
+            {hasValidAvatar(chatInfo?.avatar) ? (
+              <div className="relative">
+                <img
+                  src={chatInfo?.avatar}
+                  alt={chatInfo?.name}
+                  className="w-10 h-10 rounded-full object-cover"
+                  onError={(e) => {
+                    // Fallback to initials if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const fallback = target.nextElementSibling as HTMLElement;
+                    if (fallback) {
+                      fallback.style.display = 'flex';
+                    }
+                  }}
+                />
+                {/* Hidden fallback - will be shown if image fails */}
+                <div
+                  className={`w-10 h-10 rounded-full hidden items-center justify-center text-white font-semibold absolute top-0 left-0 ${getAvatarColor(
+                    chatInfo?.name || ""
+                  )}`}
+                >
+                  {getInitials(chatInfo?.name || "")}
+                </div>
+              </div>
+            ) : (
+              // Show initials directly for chats without valid avatars
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold ${getAvatarColor(
+                  chatInfo?.name || ""
+                )}`}
+              >
+                {getInitials(chatInfo?.name || "")}
+              </div>
+            )}
 
             <div>
               <h1 className="text-lg font-medium">{chatInfo?.name}</h1>
@@ -787,11 +827,42 @@ export default function SingleChat(): JSX.Element {
           <div className="p-0">
             <div className="flex flex-col items-center mb-4">
               <div className="relative">
-                <img
-                  src={chatInfo?.avatar || "/api/placeholder/100/100"}
-                  alt={chatInfo?.name}
-                  className="w-full h-full rounded-none object-cover mb-0"
-                />
+                {/* Avatar with fallback to initials in sidebar */}
+                {hasValidAvatar(chatInfo?.avatar) ? (
+                  <div className="relative">
+                    <img
+                      src={chatInfo?.avatar}
+                      alt={chatInfo?.name}
+                      className="w-full h-full rounded-none object-cover mb-0"
+                      onError={(e) => {
+                        // Fallback to initials if image fails to load
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const fallback = target.nextElementSibling as HTMLElement;
+                        if (fallback) {
+                          fallback.style.display = 'flex';
+                        }
+                      }}
+                    />
+                    {/* Hidden fallback - will be shown if image fails */}
+                    <div
+                      className={`w-full h-full rounded-none hidden items-center justify-center text-white font-bold text-6xl absolute top-0 left-0 ${getAvatarColor(
+                        chatInfo?.name || ""
+                      )} min-h-[200px]`}
+                    >
+                      {getInitials(chatInfo?.name || "")}
+                    </div>
+                  </div>
+                ) : (
+                  // Show initials directly for chats without valid avatars
+                  <div
+                    className={`w-full h-full rounded-none flex items-center justify-center text-white font-bold text-6xl ${getAvatarColor(
+                      chatInfo?.name || ""
+                    )} min-h-[200px]`}
+                  >
+                    {getInitials(chatInfo?.name || "")}
+                  </div>
+                )}
                 <div className="absolute p-4 bottom-0 flex flex-col justify-end w-full min-h-[100px] text-white bg-gradient-to-t from-black/50 to-transparent">
                   <h3 className="text-xl font-bold">{chatInfo?.name}</h3>
                   <p className="text-gray-400">

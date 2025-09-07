@@ -1,11 +1,13 @@
 // Path: components/ChatItem.tsx
 "use client";
 
-import { useRouter } from "next/navigation";
 import React from "react";
-import { BiCheckDouble } from "react-icons/bi";
-import { FaCheck } from "react-icons/fa6";
+import { BsCheck, BsCheckAll } from "react-icons/bs";
+import { IoMdPin } from "react-icons/io";
+import { getInitials, getAvatarColor } from "@/lib/utils/avatarUtils";
 import { TbPin } from "react-icons/tb";
+import { FaCheck } from "react-icons/fa";
+import { BiCheckDouble } from "react-icons/bi";
 
 interface Chat {
   id: number;
@@ -18,6 +20,7 @@ interface Chat {
   isPinned: boolean | null;
   messageStatus: string | null;
   isArchive?: boolean;
+  lastMessageTimestamp?: Date;
 }
 
 interface SearchResult extends Chat {
@@ -28,68 +31,99 @@ interface SearchResult extends Chat {
 interface ChatItemProps {
   chat: SearchResult;
   searchQuery?: string;
-  onChatClick?: (chatId: number) => void; // Added this prop
+  onChatClick?: (chatId: number) => void;
 }
-
-// Function to highlight matching text
-const highlightText = (text: string, query: string): React.ReactElement => {
-  if (!query || !query.trim()) {
-    return <span>{text}</span>;
-  }
-
-  const normalizedQuery = query.toLowerCase().trim();
-  const normalizedText = text.toLowerCase();
-  const index = normalizedText.indexOf(normalizedQuery);
-
-  if (index === -1) {
-    return <span>{text}</span>;
-  }
-
-  const beforeMatch = text.slice(0, index);
-  const match = text.slice(index, index + query.length);
-  const afterMatch = text.slice(index + query.length);
-
-  return (
-    <span>
-      {beforeMatch}
-      <mark className="bg-yellow-200 dark:bg-yellow-600 text-black dark:text-white px-0.5 rounded">
-        {match}
-      </mark>
-      {highlightText(afterMatch, query)}
-    </span>
-  );
-};
 
 export default function ChatItem({
   chat,
   searchQuery,
   onChatClick,
 }: ChatItemProps) {
-  const router = useRouter();
+  // Check if avatar is valid (not empty or incomplete URL)
+  const hasValidAvatar = (avatarUrl: string) => {
+    return avatarUrl && 
+           avatarUrl !== "" && 
+           avatarUrl !== "http://localhost:3000/assets/avatar/" &&
+           !avatarUrl.endsWith("assets/avatar/");
+  };
 
   const handleClick = () => {
-    // Use the onChatClick prop if provided (for smooth transitions from layout)
-    // Otherwise fall back to direct router navigation
+    // Show alert for archived chats
+    if (chat.id === 0) {
+      alert("Sorry! Archived chats are not available yet.");
+      return;
+    }
+    
     if (onChatClick) {
       onChatClick(chat.id);
-    } else if (chat.id === 0) {
-      alert("Sorry! Archived chats are not available yet.");
-    } else {
-      router.push(`/chats/${chat.id}`);
     }
   };
 
+  // Highlight search matches
+  const highlightText = (text: string, query?: string) => {
+    if (!query?.trim()) return text;
+
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+
+    return parts.map((part, index) =>
+      regex.test(part) ? (
+        <mark key={index} className="bg-yellow-200 dark:bg-yellow-800 rounded px-1">
+          {part}
+        </mark>
+      ) : (
+        part
+      )
+    );
+  };
+
   return (
-    <div className="border-b border-transparent" onClick={handleClick}>
-      <button className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] dark:hover:bg-[#151515] transition-colors cursor-pointer">
-        <div className="relative">
-          <img
-            src={chat.avatar}
-            alt={chat.name}
-            className="w-12 h-12 rounded-full object-cover"
-          />
-          {chat.isOnline === true && (
-            <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white dark:border-gray-900"></div>
+    <div className="border-b border-transparent">
+      <button
+        className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] dark:hover:bg-[#151515] transition-colors cursor-pointer"
+        onClick={handleClick}
+      >
+        <div className="relative flex-shrink-0">
+          {/* Avatar with fallback to initials */}
+          {hasValidAvatar(chat.avatar) ? (
+            <div className="relative">
+              <img
+                src={chat.avatar}
+                alt={chat.name}
+                className="w-12 h-12 rounded-full object-cover"
+                onError={(e) => {
+                  // Fallback to initials if image fails to load
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const fallback = target.nextElementSibling as HTMLElement;
+                  if (fallback) {
+                    fallback.style.display = 'flex';
+                  }
+                }}
+              />
+              {/* Hidden fallback - will be shown if image fails */}
+              <div
+                className={`w-12 h-12 rounded-full hidden items-center justify-center text-white font-semibold absolute top-0 left-0 ${getAvatarColor(
+                  chat.name
+                )}`}
+              >
+                {getInitials(chat.name)}
+              </div>
+            </div>
+          ) : (
+            // Show initials directly for chats without valid avatars
+            <div
+              className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${getAvatarColor(
+                chat.name
+              )}`}
+            >
+              {getInitials(chat.name)}
+            </div>
+          )}
+
+          {/* Online indicator */}
+          {chat.isOnline && (
+            <div className="absolute -bottom-0 -right-0 w-4 h-4 bg-green-500 border-2 border-[#1a1a1a] rounded-full"></div>
           )}
         </div>
 
@@ -103,19 +137,6 @@ export default function ChatItem({
               </h3>
             </div>
             <div className="grow min-w-2"></div>
-            <div className="flex mr-0.5">
-              <span className="flex items-center text-xs text-gray-100 whitespace-nowrap">
-                {chat.messageStatus === "read" && (
-                  <BiCheckDouble fontSize={20} />
-                )}
-                {chat.messageStatus === "succeeded" && <FaCheck />}
-                <p
-                  className={`${chat.messageStatus === "succeeded" && "ml-1"}`}
-                >
-                  {chat.isArchive ? null : chat.lastMessageTime}
-                </p>
-              </span>
-            </div>
           </div>
 
           <div className="flex justify-start items-center min-w-0">

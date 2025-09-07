@@ -372,7 +372,7 @@ const getInitialContacts = (): Contact[] => [
     id: 7,
     name: "Elon Musk",
     lastSeen: "2025-08-25T09:10:00Z",
-    avatar: "http://localhost:3000/assets/avatar/amir.jpg",
+    avatar: "http://localhost:3000/assets/avatar/hamed.jpg",
     chatUrl: "http://localhost:3000/chats/7",
   },
   {

@@ -106,8 +106,6 @@ export default function ChatsLayout({
       {/* Main content with transition effect */}
       <main
         className={`transition-opacity duration-150 ${
-          isTransitioning ? "opacity-0" : "opacity-100"
-        } ${
           // On mobile, when showing sidebar, hide main content
           // On desktop, always show main content alongside sidebar
           isMobile
