@@ -5,7 +5,7 @@ import React, { useState, useMemo, useEffect } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import { useChatStore } from "@/store/useChatStore";
-import { getInitials, getAvatarColor } from "@/lib/utils/avatarUtils"; // You'll need to create this
+import { getInitials, getAvatarColor } from "@/lib/utils/avatarUtils";
 
 interface ContactListProps {
   onBackToChats: () => void;
@@ -44,6 +44,7 @@ const formatLastSeen = (lastSeenString: string): string => {
 
 export default function ContactList({ onBackToChats }: ContactListProps) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [isClient, setIsClient] = useState(false);
   const router = useRouter();
   
   // Get contacts from Zustand store
@@ -53,23 +54,57 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
     createNewChat, 
     getChat,
     setSelectedChat,
-    markMessagesAsRead 
+    markMessagesAsRead,
+    initializeStore
   } = useChatStore();
 
-  // Load contacts when component mounts
+  // Handle client-side hydration
   useEffect(() => {
-    // This ensures contacts are loaded from the store
+    setIsClient(true);
+  }, []);
+
+  // Initialize store and load contacts when component mounts
+  useEffect(() => {
+    if (!isClient) return;
+    
+    initializeStore();
     getContacts();
-  }, [getContacts]);
+    
+    // Debug log to see what contacts we have
+    console.log('Total contacts loaded:', contacts.length);
+    console.log('Contacts:', contacts);
+  }, [isClient, getContacts, initializeStore]);
 
-  // Filter contacts based on search query
+  // Filter contacts based on search query and exclude system contacts
   const filteredContacts = useMemo(() => {
-    if (!searchQuery.trim()) return contacts;
+    if (!isClient) return [];
+    
+    console.log('Raw contacts before filtering:', contacts.length);
+    
+    // Filter out system contacts (Saved Messages, Archive) - only exclude Saved Messages
+    let availableContacts = contacts.filter(contact => {
+      const shouldExclude = contact.id === 5 || // Saved Messages
+                           contact.name === "Saved Messages" ||
+                           contact.id === 0 || // Archive (if it exists in contacts)
+                           contact.name === "Archived Chats";
+      
+      return !shouldExclude;
+    });
 
-    return contacts.filter(contact =>
+    console.log('Contacts after filtering system contacts:', availableContacts.length);
+
+    if (!searchQuery.trim()) {
+      return availableContacts;
+    }
+
+    const searchFiltered = availableContacts.filter(contact =>
       contact.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [contacts, searchQuery]);
+    
+    console.log('Contacts after search filtering:', searchFiltered.length);
+    
+    return searchFiltered;
+  }, [contacts, searchQuery, isClient]);
 
   const clearSearch = () => {
     setSearchQuery("");
@@ -98,6 +133,38 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
     }
   };
 
+  // Check if avatar is valid (not empty or incomplete URL)
+  const hasValidAvatar = (avatarUrl: string) => {
+    return avatarUrl && 
+           avatarUrl !== "" && 
+           avatarUrl !== "http://localhost:3000/assets/avatar/" &&
+           !avatarUrl.endsWith("assets/avatar/");
+  };
+
+  // Loading state for SSR
+  if (!isClient) {
+    return (
+      <div className="w-96 border-r border-transparent flex flex-col h-full bg-[#1a1a1a] text-white">
+        <div className="p-3 border-b border-[#2d2d2d] flex items-center gap-2">
+          <button
+            onClick={onBackToChats}
+            className="p-2 rounded-full hover:bg-[#151515] cursor-pointer"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+            </svg>
+          </button>
+          <div className="flex-1 text-center">
+            <span className="text-gray-400">Loading contacts...</span>
+          </div>
+        </div>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-gray-400">Loading...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-96 border-r border-transparent flex flex-col h-full bg-[#1a1a1a] text-white">
       {/* Header */}
@@ -125,8 +192,9 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
           {/* Search Icon */}
           <FiSearch
             size={20}
-            className={`absolute left-3 top-2.5 transition-colors duration-200 ${searchQuery ? "text-blue-400" : "text-gray-500"
-              }`}
+            className={`absolute left-3 top-2.5 transition-colors duration-200 ${
+              searchQuery ? "text-blue-400" : "text-gray-500"
+            }`}
           />
 
           {/* Clear Button */}
@@ -148,9 +216,19 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
           <div className="p-3 border-b border-[#2d2d2d] bg-[#1a1a1a]">
             <p className="text-sm text-gray-400">
               {filteredContacts.length > 0
-                ? `Found ${filteredContacts.length} contact${filteredContacts.length !== 1 ? "s" : ""
-                }`
+                ? `Found ${filteredContacts.length} contact${
+                    filteredContacts.length !== 1 ? "s" : ""
+                  }`
                 : "No contacts found"}
+            </p>
+          </div>
+        )}
+
+        {/* Show total contacts count when not searching */}
+        {!searchQuery && (
+          <div className="p-3 border-b border-[#2d2d2d] bg-[#1a1a1a]">
+            <p className="text-sm text-gray-400">
+              {filteredContacts.length} contacts
             </p>
           </div>
         )}
@@ -167,9 +245,9 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
                   className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] transition-colors cursor-pointer"
                   onClick={() => handleContactClick(contact)}
                 >
-                  {/* Avatar */}
-                  {contact.avatar && contact.avatar !== "http://localhost:3000/assets/avatar/" ? (
-                    <div>
+                  {/* Avatar - Show image if valid, otherwise show initials */}
+                  {hasValidAvatar(contact.avatar) ? (
+                    <div className="relative">
                       <img
                         src={contact.avatar}
                         alt={contact.name}
@@ -178,18 +256,23 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
                           // Fallback to initials if image fails to load
                           const target = e.target as HTMLImageElement;
                           target.style.display = 'none';
-                          target.nextSibling?.removeAttribute('style');
+                          const fallback = target.nextElementSibling as HTMLElement;
+                          if (fallback) {
+                            fallback.style.display = 'flex';
+                          }
                         }}
                       />
+                      {/* Hidden fallback - will be shown if image fails */}
                       <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${getAvatarColor(
+                        className={`w-12 h-12 rounded-full hidden items-center justify-center text-white font-semibold absolute top-0 left-0 ${getAvatarColor(
                           contact.name
-                        )} hidden`}
+                        )}`}
                       >
                         {getInitials(contact.name)}
                       </div>
                     </div>
                   ) : (
+                    // Show initials directly for contacts without valid avatars
                     <div
                       className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${getAvatarColor(
                         contact.name
@@ -227,9 +310,9 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
         ) : (
           <div className="flex flex-col items-center justify-center h-64 text-gray-500">
             <div className="text-4xl mb-4">📞</div>
-            <p className="text-lg font-medium mb-2">No contacts</p>
+            <p className="text-lg font-medium mb-2">No contacts available</p>
             <p className="text-sm text-center px-8">
-              Add some contacts to get started
+              Contacts will appear here when loaded
             </p>
           </div>
         )}
