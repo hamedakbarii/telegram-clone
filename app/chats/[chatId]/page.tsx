@@ -41,7 +41,7 @@ export default function SingleChat(): JSX.Element {
   const [isTyping, setIsTyping] = useState(false);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  
+
   const menuRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -68,12 +68,12 @@ export default function SingleChat(): JSX.Element {
   // Initialize store and simulation on mount - but only once
   useEffect(() => {
     if (!isClient) return;
-    
+
     // Initialize store only once when client is ready
     initializeStore();
-    
+
     const simulation = startSimulation();
-    
+
     return () => {
       stopSimulation();
     };
@@ -85,10 +85,10 @@ export default function SingleChat(): JSX.Element {
 
   // Check if avatar is valid (not empty or incomplete URL)
   const hasValidAvatar = (avatarUrl: string) => {
-    return avatarUrl && 
-           avatarUrl !== "" && 
-           avatarUrl !== "http://localhost:3000/assets/avatar/" &&
-           !avatarUrl.endsWith("assets/avatar/");
+    return avatarUrl &&
+      avatarUrl !== "" &&
+      avatarUrl !== "http://localhost:3000/assets/avatar/" &&
+      !avatarUrl.endsWith("assets/avatar/");
   };
 
   // Auto-scroll to bottom when messages change
@@ -110,7 +110,7 @@ export default function SingleChat(): JSX.Element {
   // Check if mobile
   useEffect(() => {
     if (!isClient) return;
-    
+
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -123,7 +123,7 @@ export default function SingleChat(): JSX.Element {
   // Close menu when clicking outside
   useEffect(() => {
     if (!isClient) return;
-    
+
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsMenuOpen(false);
@@ -137,7 +137,7 @@ export default function SingleChat(): JSX.Element {
   // Set selected chat and mark as read on mount
   useEffect(() => {
     if (!isClient) return;
-    
+
     const chatIdNum = parseInt(chatId);
     setSelectedChat(chatIdNum);
     markMessagesAsRead(chatIdNum);
@@ -150,13 +150,18 @@ export default function SingleChat(): JSX.Element {
 
   // Toggle user info panel
   const toggleUserInfo = () => {
+    // Don't show user info for Saved Messages (chat ID 5)
+    const chatIdNum = parseInt(chatId);
+    if (chatIdNum === 5) {
+      return; // Exit early, don't toggle user info
+    }
     setShowUserInfo(!showUserInfo);
   };
 
   // Enhanced chat-specific responses with more variety
   const getChatSpecificResponse = (chatIdNum: number, userMessage: string) => {
     if (!isClient) return "Hello!";
-    
+
     const chat = getChat(chatIdNum);
     const chatName = chat?.name || "";
 
@@ -174,8 +179,8 @@ export default function SingleChat(): JSX.Element {
         "Channel recommendations updated based on your interests.",
       ];
       return responses[Math.floor(Math.random() * responses.length)];
-    } 
-    
+    }
+
     if (chatName.includes("Belami")) {
       const responses = [
         "سفارش شما در حال پردازش است.",
@@ -187,8 +192,8 @@ export default function SingleChat(): JSX.Element {
         "محصولات جدید به فروشگاه اضافه شد.",
       ];
       return responses[Math.floor(Math.random() * responses.length)];
-    } 
-    
+    }
+
     if (chatName.includes("Hamed")) {
       const responses = [
         "پسرم چطوری؟",
@@ -200,8 +205,8 @@ export default function SingleChat(): JSX.Element {
         "پروژه چطور پیش میره؟",
       ];
       return responses[Math.floor(Math.random() * responses.length)];
-    } 
-    
+    }
+
     if (chatName.includes("Amir")) {
       const responses = [
         "Hey, did you finish the project?",
@@ -213,8 +218,8 @@ export default function SingleChat(): JSX.Element {
         "Code review meeting at 2 PM tomorrow.",
       ];
       return responses[Math.floor(Math.random() * responses.length)];
-    } 
-    
+    }
+
     if (chatName.includes("eldrÃƒ  cu")) {
       const responses = [
         "همیشه سلامت باشی رفیق!",
@@ -331,7 +336,7 @@ export default function SingleChat(): JSX.Element {
     setTimeout(() => {
       setIsTyping(false);
       setTypingStatus(chatIdNum, false);
-      
+
       addMessage(chatIdNum, {
         text: getChatSpecificResponse(chatIdNum, currentInput),
         sender: "ai",
@@ -365,7 +370,7 @@ export default function SingleChat(): JSX.Element {
   // Enhanced time formatting
   const formatTime = (timestamp: Date) => {
     if (!isClient) return "now";
-    
+
     const now = new Date();
     const messageTime = new Date(timestamp);
     const diffInHours = (now.getTime() - messageTime.getTime()) / (1000 * 60 * 60);
@@ -381,7 +386,7 @@ export default function SingleChat(): JSX.Element {
         hour12: false,
       });
     } else if (diffInDays < 7) {
-      return diffInDays < 2 ? "Yesterday" : 
+      return diffInDays < 2 ? "Yesterday" :
         messageTime.toLocaleDateString("en-US", { weekday: "short" });
     } else {
       return messageTime.toLocaleDateString("en-US", {
@@ -433,11 +438,10 @@ export default function SingleChat(): JSX.Element {
 
     return (
       <div
-        className={`rounded-2xl p-3 max-w-sm ${
-          message.sender === "user"
+        className={`rounded-2xl p-3 max-w-sm ${message.sender === "user"
             ? "bg-purple-500 text-white"
             : "bg-gray-700 text-white"
-        }`}
+          }`}
       >
         <div className="break-words">{message.text}</div>
         <div className="flex items-center justify-between mt-1">
@@ -474,9 +478,8 @@ export default function SingleChat(): JSX.Element {
     <div className="flex h-full bg-[#101010] text-white">
       {/* Main Chat Area */}
       <div
-        className={`flex flex-col h-full ${
-          showUserInfo ? "w-2/3" : "w-full"
-        } transition-all duration-300`}
+        className={`flex flex-col h-full ${showUserInfo ? "w-2/3" : "w-full"
+          } transition-all duration-300`}
       >
         {/* Chat Header */}
         <div className="flex items-center justify-between p-4 h-14 bg-[#212121] border-b border-[#212121]">
@@ -537,8 +540,8 @@ export default function SingleChat(): JSX.Element {
                 {isTyping || chatInfo?.isTyping
                   ? "typing..."
                   : chatInfo?.isOnline
-                  ? "online"
-                  : "offline"}
+                    ? "online"
+                    : "offline"}
               </p>
             </div>
           </div>
@@ -683,13 +686,13 @@ export default function SingleChat(): JSX.Element {
             {messages.map((message, index) => {
               // Safe timestamp comparison
               const currentTimestamp = message.timestamp instanceof Date ? message.timestamp : new Date(message.timestamp);
-              const previousTimestamp = index > 0 && messages[index - 1] 
-                ? (messages[index - 1].timestamp instanceof Date 
-                    ? messages[index - 1].timestamp 
-                    : new Date(messages[index - 1].timestamp))
+              const previousTimestamp = index > 0 && messages[index - 1]
+                ? (messages[index - 1].timestamp instanceof Date
+                  ? messages[index - 1].timestamp
+                  : new Date(messages[index - 1].timestamp))
                 : null;
-              
-              const showTime = index === 0 || 
+
+              const showTime = index === 0 ||
                 (previousTimestamp && Math.abs(currentTimestamp.getTime() - previousTimestamp.getTime()) > 300000); // 5 minutes
 
               return (
@@ -702,11 +705,10 @@ export default function SingleChat(): JSX.Element {
                     </div>
                   )}
                   <div
-                    className={`flex ${
-                      message.sender === "user"
+                    className={`flex ${message.sender === "user"
                         ? "justify-end"
                         : "justify-start"
-                    }`}
+                      }`}
                   >
                     {renderMessage(message)}
                   </div>
@@ -784,11 +786,10 @@ export default function SingleChat(): JSX.Element {
             <div className="relative w-10 h-10">
               {/* Voice/Mic Button */}
               <button
-                className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 rounded-full transition-all duration-200 ease-in-out transform ${
-                  inputMessage.trim()
+                className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 rounded-full transition-all duration-200 ease-in-out transform ${inputMessage.trim()
                     ? "opacity-0 scale-75 rotate-45"
                     : "opacity-100 scale-100 rotate-0"
-                }`}
+                  }`}
                 disabled={inputMessage.trim() !== ""}
               >
                 <FaMicrophone className="w-6 h-6 text-white" />
@@ -798,11 +799,10 @@ export default function SingleChat(): JSX.Element {
               <button
                 onClick={handleSendMessage}
                 disabled={!inputMessage.trim()}
-                className={`cursor-pointer absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-0 disabled:cursor-not-allowed rounded-full transition-all duration-200 ease-in-out transform ${
-                  inputMessage.trim()
+                className={`cursor-pointer absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-0 disabled:cursor-not-allowed rounded-full transition-all duration-200 ease-in-out transform ${inputMessage.trim()
                     ? "opacity-100 scale-100 rotate-0"
                     : "opacity-0 scale-75 -rotate-45"
-                }`}
+                  }`}
               >
                 <IoSend className="w-6 h-6 text-white" />
               </button>
