@@ -30,14 +30,18 @@ interface ChatListProps {
   onChatClick?: (chatId: number) => void;
 }
 
-export default function ChatList({ chats, searchQuery, onChatClick }: ChatListProps) {
+export default function ChatList({
+  chats,
+  searchQuery,
+  onChatClick,
+}: ChatListProps) {
   const { setSelectedChat, markMessagesAsRead } = useChatStore();
 
   const handleChatClick = (chatId: number) => {
     // Update store when chat is selected
     setSelectedChat(chatId);
     markMessagesAsRead(chatId);
-    
+
     // Call parent handler if provided
     if (onChatClick) {
       onChatClick(chatId);
@@ -52,10 +56,14 @@ export default function ChatList({ chats, searchQuery, onChatClick }: ChatListPr
     }
 
     // Separate into categories
-    const archivedChats = chats.filter(chat => chat.isArchive);
-    const pinnedChats = chats.filter(chat => chat.isPinned && !chat.isArchive);
-    const regularChats = chats.filter(chat => !chat.isPinned && !chat.isArchive);
-    
+    const archivedChats = chats.filter((chat) => chat.isArchive);
+    const pinnedChats = chats.filter(
+      (chat) => chat.isPinned && !chat.isArchive
+    );
+    const regularChats = chats.filter(
+      (chat) => !chat.isPinned && !chat.isArchive
+    );
+
     return [...archivedChats, ...pinnedChats, ...regularChats];
   }, [chats, searchQuery]);
 
@@ -63,17 +71,20 @@ export default function ChatList({ chats, searchQuery, onChatClick }: ChatListPr
     <div className="divide-y divide-transparent">
       {organizedChats.map((chat, index) => {
         // Check if we need to show section headers
-        const showArchivedHeader = !searchQuery && 
-          index === 0 && 
-          chat.isArchive;
+        const showArchivedHeader =
+          !searchQuery && index === 0 && chat.isArchive;
 
-        const showPinnedHeader = !searchQuery && 
-          organizedChats.findIndex(c => c.isPinned && !c.isArchive) === index &&
-          organizedChats.some(c => c.isPinned && !c.isArchive);
+        const showPinnedHeader =
+          !searchQuery &&
+          organizedChats.findIndex((c) => c.isPinned && !c.isArchive) ===
+            index &&
+          organizedChats.some((c) => c.isPinned && !c.isArchive);
 
-        const showRegularHeader = !searchQuery && 
-          organizedChats.findIndex(c => !c.isPinned && !c.isArchive) === index &&
-          organizedChats.some(c => !c.isPinned && !c.isArchive);
+        const showRegularHeader =
+          !searchQuery &&
+          organizedChats.findIndex((c) => !c.isPinned && !c.isArchive) ===
+            index &&
+          organizedChats.some((c) => !c.isPinned && !c.isArchive);
 
         return (
           <div key={chat.id}>
@@ -83,14 +94,14 @@ export default function ChatList({ chats, searchQuery, onChatClick }: ChatListPr
                 Archived
               </div>
             )}
-            
+
             {/* Pinned Chats Header */}
             {showPinnedHeader && (
               <div className="hidden px-4 py-2 text-xs text-gray-500 uppercase tracking-wide font-medium bg-[#0f0f0f] border-t border-gray-800">
                 Pinned
               </div>
             )}
-            
+
             {/* Regular Chats Header */}
             {showRegularHeader && (
               <div className="hidden px-4 py-2 text-xs text-gray-500 uppercase tracking-wide font-medium bg-[#0f0f0f] border-t border-gray-800">
@@ -98,15 +109,15 @@ export default function ChatList({ chats, searchQuery, onChatClick }: ChatListPr
               </div>
             )}
 
-            <ChatItem 
-              chat={chat} 
+            <ChatItem
+              chat={chat}
               searchQuery={searchQuery}
-              onClick={() => handleChatClick(chat.id)}
+              onChatClick={handleChatClick}
             />
           </div>
         );
       })}
-      
+
       {chats.length === 0 && !searchQuery && (
         <div className="flex flex-col items-center justify-center h-64 text-gray-500">
           <div className="text-4xl mb-4">💬</div>

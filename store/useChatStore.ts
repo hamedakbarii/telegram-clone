@@ -1,6 +1,6 @@
 // Path: store/useChatStore.ts
-import { create } from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools, persist } from "zustand/middleware";
 
 // Types
 export interface Chat {
@@ -29,7 +29,7 @@ export interface Message {
   timestamp: Date;
   status?: "sent" | "delivered" | "read" | "succeeded" | null;
   isEdited?: boolean;
-  type?: 'text' | 'image' | 'file';
+  type?: "text" | "image" | "file";
   mediaUrl?: string;
   fileName?: string;
 }
@@ -51,16 +51,23 @@ interface ChatStore {
   isLoading: boolean;
   onlineStatus: Record<number, boolean>;
   isInitialized: boolean;
-  
+
   // Actions
   initializeStore: () => void;
   setSelectedChat: (chatId: number) => void;
-  addMessage: (chatId: number, message: Omit<Message, 'id'>) => void;
-  updateMessageStatus: (messageId: string, status: Message['status']) => void;
+  addMessage: (
+    chatId: number,
+    message: Omit<Message, "id" | "chatId" | "timestamp">
+  ) => void;
+  updateMessageStatus: (messageId: string, status: Message["status"]) => void;
   getChatMessages: (chatId: number) => Message[];
   getChat: (chatId: number) => Chat | undefined;
   sortChatsByLastMessage: () => void;
-  updateChatLastMessage: (chatId: number, message: string, timestamp?: Date) => void;
+  updateChatLastMessage: (
+    chatId: number,
+    message: string,
+    timestamp?: Date
+  ) => void;
   markMessagesAsRead: (chatId: number) => void;
   createNewChat: (contact: Contact) => void;
   pinChat: (chatId: number, isPinned: boolean) => void;
@@ -70,14 +77,14 @@ interface ChatStore {
   incrementUnreadCount: (chatId: number) => void;
   getChatsSortedByActivity: () => Chat[];
 
-    // Contact actions
+  // Contact actions
   getContacts: () => Contact[];
-  addContact: (contact: Omit<Contact, 'id'>) => void;
+  addContact: (contact: Omit<Contact, "id">) => void;
   updateContactLastSeen: (contactId: number, lastSeen: string) => void;
 }
 
 // Use fixed timestamps to prevent hydration issues
-const baseTime = new Date('2024-01-15T12:00:00Z');
+const baseTime = new Date("2024-01-15T12:00:00Z");
 
 // Enhanced initial data with fixed timestamps
 const getInitialChats = (): Chat[] => [
@@ -130,7 +137,8 @@ const getInitialChats = (): Chat[] => [
   {
     id: 3,
     name: "Telegram",
-    lastMessage: "Login code: 46619. Do not give this code to anyone, even if they say they are from Telegram!",
+    lastMessage:
+      "Login code: 46619. Do not give this code to anyone, even if they say they are from Telegram!",
     lastMessageTime: "Yesterday",
     unreadCount: 2,
     avatar: "http://localhost:3000/assets/avatar/telegram.jpg",
@@ -318,80 +326,432 @@ const getInitialMessages = (): Record<number, Message[]> => ({
 });
 
 const getInitialContacts = (): Contact[] => [
-  { id: 1, name: "Belami", lastSeen: "last seen recently", avatar: "http://localhost:3000/assets/avatar/belami.jpg", chatUrl: "http://localhost:3000/chats/1" },
-  { id: 2, name: "Hamed Akbari", lastSeen: "last seen recently", avatar: "http://localhost:3000/assets/avatar/hamed.jpg", chatUrl: "http://localhost:3000/chats/2" },
-  { id: 3, name: "Telegram", lastSeen: "last seen recently", avatar: "http://localhost:3000/assets/avatar/telegram.jpg", chatUrl: "http://localhost:3000/chats/3" },
-  { id: 4, name: "Amir Rahemi", lastSeen: "last seen recently", avatar: "http://localhost:3000/assets/avatar/amir.jpg", chatUrl: "http://localhost:3000/chats/4" },
-  { id: 5, name: "Saved Messages", lastSeen: "last seen recently", avatar: "http://localhost:3000/assets/avatar/save-message.jpeg", chatUrl: "http://localhost:3000/chats/5" },
-  { id: 6, name: "eldràcu", lastSeen: "last seen recently", avatar: "http://localhost:3000/assets/avatar/eldracu.jpeg", chatUrl: "http://localhost:3000/chats/6" },
-  { id: 7, name: "Elon Musk", lastSeen: "2025-08-25T09:10:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/7" },
-  { id: 8, name: "Taylor Swift", lastSeen: "2025-08-25T02:45:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/8" },
-  { id: 9, name: "Cristiano Ronaldo", lastSeen: "2025-08-24T21:30:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/9" },
-  { id: 10, name: "Lionel Messi", lastSeen: "2025-08-23T15:20:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/10" },
-  { id: 11, name: "Billie Eilish", lastSeen: "2025-08-25T07:55:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/11" },
-  { id: 12, name: "Mark Zuckerberg", lastSeen: "2025-08-22T19:00:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/12" },
-  { id: 13, name: "Zendaya", lastSeen: "2025-08-24T12:40:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/13" },
-  { id: 14, name: "Robert Downey Jr.", lastSeen: "2025-08-25T10:00:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/14" },
-  { id: 15, name: "Ariana Grande", lastSeen: "2025-08-21T20:30:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/15" },
-  { id: 16, name: "Dwayne Johnson", lastSeen: "2025-08-23T11:15:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/16" },
-  { id: 17, name: "Kylie Jenner", lastSeen: "2025-08-25T01:00:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/17" },
-  { id: 18, name: "Selena Gomez", lastSeen: "2025-08-24T08:25:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/18" },
-  { id: 19, name: "Beyoncé", lastSeen: "2025-08-25T03:40:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/19" },
-  { id: 20, name: "Justin Bieber", lastSeen: "2025-08-22T23:05:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/20" },
-  { id: 21, name: "Kim Kardashian", lastSeen: "2025-08-23T18:50:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/21" },
-  { id: 22, name: "Oprah Winfrey", lastSeen: "2025-08-25T09:30:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/22" },
-  { id: 23, name: "LeBron James", lastSeen: "2025-08-24T13:40:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/23" },
-  { id: 24, name: "Shakira", lastSeen: "2025-08-23T16:20:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/24" },
-  { id: 25, name: "Tom Cruise", lastSeen: "2025-08-21T22:00:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/25" },
-  { id: 26, name: "Keanu Reeves", lastSeen: "2025-08-22T14:15:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/26" },
-  { id: 27, name: "Chris Hemsworth", lastSeen: "2025-08-25T06:20:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/27" },
-  { id: 28, name: "Scarlett Johansson", lastSeen: "2025-08-24T15:55:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/28" },
-  { id: 29, name: "Angelina Jolie", lastSeen: "2025-08-22T17:45:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/29" },
-  { id: 30, name: "Brad Pitt", lastSeen: "2025-08-25T04:10:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/30" },
-  { id: 31, name: "Leonardo DiCaprio", lastSeen: "2025-08-23T09:05:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/31" },
-  { id: 32, name: "Megan Fox", lastSeen: "2025-08-24T19:20:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/32" },
-  { id: 33, name: "Post Malone", lastSeen: "2025-08-25T08:50:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/33" },
-  { id: 34, name: "Rihanna", lastSeen: "2025-08-21T11:40:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/34" },
-  { id: 35, name: "Ed Sheeran", lastSeen: "2025-08-24T22:10:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/35" },
-  { id: 36, name: "Adele", lastSeen: "2025-08-22T13:25:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/36" },
-  { id: 37, name: "Drake", lastSeen: "2025-08-25T05:15:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/37" },
-  { id: 38, name: "Snoop Dogg", lastSeen: "2025-08-23T20:40:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/38" },
-  { id: 39, name: "Eminem", lastSeen: "2025-08-22T10:00:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/39" },
-  { id: 40, name: "Kendrick Lamar", lastSeen: "2025-08-24T16:35:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/40" },
-  { id: 41, name: "Lady Gaga", lastSeen: "2025-08-21T15:55:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/41" },
-  { id: 42, name: "Johnny Depp", lastSeen: "2025-08-25T07:00:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/42" },
-  { id: 43, name: "Emma Watson", lastSeen: "2025-08-23T12:20:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/43" },
-  { id: 44, name: "Daniel Radcliffe", lastSeen: "2025-08-24T18:50:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/44" },
-  { id: 45, name: "Gal Gadot", lastSeen: "2025-08-25T02:30:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/45" },
-  { id: 46, name: "Chris Evans", lastSeen: "2025-08-23T21:25:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/46" },
-  { id: 47, name: "Tom Holland", lastSeen: "2025-08-25T00:40:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/47" },
-  { id: 48, name: "Zendaya", lastSeen: "2025-08-24T09:50:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/48" },
-  { id: 49, name: "Miley Cyrus", lastSeen: "2025-08-23T17:10:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/49" },
-  { id: 50, name: "Bruno Mars", lastSeen: "2025-08-22T08:15:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/50" },
-  { id: 51, name: "Shawn Mendes", lastSeen: "2025-08-21T23:30:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/51" },
-  { id: 52, name: "Will Smith", lastSeen: "2025-08-22T18:40:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/52" },
-  { id: 53, name: "Jaden Smith", lastSeen: "2025-08-24T14:05:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/53" },
-  { id: 54, name: "Kanye West", lastSeen: "2025-08-25T03:15:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/54" },
-  { id: 55, name: "Travis Scott", lastSeen: "2025-08-23T08:25:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/55" },
-  { id: 56, name: "Dua Lipa", lastSeen: "2025-08-25T06:55:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/56" }
+  {
+    id: 1,
+    name: "Belami",
+    lastSeen: "last seen recently",
+    avatar: "http://localhost:3000/assets/avatar/belami.jpg",
+    chatUrl: "http://localhost:3000/chats/1",
+  },
+  {
+    id: 2,
+    name: "Hamed Akbari",
+    lastSeen: "last seen recently",
+    avatar: "http://localhost:3000/assets/avatar/hamed.jpg",
+    chatUrl: "http://localhost:3000/chats/2",
+  },
+  {
+    id: 3,
+    name: "Telegram",
+    lastSeen: "last seen recently",
+    avatar: "http://localhost:3000/assets/avatar/telegram.jpg",
+    chatUrl: "http://localhost:3000/chats/3",
+  },
+  {
+    id: 4,
+    name: "Amir Rahemi",
+    lastSeen: "last seen recently",
+    avatar: "http://localhost:3000/assets/avatar/amir.jpg",
+    chatUrl: "http://localhost:3000/chats/4",
+  },
+  {
+    id: 5,
+    name: "Saved Messages",
+    lastSeen: "last seen recently",
+    avatar: "http://localhost:3000/assets/avatar/save-message.jpeg",
+    chatUrl: "http://localhost:3000/chats/5",
+  },
+  {
+    id: 6,
+    name: "eldràcu",
+    lastSeen: "last seen recently",
+    avatar: "http://localhost:3000/assets/avatar/eldracu.jpeg",
+    chatUrl: "http://localhost:3000/chats/6",
+  },
+  {
+    id: 7,
+    name: "Elon Musk",
+    lastSeen: "2025-08-25T09:10:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/7",
+  },
+  {
+    id: 8,
+    name: "Taylor Swift",
+    lastSeen: "2025-08-25T02:45:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/8",
+  },
+  {
+    id: 9,
+    name: "Cristiano Ronaldo",
+    lastSeen: "2025-08-24T21:30:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/9",
+  },
+  {
+    id: 10,
+    name: "Lionel Messi",
+    lastSeen: "2025-08-23T15:20:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/10",
+  },
+  {
+    id: 11,
+    name: "Billie Eilish",
+    lastSeen: "2025-08-25T07:55:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/11",
+  },
+  {
+    id: 12,
+    name: "Mark Zuckerberg",
+    lastSeen: "2025-08-22T19:00:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/12",
+  },
+  {
+    id: 13,
+    name: "Zendaya",
+    lastSeen: "2025-08-24T12:40:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/13",
+  },
+  {
+    id: 14,
+    name: "Robert Downey Jr.",
+    lastSeen: "2025-08-25T10:00:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/14",
+  },
+  {
+    id: 15,
+    name: "Ariana Grande",
+    lastSeen: "2025-08-21T20:30:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/15",
+  },
+  {
+    id: 16,
+    name: "Dwayne Johnson",
+    lastSeen: "2025-08-23T11:15:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/16",
+  },
+  {
+    id: 17,
+    name: "Kylie Jenner",
+    lastSeen: "2025-08-25T01:00:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/17",
+  },
+  {
+    id: 18,
+    name: "Selena Gomez",
+    lastSeen: "2025-08-24T08:25:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/18",
+  },
+  {
+    id: 19,
+    name: "Beyoncé",
+    lastSeen: "2025-08-25T03:40:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/19",
+  },
+  {
+    id: 20,
+    name: "Justin Bieber",
+    lastSeen: "2025-08-22T23:05:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/20",
+  },
+  {
+    id: 21,
+    name: "Kim Kardashian",
+    lastSeen: "2025-08-23T18:50:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/21",
+  },
+  {
+    id: 22,
+    name: "Oprah Winfrey",
+    lastSeen: "2025-08-25T09:30:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/22",
+  },
+  {
+    id: 23,
+    name: "LeBron James",
+    lastSeen: "2025-08-24T13:40:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/23",
+  },
+  {
+    id: 24,
+    name: "Shakira",
+    lastSeen: "2025-08-23T16:20:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/24",
+  },
+  {
+    id: 25,
+    name: "Tom Cruise",
+    lastSeen: "2025-08-21T22:00:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/25",
+  },
+  {
+    id: 26,
+    name: "Keanu Reeves",
+    lastSeen: "2025-08-22T14:15:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/26",
+  },
+  {
+    id: 27,
+    name: "Chris Hemsworth",
+    lastSeen: "2025-08-25T06:20:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/27",
+  },
+  {
+    id: 28,
+    name: "Scarlett Johansson",
+    lastSeen: "2025-08-24T15:55:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/28",
+  },
+  {
+    id: 29,
+    name: "Angelina Jolie",
+    lastSeen: "2025-08-22T17:45:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/29",
+  },
+  {
+    id: 30,
+    name: "Brad Pitt",
+    lastSeen: "2025-08-25T04:10:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/30",
+  },
+  {
+    id: 31,
+    name: "Leonardo DiCaprio",
+    lastSeen: "2025-08-23T09:05:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/31",
+  },
+  {
+    id: 32,
+    name: "Megan Fox",
+    lastSeen: "2025-08-24T19:20:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/32",
+  },
+  {
+    id: 33,
+    name: "Post Malone",
+    lastSeen: "2025-08-25T08:50:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/33",
+  },
+  {
+    id: 34,
+    name: "Rihanna",
+    lastSeen: "2025-08-21T11:40:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/34",
+  },
+  {
+    id: 35,
+    name: "Ed Sheeran",
+    lastSeen: "2025-08-24T22:10:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/35",
+  },
+  {
+    id: 36,
+    name: "Adele",
+    lastSeen: "2025-08-22T13:25:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/36",
+  },
+  {
+    id: 37,
+    name: "Drake",
+    lastSeen: "2025-08-25T05:15:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/37",
+  },
+  {
+    id: 38,
+    name: "Snoop Dogg",
+    lastSeen: "2025-08-23T20:40:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/38",
+  },
+  {
+    id: 39,
+    name: "Eminem",
+    lastSeen: "2025-08-22T10:00:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/39",
+  },
+  {
+    id: 40,
+    name: "Kendrick Lamar",
+    lastSeen: "2025-08-24T16:35:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/40",
+  },
+  {
+    id: 41,
+    name: "Lady Gaga",
+    lastSeen: "2025-08-21T15:55:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/41",
+  },
+  {
+    id: 42,
+    name: "Johnny Depp",
+    lastSeen: "2025-08-25T07:00:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/42",
+  },
+  {
+    id: 43,
+    name: "Emma Watson",
+    lastSeen: "2025-08-23T12:20:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/43",
+  },
+  {
+    id: 44,
+    name: "Daniel Radcliffe",
+    lastSeen: "2025-08-24T18:50:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/44",
+  },
+  {
+    id: 45,
+    name: "Gal Gadot",
+    lastSeen: "2025-08-25T02:30:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/45",
+  },
+  {
+    id: 46,
+    name: "Chris Evans",
+    lastSeen: "2025-08-23T21:25:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/46",
+  },
+  {
+    id: 47,
+    name: "Tom Holland",
+    lastSeen: "2025-08-25T00:40:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/47",
+  },
+  {
+    id: 48,
+    name: "Zendaya",
+    lastSeen: "2025-08-24T09:50:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/48",
+  },
+  {
+    id: 49,
+    name: "Miley Cyrus",
+    lastSeen: "2025-08-23T17:10:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/49",
+  },
+  {
+    id: 50,
+    name: "Bruno Mars",
+    lastSeen: "2025-08-22T08:15:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/50",
+  },
+  {
+    id: 51,
+    name: "Shawn Mendes",
+    lastSeen: "2025-08-21T23:30:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/51",
+  },
+  {
+    id: 52,
+    name: "Will Smith",
+    lastSeen: "2025-08-22T18:40:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/52",
+  },
+  {
+    id: 53,
+    name: "Jaden Smith",
+    lastSeen: "2025-08-24T14:05:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/53",
+  },
+  {
+    id: 54,
+    name: "Kanye West",
+    lastSeen: "2025-08-25T03:15:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/54",
+  },
+  {
+    id: 55,
+    name: "Travis Scott",
+    lastSeen: "2025-08-23T08:25:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/55",
+  },
+  {
+    id: 56,
+    name: "Dua Lipa",
+    lastSeen: "2025-08-25T06:55:00Z",
+    avatar: "http://localhost:3000/assets/avatar/",
+    chatUrl: "http://localhost:3000/chats/56",
+  },
 ];
 
 // Enhanced utility function to format relative time
 const formatRelativeTime = (timestamp: Date): string => {
   const now = new Date();
-  const diffInMinutes = Math.floor((now.getTime() - timestamp.getTime()) / (1000 * 60));
+  const diffInMinutes = Math.floor(
+    (now.getTime() - timestamp.getTime()) / (1000 * 60)
+  );
   const diffInHours = Math.floor(diffInMinutes / 60);
   const diffInDays = Math.floor(diffInHours / 24);
   const diffInWeeks = Math.floor(diffInDays / 7);
 
-  if (diffInMinutes < 1) return 'now';
+  if (diffInMinutes < 1) return "now";
   if (diffInMinutes < 60) return `${diffInMinutes}m`;
-  if (diffInHours < 24) return timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-  if (diffInDays === 1) return 'Yesterday';
-  if (diffInDays < 7) return timestamp.toLocaleDateString('en-US', { weekday: 'short' });
+  if (diffInHours < 24)
+    return timestamp.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  if (diffInDays === 1) return "Yesterday";
+  if (diffInDays < 7)
+    return timestamp.toLocaleDateString("en-US", { weekday: "short" });
   if (diffInWeeks < 4) return `${diffInWeeks}w`;
-  if (diffInDays < 365) return timestamp.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  return timestamp.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  if (diffInDays < 365)
+    return timestamp.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+  return timestamp.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 };
 
 export const useChatStore = create<ChatStore>()(
@@ -410,7 +770,7 @@ export const useChatStore = create<ChatStore>()(
         // Initialize store with mock data - only once
         initializeStore: () => {
           const state = get();
-          
+
           // Prevent re-initialization
           if (state.isInitialized && state.chats.length > 0) {
             return;
@@ -420,13 +780,13 @@ export const useChatStore = create<ChatStore>()(
           const sortedChats = initialChats.sort((a, b) => {
             if (a.isPinned && !b.isPinned) return -1;
             if (!a.isPinned && b.isPinned) return 1;
-            
+
             const timeA = a.lastMessageTimestamp?.getTime() || 0;
             const timeB = b.lastMessageTimestamp?.getTime() || 0;
             return timeB - timeA;
           });
 
-          set({ 
+          set({
             chats: sortedChats,
             messages: getInitialMessages(),
             contacts: getInitialContacts(),
@@ -438,7 +798,7 @@ export const useChatStore = create<ChatStore>()(
               5: false,
               6: false,
             },
-            isInitialized: true
+            isInitialized: true,
           });
         },
 
@@ -450,7 +810,9 @@ export const useChatStore = create<ChatStore>()(
 
         // Add a new message with real-time chat reordering
         addMessage: (chatId, messageData) => {
-          const messageId = `msg_${chatId}_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+          const messageId = `msg_${chatId}_${Date.now()}_${Math.floor(
+            Math.random() * 1000
+          )}`;
           const newMessage: Message = {
             id: messageId,
             chatId,
@@ -467,9 +829,13 @@ export const useChatStore = create<ChatStore>()(
             return { messages: updatedMessages };
           });
 
-          get().updateChatLastMessage(chatId, messageData.text, newMessage.timestamp);
-          
-          if (messageData.sender === 'ai' && get().selectedChatId !== chatId) {
+          get().updateChatLastMessage(
+            chatId,
+            messageData.text,
+            newMessage.timestamp
+          );
+
+          if (messageData.sender === "ai" && get().selectedChatId !== chatId) {
             get().incrementUnreadCount(chatId);
           }
         },
@@ -478,11 +844,11 @@ export const useChatStore = create<ChatStore>()(
         updateMessageStatus: (messageId, status) => {
           set((state) => {
             const updatedMessages = { ...state.messages };
-            
-            Object.keys(updatedMessages).forEach(chatId => {
-              updatedMessages[Number(chatId)] = updatedMessages[Number(chatId)].map(msg =>
-                msg.id === messageId ? { ...msg, status } : msg
-              );
+
+            Object.keys(updatedMessages).forEach((chatId) => {
+              updatedMessages[Number(chatId)] = updatedMessages[
+                Number(chatId)
+              ].map((msg) => (msg.id === messageId ? { ...msg, status } : msg));
             });
 
             return { messages: updatedMessages };
@@ -496,7 +862,7 @@ export const useChatStore = create<ChatStore>()(
 
         // Get chat by ID
         getChat: (chatId) => {
-          return get().chats.find(chat => chat.id === chatId);
+          return get().chats.find((chat) => chat.id === chatId);
         },
 
         // Enhanced sorting with pinned chats priority
@@ -505,22 +871,28 @@ export const useChatStore = create<ChatStore>()(
             chats: [...state.chats].sort((a, b) => {
               if (a.isPinned && !b.isPinned) return -1;
               if (!a.isPinned && b.isPinned) return 1;
-              
-              const timeA = a.lastMessageTimestamp instanceof Date 
-                ? a.lastMessageTimestamp.getTime() 
-                : (a.lastMessageTimestamp ? new Date(a.lastMessageTimestamp).getTime() : 0);
-              const timeB = b.lastMessageTimestamp instanceof Date 
-                ? b.lastMessageTimestamp.getTime() 
-                : (b.lastMessageTimestamp ? new Date(b.lastMessageTimestamp).getTime() : 0);
+
+              const timeA =
+                a.lastMessageTimestamp instanceof Date
+                  ? a.lastMessageTimestamp.getTime()
+                  : a.lastMessageTimestamp
+                  ? new Date(a.lastMessageTimestamp).getTime()
+                  : 0;
+              const timeB =
+                b.lastMessageTimestamp instanceof Date
+                  ? b.lastMessageTimestamp.getTime()
+                  : b.lastMessageTimestamp
+                  ? new Date(b.lastMessageTimestamp).getTime()
+                  : 0;
               return timeB - timeA;
-            })
+            }),
           }));
         },
 
         // Update chat's last message and reorder chats in real-time
         updateChatLastMessage: (chatId, message, timestamp = new Date()) => {
           set((state) => {
-            const updatedChats = state.chats.map(chat => {
+            const updatedChats = state.chats.map((chat) => {
               if (chat.id === chatId) {
                 return {
                   ...chat,
@@ -536,15 +908,21 @@ export const useChatStore = create<ChatStore>()(
               chats: updatedChats.sort((a, b) => {
                 if (a.isPinned && !b.isPinned) return -1;
                 if (!a.isPinned && b.isPinned) return 1;
-                
-                const timeA = a.lastMessageTimestamp instanceof Date 
-                  ? a.lastMessageTimestamp.getTime() 
-                  : (a.lastMessageTimestamp ? new Date(a.lastMessageTimestamp).getTime() : 0);
-                const timeB = b.lastMessageTimestamp instanceof Date 
-                  ? b.lastMessageTimestamp.getTime() 
-                  : (b.lastMessageTimestamp ? new Date(b.lastMessageTimestamp).getTime() : 0);
+
+                const timeA =
+                  a.lastMessageTimestamp instanceof Date
+                    ? a.lastMessageTimestamp.getTime()
+                    : a.lastMessageTimestamp
+                    ? new Date(a.lastMessageTimestamp).getTime()
+                    : 0;
+                const timeB =
+                  b.lastMessageTimestamp instanceof Date
+                    ? b.lastMessageTimestamp.getTime()
+                    : b.lastMessageTimestamp
+                    ? new Date(b.lastMessageTimestamp).getTime()
+                    : 0;
                 return timeB - timeA;
-              })
+              }),
             };
           });
         },
@@ -552,16 +930,16 @@ export const useChatStore = create<ChatStore>()(
         // Mark messages as read and clear unread count
         markMessagesAsRead: (chatId) => {
           set((state) => {
-            const updatedChats = state.chats.map(chat => 
+            const updatedChats = state.chats.map((chat) =>
               chat.id === chatId ? { ...chat, unreadCount: 0 } : chat
             );
 
             const updatedMessages = {
               ...state.messages,
-              [chatId]: (state.messages[chatId] || []).map(msg => ({ 
-                ...msg, 
-                status: msg.sender === 'ai' ? 'read' : msg.status 
-              }))
+              [chatId]: (state.messages[chatId] || []).map((msg) => ({
+                ...msg,
+                status: msg.sender === "ai" ? "read" : msg.status,
+              })),
             };
 
             return { chats: updatedChats, messages: updatedMessages };
@@ -570,7 +948,7 @@ export const useChatStore = create<ChatStore>()(
 
         // Create new chat from contact
         createNewChat: (contact) => {
-          const chatExists = get().chats.find(chat => chat.id === contact.id);
+          const chatExists = get().chats.find((chat) => chat.id === contact.id);
           if (chatExists) return;
 
           const newChat: Chat = {
@@ -593,15 +971,15 @@ export const useChatStore = create<ChatStore>()(
             chats: [newChat, ...state.chats],
             messages: {
               ...state.messages,
-              [contact.id]: []
-            }
+              [contact.id]: [],
+            },
           }));
         },
 
         // Pin/unpin chat
         pinChat: (chatId, isPinned) => {
           set((state) => {
-            const updatedChats = state.chats.map(chat =>
+            const updatedChats = state.chats.map((chat) =>
               chat.id === chatId ? { ...chat, isPinned } : chat
             );
 
@@ -609,15 +987,21 @@ export const useChatStore = create<ChatStore>()(
               chats: updatedChats.sort((a, b) => {
                 if (a.isPinned && !b.isPinned) return -1;
                 if (!a.isPinned && b.isPinned) return 1;
-                
-                const timeA = a.lastMessageTimestamp instanceof Date 
-                  ? a.lastMessageTimestamp.getTime() 
-                  : (a.lastMessageTimestamp ? new Date(a.lastMessageTimestamp).getTime() : 0);
-                const timeB = b.lastMessageTimestamp instanceof Date 
-                  ? b.lastMessageTimestamp.getTime() 
-                  : (b.lastMessageTimestamp ? new Date(b.lastMessageTimestamp).getTime() : 0);
+
+                const timeA =
+                  a.lastMessageTimestamp instanceof Date
+                    ? a.lastMessageTimestamp.getTime()
+                    : a.lastMessageTimestamp
+                    ? new Date(a.lastMessageTimestamp).getTime()
+                    : 0;
+                const timeB =
+                  b.lastMessageTimestamp instanceof Date
+                    ? b.lastMessageTimestamp.getTime()
+                    : b.lastMessageTimestamp
+                    ? new Date(b.lastMessageTimestamp).getTime()
+                    : 0;
                 return timeB - timeA;
-              })
+              }),
             };
           });
         },
@@ -629,9 +1013,10 @@ export const useChatStore = create<ChatStore>()(
             delete updatedMessages[chatId];
 
             return {
-              chats: state.chats.filter(chat => chat.id !== chatId),
+              chats: state.chats.filter((chat) => chat.id !== chatId),
               messages: updatedMessages,
-              selectedChatId: state.selectedChatId === chatId ? null : state.selectedChatId
+              selectedChatId:
+                state.selectedChatId === chatId ? null : state.selectedChatId,
             };
           });
         },
@@ -639,33 +1024,33 @@ export const useChatStore = create<ChatStore>()(
         // Set typing status for a chat
         setTypingStatus: (chatId, isTyping) => {
           set((state) => ({
-            chats: state.chats.map(chat =>
+            chats: state.chats.map((chat) =>
               chat.id === chatId ? { ...chat, isTyping } : chat
-            )
+            ),
           }));
         },
 
         // Set online status for a chat
         setOnlineStatus: (chatId, isOnline) => {
           set((state) => ({
-            chats: state.chats.map(chat =>
+            chats: state.chats.map((chat) =>
               chat.id === chatId ? { ...chat, isOnline } : chat
             ),
             onlineStatus: {
               ...state.onlineStatus,
-              [chatId]: isOnline
-            }
+              [chatId]: isOnline,
+            },
           }));
         },
 
         // Increment unread count
         incrementUnreadCount: (chatId) => {
           set((state) => ({
-            chats: state.chats.map(chat =>
-              chat.id === chatId 
+            chats: state.chats.map((chat) =>
+              chat.id === chatId
                 ? { ...chat, unreadCount: chat.unreadCount + 1 }
                 : chat
-            )
+            ),
           }));
         },
 
@@ -675,56 +1060,66 @@ export const useChatStore = create<ChatStore>()(
           return [...chats].sort((a, b) => {
             if (a.isPinned && !b.isPinned) return -1;
             if (!a.isPinned && b.isPinned) return 1;
-            
-            const timeA = a.lastMessageTimestamp instanceof Date 
-              ? a.lastMessageTimestamp.getTime() 
-              : (a.lastMessageTimestamp ? new Date(a.lastMessageTimestamp).getTime() : 0);
-            const timeB = b.lastMessageTimestamp instanceof Date 
-              ? b.lastMessageTimestamp.getTime() 
-              : (b.lastMessageTimestamp ? new Date(b.lastMessageTimestamp).getTime() : 0);
+
+            const timeA =
+              a.lastMessageTimestamp instanceof Date
+                ? a.lastMessageTimestamp.getTime()
+                : a.lastMessageTimestamp
+                ? new Date(a.lastMessageTimestamp).getTime()
+                : 0;
+            const timeB =
+              b.lastMessageTimestamp instanceof Date
+                ? b.lastMessageTimestamp.getTime()
+                : b.lastMessageTimestamp
+                ? new Date(b.lastMessageTimestamp).getTime()
+                : 0;
             return timeB - timeA;
           });
         },
 
         getContacts: () => {
-  return get().contacts;
-},
+          return get().contacts;
+        },
 
-addContact: (contactData) => {
-  const newContact: Contact = {
-    id: Math.max(0, ...get().contacts.map(c => c.id)) + 1,
-    ...contactData,
-  };
+        addContact: (contactData) => {
+          const newContact: Contact = {
+            id: Math.max(0, ...get().contacts.map((c) => c.id)) + 1,
+            ...contactData,
+          };
 
-  set((state) => ({
-    contacts: [...state.contacts, newContact],
-  }));
-},
+          set((state) => ({
+            contacts: [...state.contacts, newContact],
+          }));
+        },
 
-updateContactLastSeen: (contactId, lastSeen) => {
-  set((state) => ({
-    contacts: state.contacts.map(contact =>
-      contact.id === contactId ? { ...contact, lastSeen } : contact
-    ),
-  }));
-},
+        updateContactLastSeen: (contactId, lastSeen) => {
+          set((state) => ({
+            contacts: state.contacts.map((contact) =>
+              contact.id === contactId ? { ...contact, lastSeen } : contact
+            ),
+          }));
+        },
       }),
       {
-        name: 'telegram-chat-store',
+        name: "telegram-chat-store",
         partialize: (state) => ({
-          chats: state.chats.map(chat => ({
+          chats: state.chats.map((chat) => ({
             ...chat,
-            lastMessageTimestamp: chat.lastMessageTimestamp instanceof Date 
-              ? chat.lastMessageTimestamp.toISOString() 
-              : chat.lastMessageTimestamp,
+            lastMessageTimestamp:
+              chat.lastMessageTimestamp instanceof Date
+                ? chat.lastMessageTimestamp.toISOString()
+                : chat.lastMessageTimestamp,
           })),
           messages: Object.fromEntries(
             Object.entries(state.messages).map(([chatId, messages]) => [
               chatId,
-              messages.map(msg => ({
+              messages.map((msg) => ({
                 ...msg,
-                timestamp: msg.timestamp instanceof Date ? msg.timestamp.toISOString() : msg.timestamp,
-              }))
+                timestamp:
+                  msg.timestamp instanceof Date
+                    ? msg.timestamp.toISOString()
+                    : msg.timestamp,
+              })),
             ])
           ),
           contacts: state.contacts,
@@ -733,30 +1128,33 @@ updateContactLastSeen: (contactId, lastSeen) => {
         onRehydrateStorage: () => (state) => {
           if (state) {
             // Convert string timestamps back to Date objects
-            state.chats = state.chats.map(chat => ({
+            state.chats = state.chats.map((chat) => ({
               ...chat,
-              lastMessageTimestamp: chat.lastMessageTimestamp && typeof chat.lastMessageTimestamp === 'string'
-                ? new Date(chat.lastMessageTimestamp)
-                : chat.lastMessageTimestamp,
+              lastMessageTimestamp:
+                chat.lastMessageTimestamp &&
+                typeof chat.lastMessageTimestamp === "string"
+                  ? new Date(chat.lastMessageTimestamp)
+                  : chat.lastMessageTimestamp,
             }));
-            
+
             state.messages = Object.fromEntries(
               Object.entries(state.messages).map(([chatId, messages]) => [
                 chatId,
-                messages.map(msg => ({
+                messages.map((msg) => ({
                   ...msg,
-                  timestamp: msg.timestamp && typeof msg.timestamp === 'string'
-                    ? new Date(msg.timestamp)
-                    : msg.timestamp,
-                }))
+                  timestamp:
+                    msg.timestamp && typeof msg.timestamp === "string"
+                      ? new Date(msg.timestamp)
+                      : msg.timestamp,
+                })),
               ])
             );
           }
-        }
+        },
       }
     ),
     {
-      name: 'chat-store',
+      name: "chat-store",
     }
   )
 );
