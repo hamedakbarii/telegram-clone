@@ -25,6 +25,7 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { FiEdit2, FiGift } from "react-icons/fi";
 import { BiVolumeMute } from "react-icons/bi";
 import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
+import { formatPhoneNumber } from "@/lib/utils/formatPhone";
 
 type Params = {
   chatId: string;
@@ -814,7 +815,7 @@ export default function SingleChat(): JSX.Element {
                   <IoCall className="w-5 h-5 text-gray-400" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-sm text-white">{chatInfo?.number}</span>
+                  <span className="text-sm text-white">+{chatInfo?.number ? formatPhoneNumber(chatInfo.number.toString()) : ""}</span>
                   <span className="text-sm font-medium text-gray-400">
                     Phone
                   </span>
