@@ -18,6 +18,7 @@ const config: Config = {
       fontFamily: {
         geistSans: ['var(--font-geist-sans)'],
         geistMono: ['var(--font-geist-mono)'],
+        vazirmatn: ['var(--font-vazirmatn)'],
       },
       colors: {
         // You can define your custom color palette here

@@ -1,6 +1,11 @@
 /* app/globals.css */
 @import "tailwindcss";
 
+/* Apply Vazirmatn to all elements that might contain Persian text */
+.font-vazirmatn {
+  font-family: var(--font-vazirmatn), system-ui, sans-serif;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
