@@ -2,16 +2,16 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import { chats } from "@/lib/mocks/chat";
 import { FiArrowLeft } from "react-icons/fi";
 import { MdOutlineMenu } from "react-icons/md";
+import { useChatStore } from "@/store/useChatStore";
 import SearchInput from "./SearchInput";
 import DropdownMenu from "./DropdownMenu";
 import UserProfile from "./UserProfile";
 import ChatList from "./ChatList";
 import ContactList from "./ContactList";
 
-interface Chat {
+interface SearchResult {
   id: number;
   name: string;
   avatar: string;
@@ -22,11 +22,9 @@ interface Chat {
   isPinned: boolean | null;
   messageStatus: string | null;
   isArchive?: boolean;
-}
-
-interface SearchResult extends Chat {
   matchType: "name" | "message" | "both";
   relevanceScore: number;
+  lastMessageTimestamp?: Date;
 }
 
 interface ChatSidebarProps {
@@ -40,8 +38,8 @@ interface ChatSidebarProps {
   currentPath?: string;
 }
 
-// Simple search function (you can replace this with the advanced one from searchUtils.ts)
-const searchChats = (chats: Chat[], query: string): SearchResult[] => {
+// Enhanced search function that works with Zustand store data
+const searchChats = (chats: any[], query: string): SearchResult[] => {
   if (!query.trim()) {
     return chats.map((chat) => ({
       ...chat,
@@ -96,17 +94,23 @@ export default function ChatSidebar({
   handleUserClick,
   handleBackToChats,
   onChatSelect,
-}: // onBackToChatList,
-// currentPath = '/chats'
-ChatSidebarProps) {
+}: ChatSidebarProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [showContacts, setShowContacts] = useState(false); // Added state for contacts
+  const [showContacts, setShowContacts] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Get chats from Zustand store
+  const { chats, initializeStore } = useChatStore();
+
+  // Initialize store on mount
+  useEffect(() => {
+    initializeStore();
+  }, [initializeStore]);
 
   // Filter chats based on search query with enhanced search
   const filteredChats = useMemo(() => {
     return searchChats(chats, searchQuery);
-  }, [searchQuery]);
+  }, [chats, searchQuery]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -122,7 +126,7 @@ ChatSidebarProps) {
   // Handle contact click
   const handleContactClick = () => {
     setShowContacts(true);
-    toggleMenu(); // Close the dropdown menu
+    toggleMenu();
   };
 
   // Handle back from contacts
@@ -185,7 +189,7 @@ ChatSidebarProps) {
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768); // md breakpoint
+      setIsMobile(window.innerWidth < 768);
     };
 
     checkIsMobile();
@@ -230,7 +234,7 @@ ChatSidebarProps) {
             toggleMenu={toggleMenu}
             handleUserClick={handleUserClick}
             handleSettingClick={handleUserClick}
-            handleContactClick={handleContactClick} // Pass the contact handler
+            handleContactClick={handleContactClick}
           />
         </div>
 

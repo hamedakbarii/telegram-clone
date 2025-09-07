@@ -1,10 +1,11 @@
 // Path: components/ContactList.tsx
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { contacts } from "@/lib/mocks/contact";
+import React, { useState, useMemo, useEffect } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
 import { useRouter } from "next/navigation";
+import { useChatStore } from "@/store/useChatStore";
+import { getInitials, getAvatarColor } from "@/lib/utils/avatarUtils"; // You'll need to create this
 
 interface ContactListProps {
   onBackToChats: () => void;
@@ -12,53 +13,54 @@ interface ContactListProps {
 
 // Function to format last seen time
 const formatLastSeen = (lastSeenString: string): string => {
-  const lastSeen = new Date(lastSeenString);
-  const now = new Date();
-  const diffInHours = Math.floor((now.getTime() - lastSeen.getTime()) / (1000 * 60 * 60));
-  const diffInDays = Math.floor(diffInHours / 24);
+  try {
+    const lastSeen = new Date(lastSeenString);
+    const now = new Date();
+    const diffInMinutes = Math.floor((now.getTime() - lastSeen.getTime()) / (1000 * 60));
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    const diffInDays = Math.floor(diffInHours / 24);
 
-  if (diffInHours < 1) {
+    if (isNaN(lastSeen.getTime())) {
+      return "last seen recently";
+    }
+
+    if (diffInMinutes < 1) {
+      return "last seen recently";
+    } else if (diffInMinutes < 60) {
+      return `last seen ${diffInMinutes} min${diffInMinutes > 1 ? 's' : ''} ago`;
+    } else if (diffInHours < 24) {
+      return `last seen ${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+    } else if (diffInDays === 1) {
+      return "last seen yesterday";
+    } else if (diffInDays < 7) {
+      return `last seen ${diffInDays} days ago`;
+    } else {
+      return `last seen ${lastSeen.toLocaleDateString()}`;
+    }
+  } catch {
     return "last seen recently";
-  } else if (diffInHours < 24) {
-    return `last seen ${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
-  } else if (diffInDays === 1) {
-    return "last seen yesterday";
-  } else if (diffInDays < 7) {
-    return `last seen ${diffInDays} days ago`;
-  } else {
-    return `last seen ${lastSeen.toLocaleDateString()}`;
   }
-};
-
-// Function to get initials from name
-const getInitials = (name: string): string => {
-  return name
-    .split(' ')
-    .map(word => word[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2);
-};
-
-// Function to generate a consistent color based on name
-const getAvatarColor = (name: string): string => {
-  const colors = [
-    'bg-blue-500', 'bg-green-500', 'bg-yellow-500', 'bg-red-500',
-    'bg-purple-500', 'bg-pink-500', 'bg-indigo-500', 'bg-teal-500',
-    'bg-orange-500', 'bg-cyan-500'
-  ];
-
-  const nameHash = name.split('').reduce((hash, char) => {
-    return char.charCodeAt(0) + ((hash << 5) - hash);
-  }, 0);
-
-  return colors[Math.abs(nameHash) % colors.length];
 };
 
 export default function ContactList({ onBackToChats }: ContactListProps) {
   const [searchQuery, setSearchQuery] = useState("");
-
   const router = useRouter();
+  
+  // Get contacts from Zustand store
+  const { 
+    contacts, 
+    getContacts, 
+    createNewChat, 
+    getChat,
+    setSelectedChat,
+    markMessagesAsRead 
+  } = useChatStore();
+
+  // Load contacts when component mounts
+  useEffect(() => {
+    // This ensures contacts are loaded from the store
+    getContacts();
+  }, [getContacts]);
 
   // Filter contacts based on search query
   const filteredContacts = useMemo(() => {
@@ -67,7 +69,7 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [searchQuery]);
+  }, [contacts, searchQuery]);
 
   const clearSearch = () => {
     setSearchQuery("");
@@ -76,6 +78,23 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Escape") {
       clearSearch();
+    }
+  };
+
+  const handleContactClick = (contact: any) => {
+    // Check if chat already exists
+    const existingChat = getChat(contact.id);
+    
+    if (existingChat) {
+      // Chat exists, navigate to it
+      setSelectedChat(contact.id);
+      markMessagesAsRead(contact.id);
+      router.push(`/chats/${contact.id}`);
+    } else {
+      // Create new chat and navigate to it
+      createNewChat(contact);
+      setSelectedChat(contact.id);
+      router.push(`/chats/${contact.id}`);
     }
   };
 
@@ -143,17 +162,32 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
               <div
                 key={contact.id}
                 className="border-b border-transparent"
-                onClick={() => router.push(contact.chatUrl)}
               >
-                <button className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] transition-colors cursor-pointer">
+                <button 
+                  className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] transition-colors cursor-pointer"
+                  onClick={() => handleContactClick(contact)}
+                >
                   {/* Avatar */}
-                  {contact.avatar && !contact.avatar.endsWith("/avatar/") ? (
+                  {contact.avatar && contact.avatar !== "http://localhost:3000/assets/avatar/" ? (
                     <div>
                       <img
                         src={contact.avatar}
                         alt={contact.name}
                         className="w-12 h-12 rounded-full object-cover"
+                        onError={(e) => {
+                          // Fallback to initials if image fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.nextSibling?.removeAttribute('style');
+                        }}
                       />
+                      <div
+                        className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-semibold ${getAvatarColor(
+                          contact.name
+                        )} hidden`}
+                      >
+                        {getInitials(contact.name)}
+                      </div>
                     </div>
                   ) : (
                     <div
@@ -164,7 +198,6 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
                       {getInitials(contact.name)}
                     </div>
                   )}
-
 
                   {/* Contact Info */}
                   <div className="flex-1 min-w-0 text-left">

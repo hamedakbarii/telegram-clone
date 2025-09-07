@@ -15,7 +15,6 @@ export const contacts: Contact[] = [
   { id: 4, name: "Amir Rahemi", lastSeen: "last seen recently", avatar: "http://localhost:3000/assets/avatar/amir.jpg", chatUrl: "http://localhost:3000/chats/4" },
   { id: 5, name: "Saved Messages", lastSeen: "last seen recently", avatar: "http://localhost:3000/assets/avatar/save-message.jpeg", chatUrl: "http://localhost:3000/chats/5" },
   { id: 6, name: "eldràcu", lastSeen: "last seen recently", avatar: "http://localhost:3000/assets/avatar/eldracu.jpeg", chatUrl: "http://localhost:3000/chats/6" },
-  
   { id: 7, name: "Elon Musk", lastSeen: "2025-08-25T09:10:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/7" },
   { id: 8, name: "Taylor Swift", lastSeen: "2025-08-25T02:45:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/8" },
   { id: 9, name: "Cristiano Ronaldo", lastSeen: "2025-08-24T21:30:00Z", avatar:"http://localhost:3000/assets/avatar/", chatUrl: "http://localhost:3000/chats/9" },
