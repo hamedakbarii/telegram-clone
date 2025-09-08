@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { BsPhone, BsDisplay, BsFolder, BsChat } from "react-icons/bs";
+import { BsDisplay, BsFolder, BsChat } from "react-icons/bs";
 import {
   MdNotifications,
   MdStorage,
@@ -45,11 +45,12 @@ const helpItems = [
   { icon: MdHelpOutline, label: "Telegram FAQ" },
   { icon: MdPrivacyTip, label: "Privacy Policy" },
   { icon: CiLogout, label: "Logout" },
+  { icon: CiLogout, label: "" },
 ];
 
 export default function UserProfile() {
   return (
-    <div className="h-[100vh] flex flex-col bg-[#1a1a1a] dark:bg-[#1a1a1a]">
+    <div className="h-screen flex flex-col bg-[#1a1a1a] dark:bg-[#1a1a1a]">
       {/* Settings Menu */}
       <div className="flex-1">
         <ProfileHeader />

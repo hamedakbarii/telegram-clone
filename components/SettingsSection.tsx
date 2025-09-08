@@ -20,7 +20,7 @@ export default function SettingsSection({ items }: SettingsSectionProps) {
   const router = useRouter();
 
   const logOutHandler = () => {
-    console.log("logOut Clicked");
+    // console.log("logOut Clicked");
     logOut();
     router.push("login");
   };
