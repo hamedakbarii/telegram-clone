@@ -84,7 +84,7 @@ export default function ChatsLayout({
   };
 
   return (
-    <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021]">
+    <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021] overflow-x-hidden md:overflow-x-auto">
       {/* ChatSidebar - conditionally rendered based on responsive logic */}
       <div
         className={`${shouldShowSidebar() ? "block" : "hidden"} ${

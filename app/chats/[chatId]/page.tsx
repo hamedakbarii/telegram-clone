@@ -496,11 +496,14 @@ export default function SingleChat(): JSX.Element {
     <div className="flex h-full bg-[#101010] text-white">
       {/* Main Chat Area */}
       <div
-        className={`flex flex-col h-full ${
-          showUserInfo ? "hidden" : "w-full"
-        } transition-all duration-300`}
+        className={`flex flex-col h-full ${showUserInfo
+            ? isMobile
+              ? 'hidden' // For mobile/tablet: hide completely when showing user info
+              : 'w-full md:w-2/3 lg:w-2/3' // For desktop: show at 2/3 width
+            : 'w-full' // When not showing user info: full width
+          } transition-all duration-300`}
       >
-        {/* Chat Header */}
+        { }
         <div className="flex items-center justify-between p-1 md:p-4 h-14 bg-[#212121] border-b border-[#212121]">
           <div
             className="flex items-center gap-3 cursor-pointer"
@@ -850,7 +853,7 @@ export default function SingleChat(): JSX.Element {
 
       {/* User Info Sidebar */}
       {showUserInfo && (
-        <div className="w-full md:w-1/3 bg-[#212121] border-l border-gray-700 overflow-y-auto transition-all duration-300">
+        <div className="w-full lg:w-1/3 bg-[#212121] border-l border-gray-700 overflow-y-auto transition-all duration-300">
           <div className="p-4 h-14 border-b border-gray-700 flex justify-between items-center">
             <h2 className="text-lg font-medium">User Info</h2>
             <button
