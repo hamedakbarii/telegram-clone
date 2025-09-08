@@ -12,7 +12,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (storedUser) {
-      console.log("storedUser: " + storedUser);
+      // console.log("storedUser: " + storedUser);
       router.push("chats");
     } else {
       router.push("/login");

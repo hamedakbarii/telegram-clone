@@ -53,6 +53,7 @@ export default function UserProfile() {
       {/* Settings Menu */}
       <div className="flex-1">
         <ProfileHeader />
+
         <div className="py-2">
           <SettingsSection items={settingsItems} />
 

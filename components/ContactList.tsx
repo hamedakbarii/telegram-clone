@@ -16,7 +16,9 @@ const formatLastSeen = (lastSeenString: string): string => {
   try {
     const lastSeen = new Date(lastSeenString);
     const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - lastSeen.getTime()) / (1000 * 60));
+    const diffInMinutes = Math.floor(
+      (now.getTime() - lastSeen.getTime()) / (1000 * 60)
+    );
     const diffInHours = Math.floor(diffInMinutes / 60);
     const diffInDays = Math.floor(diffInHours / 24);
 
@@ -27,9 +29,11 @@ const formatLastSeen = (lastSeenString: string): string => {
     if (diffInMinutes < 1) {
       return "last seen recently";
     } else if (diffInMinutes < 60) {
-      return `last seen ${diffInMinutes} min${diffInMinutes > 1 ? 's' : ''} ago`;
+      return `last seen ${diffInMinutes} min${
+        diffInMinutes > 1 ? "s" : ""
+      } ago`;
     } else if (diffInHours < 24) {
-      return `last seen ${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`;
+      return `last seen ${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
     } else if (diffInDays === 1) {
       return "last seen yesterday";
     } else if (diffInDays < 7) {
@@ -46,16 +50,16 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
-  
+
   // Get contacts from Zustand store
-  const { 
-    contacts, 
-    getContacts, 
-    createNewChat, 
+  const {
+    contacts,
+    getContacts,
+    createNewChat,
     getChat,
     setSelectedChat,
     markMessagesAsRead,
-    initializeStore
+    initializeStore,
   } = useChatStore();
 
   // Handle client-side hydration
@@ -66,43 +70,47 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
   // Initialize store and load contacts when component mounts
   useEffect(() => {
     if (!isClient) return;
-    
+
     initializeStore();
     getContacts();
-    
+
     // Debug log to see what contacts we have
-    console.log('Total contacts loaded:', contacts.length);
-    console.log('Contacts:', contacts);
+    // console.log('Total contacts loaded:', contacts.length);
+    // console.log('Contacts:', contacts);
   }, [isClient, getContacts, initializeStore]);
 
   // Filter contacts based on search query and exclude system contacts
   const filteredContacts = useMemo(() => {
     if (!isClient) return [];
-    
-    console.log('Raw contacts before filtering:', contacts.length);
-    
+
+    // console.log('Raw contacts before filtering:', contacts.length);
+
     // Filter out system contacts (Saved Messages, Archive) - only exclude Saved Messages
-    let availableContacts = contacts.filter(contact => {
-      const shouldExclude = contact.id === 5 || // Saved Messages
-                           contact.name === "Saved Messages" ||
-                           contact.id === 0 || // Archive (if it exists in contacts)
-                           contact.name === "Archived Chats";
-      
+    let availableContacts = contacts.filter((contact) => {
+      const shouldExclude =
+        contact.id === 5 || // Saved Messages
+        contact.name === "Saved Messages" ||
+        contact.id === 0 || // Archive (if it exists in contacts)
+        contact.name === "Archived Chats";
+
       return !shouldExclude;
     });
 
-    console.log('Contacts after filtering system contacts:', availableContacts.length);
+    console.log(
+      "Contacts after filtering system contacts:",
+      availableContacts.length
+    );
 
     if (!searchQuery.trim()) {
       return availableContacts;
     }
 
-    const searchFiltered = availableContacts.filter(contact =>
+    const searchFiltered = availableContacts.filter((contact) =>
       contact.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    
-    console.log('Contacts after search filtering:', searchFiltered.length);
-    
+
+    // console.log('Contacts after search filtering:', searchFiltered.length);
+
     return searchFiltered;
   }, [contacts, searchQuery, isClient]);
 
@@ -119,7 +127,7 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
   const handleContactClick = (contact: any) => {
     // Check if chat already exists
     const existingChat = getChat(contact.id);
-    
+
     if (existingChat) {
       // Chat exists, navigate to it
       setSelectedChat(contact.id);
@@ -135,10 +143,12 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
 
   // Check if avatar is valid (not empty or incomplete URL)
   const hasValidAvatar = (avatarUrl: string) => {
-    return avatarUrl && 
-           avatarUrl !== "" && 
-           avatarUrl !== "http://localhost:3000/assets/avatar/" &&
-           !avatarUrl.endsWith("assets/avatar/");
+    return (
+      avatarUrl &&
+      avatarUrl !== "" &&
+      avatarUrl !== "http://localhost:3000/assets/avatar/" &&
+      !avatarUrl.endsWith("assets/avatar/")
+    );
   };
 
   // Loading state for SSR
@@ -237,11 +247,8 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
         {filteredContacts.length > 0 ? (
           <div className="divide-y divide-transparent">
             {filteredContacts.map((contact) => (
-              <div
-                key={contact.id}
-                className="border-b border-transparent"
-              >
-                <button 
+              <div key={contact.id} className="border-b border-transparent">
+                <button
                   className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] transition-colors cursor-pointer"
                   onClick={() => handleContactClick(contact)}
                 >
@@ -255,10 +262,11 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
                         onError={(e) => {
                           // Fallback to initials if image fails to load
                           const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                          const fallback = target.nextElementSibling as HTMLElement;
+                          target.style.display = "none";
+                          const fallback =
+                            target.nextElementSibling as HTMLElement;
                           if (fallback) {
-                            fallback.style.display = 'flex';
+                            fallback.style.display = "flex";
                           }
                         }}
                       />

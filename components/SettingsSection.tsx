@@ -44,6 +44,7 @@ export default function SettingsSection({ items }: SettingsSectionProps) {
             />
             <span className="text-white">{item.label}</span>
           </div>
+
           {item.value && (
             <span className="text-sm text-gray-400">{item.value}</span>
           )}
