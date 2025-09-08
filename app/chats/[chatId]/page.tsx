@@ -501,7 +501,7 @@ export default function SingleChat(): JSX.Element {
         } transition-all duration-300`}
       >
         {/* Chat Header */}
-        <div className="flex items-center justify-between p-4 h-14 bg-[#212121] border-b border-[#212121]">
+        <div className="flex items-center justify-between p-1 md:p-4 h-14 bg-[#212121] border-b border-[#212121]">
           <div
             className="flex items-center gap-3 cursor-pointer"
             onClick={toggleUserInfo}
@@ -554,7 +554,7 @@ export default function SingleChat(): JSX.Element {
             )}
 
             <div>
-              <h1 className="text-sm md:text-base lg:text-lg font-medium">{chatInfo?.name}</h1>
+              <h1 className="text-sm md:text-base lg:text-lg font-medium truncate">{chatInfo?.name}</h1>
               <p className="text-xs lg:text-sm text-gray-400">
                 {isTyping || chatInfo?.isTyping
                   ? "typing..."
@@ -567,28 +567,30 @@ export default function SingleChat(): JSX.Element {
 
           <div className="flex items-center gap-4">
             <button
-              className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
+              className="p-0 md:p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
               onClick={() =>
                 alert("Sorry! Search feature is not available yet.")
               }
             >
-              <FaSearch className="w-5 h-5 text-gray-400" />
+              <FaSearch className="w-4 h-4 md:w-5 md:h-5 text-gray-400" />
             </button>
             <button
-              className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
+              className="p-0 md:p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
               onClick={() => alert("Sorry! Call feature is not available yet.")}
             >
-              <IoCall className="w-5 h-5 text-gray-400" />
+              <IoCall className="w-4 h-4 md:w-5 md:h-5 text-gray-400" />
             </button>
 
-            {/* Three-dot menu button */}
+            <button
+              className="p-0 md:p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <HiDotsVertical className="w-4 h-4 md:w-5 md:h-5 text-gray-400" />
+            </button>
+
+            { }
             <div className="relative" ref={menuRef}>
-              <button
-                className="p-2 hover:bg-gray-700 rounded-full transition-colors cursor-pointer"
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-              >
-                <HiDotsVertical className="w-5 h-5 text-gray-400" />
-              </button>
+
 
               {/* Menu dropdown */}
               {isMenuOpen && (

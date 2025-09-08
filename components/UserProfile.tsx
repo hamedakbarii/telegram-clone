@@ -54,7 +54,7 @@ export default function UserProfile() {
       <div className="flex-1">
         <ProfileHeader />
 
-        <div className="py-2">
+        <div className="py-2 bg-[#1a1a1a]">
           <SettingsSection items={settingsItems} />
 
           <div className="border-t border-[#2d2d2d] my-2"></div>
