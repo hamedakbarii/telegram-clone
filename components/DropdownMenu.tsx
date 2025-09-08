@@ -78,7 +78,7 @@ export default function DropdownMenu({
 
   return (
     <div
-      className="fixed inset-0 z-10 mx-2.5 border-0 transition-opacity duration-200 opacity-100"
+      className="fixed inset-0 z-10 border-0 transition-opacity duration-200 opacity-100"
       onClick={toggleMenu}
     >
       <div className="py-1 absolute top-12 left-1.5 mt-2 w-56 bg-[#212121dd] dark:bg-[#212121dd] rounded-2xl shadow-2xl z-20 border border-[#212121dd] backdrop-blur-md overflow-hidden transition-all duration-200 translate-y-0 opacity-100">

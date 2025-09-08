@@ -146,7 +146,8 @@ export default function SingleChat(): JSX.Element {
   }, [chatId, isClient, setSelectedChat, markMessagesAsRead]);
 
   // Handle back navigation
-  const handleBackToChats = () => {
+  const handleBackToChats = (e: any) => {
+    e.stopPropagation();
     router.push("/chats");
   };
 
@@ -177,8 +178,8 @@ export default function SingleChat(): JSX.Element {
       const responses = [
         "This is an automated message from Telegram.",
         "Your login code is " +
-        Math.floor(100000 + Math.random() * 900000) +
-        ". Don't share it with anyone.",
+          Math.floor(100000 + Math.random() * 900000) +
+          ". Don't share it with anyone.",
         "New feature update: Voice messages 2.0 is now available!",
         "Telegram Premium now includes 4GB file uploads.",
         "Security alert: New login detected. Was this you?",
@@ -455,10 +456,11 @@ export default function SingleChat(): JSX.Element {
 
     return (
       <div
-        className={`rounded-2xl p-3 max-w-sm ${message.sender === "user"
+        className={`rounded-2xl p-3 max-w-sm ${
+          message.sender === "user"
             ? "bg-purple-500 text-white"
             : "bg-gray-700 text-white"
-          }`}
+        }`}
       >
         <div className="break-words">{message.text}</div>
         <div className="flex items-center justify-between mt-1">
@@ -495,14 +497,15 @@ export default function SingleChat(): JSX.Element {
     <div className="flex h-full bg-[#101010] text-white">
       {/* Main Chat Area */}
       <div
-        className={`flex flex-col h-full ${showUserInfo
-          ? isMobile
-            ? 'hidden' // For mobile/tablet: hide completely when showing user info
-            : 'w-full md:w-2/3 lg:w-2/3' // For desktop: show at 2/3 width
-          : 'w-full' // When not showing user info: full width
-          } transition-all duration-300`}
+        className={`flex flex-col h-full ${
+          showUserInfo
+            ? isMobile
+              ? "hidden" // For mobile/tablet: hide completely when showing user info
+              : "w-full md:w-2/3 lg:w-2/3" // For desktop: show at 2/3 width
+            : "w-full" // When not showing user info: full width
+        } transition-all duration-300`}
       >
-        { }
+        {}
         <div className="flex items-center justify-between p-1 md:p-4 h-14 bg-[#212121] border-b border-[#212121]">
           <div
             className="flex items-center gap-3 cursor-pointer"
@@ -556,13 +559,15 @@ export default function SingleChat(): JSX.Element {
             )}
 
             <div>
-              <h1 className="text-sm md:text-base lg:text-lg font-medium truncate">{chatInfo?.name}</h1>
+              <h1 className="text-sm md:text-base lg:text-lg font-medium truncate">
+                {chatInfo?.name}
+              </h1>
               <p className="text-xs lg:text-sm text-gray-400">
                 {isTyping || chatInfo?.isTyping
                   ? "typing..."
                   : chatInfo?.isOnline
-                    ? "online"
-                    : "offline"}
+                  ? "online"
+                  : "offline"}
               </p>
             </div>
           </div>
@@ -590,10 +595,8 @@ export default function SingleChat(): JSX.Element {
               <HiDotsVertical className="w-4 h-4 md:w-5 md:h-5 text-gray-400" />
             </button>
 
-            { }
+            {}
             <div className="relative" ref={menuRef}>
-
-
               {/* Menu dropdown */}
               {isMenuOpen && (
                 <div className="absolute right-0 top-12 w-56 bg-[#212121] rounded-lg shadow-lg z-50 border border-gray-700 overflow-hidden">
@@ -736,10 +739,11 @@ export default function SingleChat(): JSX.Element {
                     </div>
                   )}
                   <div
-                    className={`flex ${message.sender === "user"
+                    className={`flex ${
+                      message.sender === "user"
                         ? "justify-end"
                         : "justify-start"
-                      }`}
+                    }`}
                   >
                     {renderMessage(message)}
                   </div>
@@ -822,10 +826,11 @@ export default function SingleChat(): JSX.Element {
             <div className="relative w-10 h-10">
               {/* Voice/Mic Button */}
               <button
-                className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 rounded-full transition-all duration-200 ease-in-out transform ${inputMessage.trim()
+                className={`absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 rounded-full transition-all duration-200 ease-in-out transform ${
+                  inputMessage.trim()
                     ? "opacity-0 scale-75 rotate-45"
                     : "opacity-100 scale-100 rotate-0"
-                  }`}
+                }`}
                 disabled={inputMessage.trim() !== ""}
               >
                 <FaMicrophone className="w-6 h-6 text-white" />
@@ -835,10 +840,11 @@ export default function SingleChat(): JSX.Element {
               <button
                 onClick={handleSendMessage}
                 disabled={!inputMessage.trim()}
-                className={`cursor-pointer absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-0 disabled:cursor-not-allowed rounded-full transition-all duration-200 ease-in-out transform ${inputMessage.trim()
+                className={`cursor-pointer absolute inset-0 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-0 disabled:cursor-not-allowed rounded-full transition-all duration-200 ease-in-out transform ${
+                  inputMessage.trim()
                     ? "opacity-100 scale-100 rotate-0"
                     : "opacity-0 scale-75 -rotate-45"
-                  }`}
+                }`}
               >
                 <IoSend className="w-6 h-6 text-white" />
               </button>

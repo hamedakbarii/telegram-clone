@@ -160,7 +160,7 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
   }
 
   return (
-    <div className="w-96 border-r border-transparent flex flex-col h-full bg-[#1a1a1a] text-white">
+    <div className="w-full md:w-96 border-r border-transparent flex flex-col h-full bg-[#1a1a1a] text-white">
       {/* Header */}
       <div className="p-3 border-b border-[#2d2d2d] flex items-center gap-2">
         <button
