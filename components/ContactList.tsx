@@ -73,17 +73,11 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
 
     initializeStore();
     getContacts();
-
-    // Debug log to see what contacts we have
-    // console.log('Total contacts loaded:', contacts.length);
-    // console.log('Contacts:', contacts);
   }, [isClient, getContacts, initializeStore]);
 
   // Filter contacts based on search query and exclude system contacts
   const filteredContacts = useMemo(() => {
     if (!isClient) return [];
-
-    // console.log('Raw contacts before filtering:', contacts.length);
 
     // Filter out system contacts (Saved Messages, Archive) - only exclude Saved Messages
     let availableContacts = contacts.filter((contact) => {
@@ -96,22 +90,13 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
       return !shouldExclude;
     });
 
-    console.log(
-      "Contacts after filtering system contacts:",
-      availableContacts.length
-    );
-
     if (!searchQuery.trim()) {
       return availableContacts;
     }
 
-    const searchFiltered = availableContacts.filter((contact) =>
+    return availableContacts.filter((contact) =>
       contact.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-    // console.log('Contacts after search filtering:', searchFiltered.length);
-
-    return searchFiltered;
   }, [contacts, searchQuery, isClient]);
 
   const clearSearch = () => {
@@ -247,14 +232,17 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
         {filteredContacts.length > 0 ? (
           <div className="divide-y divide-transparent">
             {filteredContacts.map((contact) => (
-              <div key={contact.id} className="border-b border-transparent">
+              <div 
+                key={contact.id} 
+                className="border-b border-transparent"
+              >
                 <button
                   className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] transition-colors cursor-pointer"
                   onClick={() => handleContactClick(contact)}
                 >
                   {/* Avatar - Show image if valid, otherwise show initials */}
                   {hasValidAvatar(contact.avatar) ? (
-                    <div className="relative">
+                    <div className="relative flex-shrink-0">
                       <img
                         src={contact.avatar}
                         alt={contact.name}
@@ -272,7 +260,7 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
                       />
                       {/* Hidden fallback - will be shown if image fails */}
                       <div
-                        className={`w-12 h-12 rounded-full hidden items-center justify-center text-white font-semibold absolute top-0 left-0 ${getAvatarColor(
+                        className={`w-12 h-12 rounded-full hidden items-center justify-center text-white font-semibold ${getAvatarColor(
                           contact.name
                         )}`}
                       >
@@ -292,8 +280,8 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
 
                   {/* Contact Info */}
                   <div className="flex-1 min-w-0 text-left">
-                    <div className="flex justify-between items-start min-w-0">
-                      <div className="flex flex-col gap-1 min-w-0 flex-1">
+                    <div className="flex justify-between items-start">
+                      <div className="flex flex-col gap-1 min-w-0">
                         <h3 className="font-medium truncate text-white">
                           {contact.name}
                         </h3>
@@ -308,18 +296,18 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
             ))}
           </div>
         ) : searchQuery ? (
-          <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+          <div className="flex flex-col items-center justify-center h-64 text-gray-500 p-4">
             <div className="text-4xl mb-4">👤</div>
             <p className="text-lg font-medium mb-2">No contacts found</p>
-            <p className="text-sm text-center px-8">
+            <p className="text-sm text-center">
               Try searching for a different name
             </p>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+          <div className="flex flex-col items-center justify-center h-64 text-gray-500 p-4">
             <div className="text-4xl mb-4">📞</div>
             <p className="text-lg font-medium mb-2">No contacts available</p>
-            <p className="text-sm text-center px-8">
+            <p className="text-sm text-center">
               Contacts will appear here when loaded
             </p>
           </div>
