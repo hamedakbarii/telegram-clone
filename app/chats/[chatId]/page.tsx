@@ -58,7 +58,10 @@ export default function SingleChat(): JSX.Element {
   } = useChatStore();
 
   // Chat simulation for realistic behavior
-  const { startSimulation, stopSimulation } = useChatSimulation();
+  const {
+    // startSimulation,
+    stopSimulation,
+  } = useChatSimulation();
 
   // Handle client-side hydration
   useEffect(() => {
@@ -72,7 +75,7 @@ export default function SingleChat(): JSX.Element {
     // Initialize store only once when client is ready
     initializeStore();
 
-    const simulation = startSimulation();
+    // const simulation = startSimulation();
 
     return () => {
       stopSimulation();

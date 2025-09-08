@@ -12,14 +12,14 @@ export default function ChatsLayout({
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  // const [isTransitioning, setIsTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   const pathname = usePathname();
   const router = useRouter();
 
   // Check if we're on a specific chat page
-  const isOnChatPage = pathname.startsWith("/chats/") && pathname !== "/chats";
+  // const isOnChatPage = pathname.startsWith("/chats/") && pathname !== "/chats";
   const isOnMainChatList = pathname === "/chats";
 
   // Handle window resize for responsive design
@@ -47,14 +47,11 @@ export default function ChatsLayout({
   const handleChatSelect = (chatId: string) => {
     if (pathname === `/chats/${chatId}`) return; // Already on this chat
 
-    setIsTransitioning(true);
+    // setIsTransitioning(true);
 
     // Add a small delay for the wink effect
     setTimeout(() => {
       router.push(`/chats/${chatId}`);
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 100); // Quick transition after route change
     }, 150);
   };
 
@@ -62,13 +59,8 @@ export default function ChatsLayout({
   const handleBackToChatList = () => {
     if (pathname === "/chats") return; // Already on main page
 
-    setIsTransitioning(true);
-
     setTimeout(() => {
       router.push("/chats");
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 100);
     }, 150);
   };
 
