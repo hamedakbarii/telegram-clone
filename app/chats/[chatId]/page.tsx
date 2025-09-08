@@ -554,8 +554,8 @@ export default function SingleChat(): JSX.Element {
             )}
 
             <div>
-              <h1 className="text-lg font-medium">{chatInfo?.name}</h1>
-              <p className="text-sm text-gray-400">
+              <h1 className="text-sm md:text-base lg:text-lg font-medium">{chatInfo?.name}</h1>
+              <p className="text-xs lg:text-sm text-gray-400">
                 {isTyping || chatInfo?.isTyping
                   ? "typing..."
                   : chatInfo?.isOnline
