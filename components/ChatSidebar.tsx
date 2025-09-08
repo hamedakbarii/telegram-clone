@@ -149,9 +149,8 @@ export default function ChatSidebar({
             <div className="p-3 border-b border-[#2d2d2d] bg-[#1a1a1a]">
               <p className="text-sm text-gray-400">
                 {filteredChats.length > 0
-                  ? `Found ${filteredChats.length} chat${
-                      filteredChats.length !== 1 ? "s" : ""
-                    }`
+                  ? `Found ${filteredChats.length} chat${filteredChats.length !== 1 ? "s" : ""
+                  }`
                   : "No chats found"}
               </p>
             </div>
@@ -205,9 +204,8 @@ export default function ChatSidebar({
 
   return (
     <div
-      className={`${
-        isMobile ? "w-full" : "w-96"
-      } border-r border-transparent flex flex-col`}
+      className={`${isMobile ? "w-full" : "w-96"
+        } border-r border-transparent flex flex-col`}
     >
       {/* Header */}
       <div className="p-3 border-b border-transparent flex items-center gap-2">

@@ -43,17 +43,15 @@ export default function SearchInput({
         onKeyDown={handleKeyDown}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        className={`w-full pl-10 pr-10 py-2 border-[#2d2d2d] dark:border-[#2d2d2d] bg-[#2d2d2d] dark:bg-[#2d2d2d] rounded-3xl focus:outline-none transition-all duration-200 ${
-          isFocused ? "ring-2 ring-blue-500/50" : ""
-        }`}
+        className={`w-full pl-10 pr-10 py-2 border-[#2d2d2d] dark:border-[#2d2d2d] bg-[#2d2d2d] dark:bg-[#2d2d2d] rounded-3xl focus:outline-none transition-all duration-200 ${isFocused ? "ring-2 ring-blue-500/50" : ""
+          }`}
       />
 
       {/* Search Icon */}
       <FiSearch
         size={20}
-        className={`absolute left-3 top-2.5 transition-colors duration-200 ${
-          isFocused || searchQuery ? "text-blue-400" : "text-gray-500"
-        }`}
+        className={`absolute left-3 top-2.5 transition-colors duration-200 ${isFocused || searchQuery ? "text-blue-400" : "text-gray-500"
+          }`}
       />
 
       {/* Clear Button */}

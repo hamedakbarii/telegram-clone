@@ -77,13 +77,13 @@ export default function ChatList({
         const showPinnedHeader =
           !searchQuery &&
           organizedChats.findIndex((c) => c.isPinned && !c.isArchive) ===
-            index &&
+          index &&
           organizedChats.some((c) => c.isPinned && !c.isArchive);
 
         const showRegularHeader =
           !searchQuery &&
           organizedChats.findIndex((c) => !c.isPinned && !c.isArchive) ===
-            index &&
+          index &&
           organizedChats.some((c) => !c.isPinned && !c.isArchive);
 
         return (

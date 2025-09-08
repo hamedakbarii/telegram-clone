@@ -41,10 +41,10 @@ export default function ChatItem({
 }: ChatItemProps) {
   // Check if avatar is valid (not empty or incomplete URL)
   const hasValidAvatar = (avatarUrl: string) => {
-    return avatarUrl && 
-           avatarUrl !== "" && 
-           avatarUrl !== "http://localhost:3000/assets/avatar/" &&
-           !avatarUrl.endsWith("assets/avatar/");
+    return avatarUrl &&
+      avatarUrl !== "" &&
+      avatarUrl !== "http://localhost:3000/assets/avatar/" &&
+      !avatarUrl.endsWith("assets/avatar/");
   };
 
   const handleClick = () => {
@@ -53,7 +53,7 @@ export default function ChatItem({
       alert("Sorry! Archived chats are not available yet.");
       return;
     }
-    
+
     if (onChatClick) {
       onChatClick(chat.id);
     }
@@ -141,9 +141,8 @@ export default function ChatItem({
 
           <div className="flex justify-start items-center min-w-0">
             <p
-              className={`text-sm text-gray-500 truncate text-left grow pr-1 ${
-                chat.isArchive && "font-bold"
-              }`}
+              className={`text-sm text-gray-500 truncate text-left grow pr-1 ${chat.isArchive && "font-bold"
+                }`}
             >
               {searchQuery
                 ? highlightText(chat.lastMessage, searchQuery)
@@ -151,9 +150,8 @@ export default function ChatItem({
             </p>
             {chat.unreadCount > 0 && (
               <span
-                className={`text-xs rounded-full w-5 h-5 flex items-center justify-center p-3 ${
-                  chat.isArchive ? "bg-gray-600 p-3.5" : "bg-blue-500 p-2"
-                }`}
+                className={`text-xs rounded-full w-5 h-5 flex items-center justify-center p-3 ${chat.isArchive ? "bg-gray-600 p-3.5" : "bg-blue-500 p-2"
+                  }`}
               >
                 {chat.unreadCount}
               </span>

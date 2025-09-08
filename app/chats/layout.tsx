@@ -87,9 +87,8 @@ export default function ChatsLayout({
     <div className="flex h-screen text-black dark:text-white bg-[#FEFEFF] dark:bg-[#202021] overflow-x-hidden md:overflow-x-auto">
       {/* ChatSidebar - conditionally rendered based on responsive logic */}
       <div
-        className={`${shouldShowSidebar() ? "block" : "hidden"} ${
-          isMobile ? "w-full" : "w-96"
-        }`}
+        className={`${shouldShowSidebar() ? "block" : "hidden"} ${isMobile ? "w-full" : "w-96"
+          }`}
       >
         <ChatSidebar
           isMenuOpen={isMenuOpen}
@@ -113,7 +112,7 @@ export default function ChatsLayout({
               ? "hidden"
               : "flex-grow w-full"
             : "flex-grow"
-        }`}
+          }`}
       >
         {children}
       </main>

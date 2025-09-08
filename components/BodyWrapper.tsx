@@ -22,14 +22,14 @@ export default function BodyWrapper({ children, className }: BodyWrapperProps) {
 
 // export default function RootLayout({ children }: { children: React.ReactNode }) {
 //   return (
-    // <html lang="en">
-    //   <body suppressHydrationWarning={true}>
-    //     <BodyWrapper className={`${vazirmatn.variable} antialiased bg-white text-black font-vazirmatn`}>
-    //       <Suspense fallback={<div>Loading...</div>}>
-    //         {children}
-    //       </Suspense>
-    //     </BodyWrapper>
-    //   </body>
-    // </html>
+// <html lang="en">
+//   <body suppressHydrationWarning={true}>
+//     <BodyWrapper className={`${vazirmatn.variable} antialiased bg-white text-black font-vazirmatn`}>
+//       <Suspense fallback={<div>Loading...</div>}>
+//         {children}
+//       </Suspense>
+//     </BodyWrapper>
+//   </body>
+// </html>
 //   );
 // }
