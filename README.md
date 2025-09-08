@@ -178,10 +178,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For questions or collaboration inquiries:
 
-- **[Hamed Akbari]** - [@Hamed](https://twitter.com/Hamed) - your.email@example.com
-- **[Amir Rahemi]** - [@friendusername](https://twitter.com/friendusername) - friend.email@example.com
+- **[Hamed Akbari]** - [@HamedAkbarii](https://linkedin.com/in/hamedakbarii) - hamedakbariwork@gmail.com
+- **[Amir Rahemi]** - [@AmirRahemi](https://linkedin.com/in/amirrahemi) - amirrahemi01@gmail.com
 
-Project Link: [https://github.com/yourusername/telegram-clone](https://github.com/yourusername/telegram-clone)
+Project Link: [https://github.com/hamedakbarii/telegram-clone](https://github.com/hamedakbarii/telegram-clone)
 
 ---
 
