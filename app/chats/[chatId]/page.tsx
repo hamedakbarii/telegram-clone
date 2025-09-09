@@ -29,6 +29,15 @@ type Params = {
   chatId: string;
 };
 
+type ChatMessage = {
+  id: string | number;
+  text: string;
+  sender: "user" | "ai";
+  status?: "sent" | "delivered" | "read" | "succeeded" | null;
+  timestamp: Date | string;
+  isEdited?: boolean;
+};
+
 export default function SingleChat(): JSX.Element {
   const params = useParams() as Params;
   const router = useRouter();
@@ -149,7 +158,7 @@ export default function SingleChat(): JSX.Element {
   }, [chatId, isClient, setSelectedChat, markMessagesAsRead]);
 
   // Handle back navigation
-  const handleBackToChats = (e: any) => {
+  const handleBackToChats = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     router.push("/chats");
   };
@@ -387,7 +396,7 @@ export default function SingleChat(): JSX.Element {
   };
 
   // Enhanced time formatting
-  const formatTime = (timestamp: Date) => {
+  const formatTime = (timestamp: Date | string) => {
     if (!isClient) return "now";
 
     const now = new Date();
@@ -428,7 +437,7 @@ export default function SingleChat(): JSX.Element {
   };
 
   // Enhanced message rendering with better URL handling
-  const renderMessage = (message: any) => {
+  const renderMessage = (message: ChatMessage) => {
     if (message.sender === "user" && isUrl(message.text)) {
       const lines = message.text.split("\n");
       const url = lines[0];
