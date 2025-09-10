@@ -1,6 +1,8 @@
 // app/chats/[chatId]/page.tsx
 "use client";
-
+import dynamic from "next/dynamic";
+import { Theme } from "emoji-picker-react"; // 👈 به صورت معمولی برای runtime
+import type { EmojiClickData } from "emoji-picker-react"; // 👈 به صورت type-only
 import React, { JSX, useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -19,11 +21,16 @@ import { LuInfo } from "react-icons/lu";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { FiEdit2, FiGift } from "react-icons/fi";
 import { BiVolumeMute } from "react-icons/bi";
-import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
+
 import { formatPhoneNumber } from "@/lib/utils/formatPhone";
 import { getInitials, getAvatarColor } from "@/lib/utils/avatarUtils";
 import { useChatStore } from "@/store/useChatStore";
 import { useChatSimulation } from "@/lib/utils/chatSimulation";
+
+const EmojiPicker = dynamic(
+  () => import("emoji-picker-react").then((mod) => mod.default),
+  { ssr: false }
+);
 
 type Params = {
   chatId: string;
