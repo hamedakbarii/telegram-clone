@@ -559,7 +559,7 @@ export default function SingleChat(): JSX.Element {
                 />
                 {/* Hidden fallback - will be shown if image fails */}
                 <div
-                  className={`w-10 h-10 rounded-full hidden items-center justify-center text-white font-semibold absolute top-0 left-0 ${getAvatarColor(
+                  className={`w-10 h-10 rounded-full hidden items-center justify-center text-white font-semibold ${getAvatarColor(
                     chatInfo?.name || ""
                   )}`}
                 >
