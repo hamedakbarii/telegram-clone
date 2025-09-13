@@ -2,12 +2,12 @@
 "use client";
 
 import React from "react";
-import { BsCheck, BsCheckAll } from "react-icons/bs";
-import { IoMdPin } from "react-icons/io";
+// import { BsCheck, BsCheckAll } from "react-icons/bs";
+// import { IoMdPin } from "react-icons/io";
 import { getInitials, getAvatarColor } from "@/lib/utils/avatarUtils";
 import { TbPin } from "react-icons/tb";
-import { FaCheck } from "react-icons/fa";
-import { BiCheckDouble } from "react-icons/bi";
+// import { FaCheck } from "react-icons/fa";
+// import { BiCheckDouble } from "react-icons/bi";
 
 interface Chat {
   id: number;
@@ -41,10 +41,12 @@ export default function ChatItem({
 }: ChatItemProps) {
   // Check if avatar is valid (not empty or incomplete URL)
   const hasValidAvatar = (avatarUrl: string) => {
-    return avatarUrl &&
+    return (
+      avatarUrl &&
       avatarUrl !== "" &&
       avatarUrl !== "http://localhost:3000/assets/avatar/" &&
-      !avatarUrl.endsWith("assets/avatar/");
+      !avatarUrl.endsWith("assets/avatar/")
+    );
   };
 
   const handleClick = () => {
@@ -63,12 +65,18 @@ export default function ChatItem({
   const highlightText = (text: string, query?: string) => {
     if (!query?.trim()) return text;
 
-    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const regex = new RegExp(
+      `(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`,
+      "gi"
+    );
     const parts = text.split(regex);
 
     return parts.map((part, index) =>
       regex.test(part) ? (
-        <mark key={index} className="bg-yellow-200 dark:bg-yellow-800 rounded px-1">
+        <mark
+          key={index}
+          className="bg-yellow-200 dark:bg-yellow-800 rounded px-1"
+        >
           {part}
         </mark>
       ) : (
@@ -94,16 +102,16 @@ export default function ChatItem({
                 onError={(e) => {
                   // Fallback to initials if image fails to load
                   const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
+                  target.style.display = "none";
                   const fallback = target.nextElementSibling as HTMLElement;
                   if (fallback) {
-                    fallback.style.display = 'flex';
+                    fallback.style.display = "flex";
                   }
                 }}
               />
               {/* Hidden fallback - will be shown if image fails */}
               <div
-                className={`w-12 h-12 rounded-full hidden items-center justify-center text-white font-semibold absolute top-0 left-0 ${getAvatarColor(
+                className={`w-12 h-12 rounded-full hidden items-center justify-center text-white font-semibold ${getAvatarColor(
                   chat.name
                 )}`}
               >
@@ -141,8 +149,9 @@ export default function ChatItem({
 
           <div className="flex justify-start items-center min-w-0">
             <p
-              className={`text-sm text-gray-500 truncate text-left grow pr-1 ${chat.isArchive && "font-bold"
-                }`}
+              className={`text-sm text-gray-500 truncate text-left grow pr-1 ${
+                chat.isArchive && "font-bold"
+              }`}
             >
               {searchQuery
                 ? highlightText(chat.lastMessage, searchQuery)
@@ -150,8 +159,9 @@ export default function ChatItem({
             </p>
             {chat.unreadCount > 0 && (
               <span
-                className={`text-xs rounded-full w-5 h-5 flex items-center justify-center p-3 ${chat.isArchive ? "bg-gray-600 p-3.5" : "bg-blue-500 p-2"
-                  }`}
+                className={`text-xs rounded-full w-5 h-5 flex items-center justify-center p-3 ${
+                  chat.isArchive ? "bg-gray-600 p-3.5" : "bg-blue-500 p-2"
+                }`}
               >
                 {chat.unreadCount}
               </span>

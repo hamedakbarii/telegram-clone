@@ -1,6 +1,8 @@
 // app/chats/[chatId]/page.tsx
 "use client";
-
+import dynamic from "next/dynamic";
+import { Theme } from "emoji-picker-react"; // 👈 به صورت معمولی برای runtime
+import type { EmojiClickData } from "emoji-picker-react"; // 👈 به صورت type-only
 import React, { JSX, useState, useEffect, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -19,14 +21,28 @@ import { LuInfo } from "react-icons/lu";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { FiEdit2, FiGift } from "react-icons/fi";
 import { BiVolumeMute } from "react-icons/bi";
-import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
+
 import { formatPhoneNumber } from "@/lib/utils/formatPhone";
 import { getInitials, getAvatarColor } from "@/lib/utils/avatarUtils";
 import { useChatStore } from "@/store/useChatStore";
 import { useChatSimulation } from "@/lib/utils/chatSimulation";
 
+const EmojiPicker = dynamic(
+  () => import("emoji-picker-react").then((mod) => mod.default),
+  { ssr: false }
+);
+
 type Params = {
   chatId: string;
+};
+
+type ChatMessage = {
+  id: string | number;
+  text: string;
+  sender: "user" | "ai";
+  status?: "sent" | "delivered" | "read" | "succeeded" | null;
+  timestamp: Date | string;
+  isEdited?: boolean;
 };
 
 export default function SingleChat(): JSX.Element {
@@ -58,7 +74,10 @@ export default function SingleChat(): JSX.Element {
   } = useChatStore();
 
   // Chat simulation for realistic behavior
-  const { startSimulation, stopSimulation } = useChatSimulation();
+  const {
+    // startSimulation,
+    stopSimulation,
+  } = useChatSimulation();
 
   // Handle client-side hydration
   useEffect(() => {
@@ -72,7 +91,7 @@ export default function SingleChat(): JSX.Element {
     // Initialize store only once when client is ready
     initializeStore();
 
-    const simulation = startSimulation();
+    // const simulation = startSimulation();
 
     return () => {
       stopSimulation();
@@ -146,7 +165,7 @@ export default function SingleChat(): JSX.Element {
   }, [chatId, isClient, setSelectedChat, markMessagesAsRead]);
 
   // Handle back navigation
-  const handleBackToChats = (e: any) => {
+  const handleBackToChats = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     router.push("/chats");
   };
@@ -384,7 +403,7 @@ export default function SingleChat(): JSX.Element {
   };
 
   // Enhanced time formatting
-  const formatTime = (timestamp: Date) => {
+  const formatTime = (timestamp: Date | string) => {
     if (!isClient) return "now";
 
     const now = new Date();
@@ -425,7 +444,7 @@ export default function SingleChat(): JSX.Element {
   };
 
   // Enhanced message rendering with better URL handling
-  const renderMessage = (message: any) => {
+  const renderMessage = (message: ChatMessage) => {
     if (message.sender === "user" && isUrl(message.text)) {
       const lines = message.text.split("\n");
       const url = lines[0];
@@ -540,7 +559,7 @@ export default function SingleChat(): JSX.Element {
                 />
                 {/* Hidden fallback - will be shown if image fails */}
                 <div
-                  className={`w-10 h-10 rounded-full hidden items-center justify-center text-white font-semibold absolute top-0 left-0 ${getAvatarColor(
+                  className={`w-10 h-10 rounded-full hidden items-center justify-center text-white font-semibold ${getAvatarColor(
                     chatInfo?.name || ""
                   )}`}
                 >

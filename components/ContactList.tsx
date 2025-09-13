@@ -29,8 +29,9 @@ const formatLastSeen = (lastSeenString: string): string => {
     if (diffInMinutes < 1) {
       return "last seen recently";
     } else if (diffInMinutes < 60) {
-      return `last seen ${diffInMinutes} min${diffInMinutes > 1 ? "s" : ""
-        } ago`;
+      return `last seen ${diffInMinutes} min${
+        diffInMinutes > 1 ? "s" : ""
+      } ago`;
     } else if (diffInHours < 24) {
       return `last seen ${diffInHours} hour${diffInHours > 1 ? "s" : ""} ago`;
     } else if (diffInDays === 1) {
@@ -79,7 +80,7 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
     if (!isClient) return [];
 
     // Filter out system contacts (Saved Messages, Archive) - only exclude Saved Messages
-    let availableContacts = contacts.filter((contact) => {
+    const availableContacts = contacts.filter((contact) => {
       const shouldExclude =
         contact.id === 5 || // Saved Messages
         contact.name === "Saved Messages" ||
@@ -186,8 +187,9 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
           {/* Search Icon */}
           <FiSearch
             size={20}
-            className={`absolute left-3 top-2.5 transition-colors duration-200 ${searchQuery ? "text-blue-400" : "text-gray-500"
-              }`}
+            className={`absolute left-3 top-2.5 transition-colors duration-200 ${
+              searchQuery ? "text-blue-400" : "text-gray-500"
+            }`}
           />
 
           {/* Clear Button */}
@@ -209,8 +211,9 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
           <div className="p-3 border-b border-[#2d2d2d] bg-[#1a1a1a]">
             <p className="text-sm text-gray-400">
               {filteredContacts.length > 0
-                ? `Found ${filteredContacts.length} contact${filteredContacts.length !== 1 ? "s" : ""
-                }`
+                ? `Found ${filteredContacts.length} contact${
+                    filteredContacts.length !== 1 ? "s" : ""
+                  }`
                 : "No contacts found"}
             </p>
           </div>
@@ -229,10 +232,7 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
         {filteredContacts.length > 0 ? (
           <div className="divide-y divide-transparent">
             {filteredContacts.map((contact) => (
-              <div
-                key={contact.id}
-                className="border-b border-transparent"
-              >
+              <div key={contact.id} className="border-b border-transparent">
                 <button
                   className="w-full p-3 flex items-center gap-3 hover:bg-[#151515] transition-colors cursor-pointer"
                   onClick={() => handleContactClick(contact)}
