@@ -49,6 +49,10 @@ A modern Telegram web application clone built with Next.js, TypeScript, and Zust
 - Emoji Picker: emoji-picker-react
 - Authentication Store: Zustand-based auth management
 
+## 📸 Screenshot
+
+![Telegram Clone Main Interface](screenshot.png)
+
 ## 📦 Installation
 
 1. Clone the repository:
