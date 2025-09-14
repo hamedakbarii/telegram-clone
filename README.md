@@ -13,7 +13,7 @@ A modern Telegram web application clone built with Next.js, TypeScript, and Zust
 - Unread Message Counter: Track unread messages with badge indicators
 
 ### User Interface
-- Responsive Design: Fully responsive layout that works on desktop, tablet, and mobile devices
+- Responsive Design: Fully responsive layout that works on desktop, tablet, and mobile  devices
 - Dark Theme: Modern dark theme UI matching Telegram's design language
 - Emoji Support: Integrated emoji picker for message composition
 - User Avatars: Profile pictures with fallback to initials and color-coded backgrounds
