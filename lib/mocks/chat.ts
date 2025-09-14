@@ -1,4 +1,5 @@
-// Path: lib/mocks/chat.ts
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
 export const chats = [
   {
     id: 0,
@@ -6,7 +7,7 @@ export const chats = [
     lastMessage: "Pavel Durov, BotFather, FoxNews",
     lastMessageTime: "12:30 PM",
     unreadCount: 189,
-    avatar: "http://localhost:3000/assets/avatar/archive.jpeg",
+    avatar: `${APP_URL}/assets/avatar/archive.jpeg`,
     isOnline: false,
     isPinned: false,
     messageStatus: null,
@@ -21,7 +22,7 @@ export const chats = [
     lastMessage: "سفارش با موفقیت ثبت شد ✅",
     lastMessageTime: "12:30 PM",
     unreadCount: 0,
-    avatar: "http://localhost:3000/assets/avatar/belami.jpg",
+    avatar: `${APP_URL}/assets/avatar/belami.jpg`,
     isOnline: null,
     isPinned: null,
     messageStatus: null,
@@ -35,7 +36,7 @@ export const chats = [
     lastMessage: "Salam Pesar",
     lastMessageTime: "11:15 AM",
     unreadCount: 3,
-    avatar: "http://localhost:3000/assets/avatar/hamed.jpg",
+    avatar: `${APP_URL}/assets/avatar/hamed.jpg`,
     isOnline: false,
     isPinned: null,
     messageStatus: null,
@@ -50,7 +51,7 @@ export const chats = [
       "Login code: 46619. Do not give this code to anyone, even if they say they are from Telegram!",
     lastMessageTime: "Yesterday",
     unreadCount: 2,
-    avatar: "http://localhost:3000/assets/avatar/telegram.jpg",
+    avatar: `${APP_URL}/assets/avatar/telegram.jpg`,
     isOnline: false,
     isPinned: false,
     messageStatus: null,
@@ -61,11 +62,10 @@ export const chats = [
   {
     id: 4,
     name: "Amir Rahemi",
-    lastMessage:
-      "Not yet, I need two more days",
+    lastMessage: "Not yet, I need two more days",
     lastMessageTime: "Yesterday",
     unreadCount: 2,
-    avatar: "http://localhost:3000/assets/avatar/amir.jpg",
+    avatar: `${APP_URL}/assets/avatar/amir.jpg`,
     isOnline: false,
     isPinned: false,
     messageStatus: null,
@@ -79,7 +79,7 @@ export const chats = [
     lastMessage: "Anbari",
     lastMessageTime: "Mon",
     unreadCount: 0,
-    avatar: "http://localhost:3000/assets/avatar/save-message.jpeg",
+    avatar: `${APP_URL}/assets/avatar/save-message.jpeg`,
     isOnline: false,
     isPinned: false,
     messageStatus: "succeeded",
@@ -93,7 +93,7 @@ export const chats = [
     lastMessage: "امیدوارم همیشه چمن های گیت هابتون با پول سبز باشه",
     lastMessageTime: "Jul 27",
     unreadCount: 0,
-    avatar: "http://localhost:3000/assets/avatar/eldracu.jpeg",
+    avatar: `${APP_URL}/assets/avatar/eldracu.jpeg`,
     isOnline: false,
     isPinned: false,
     messageStatus: "read",

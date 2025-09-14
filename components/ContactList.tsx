@@ -131,7 +131,7 @@ export default function ContactList({ onBackToChats }: ContactListProps) {
     return (
       avatarUrl &&
       avatarUrl !== "" &&
-      avatarUrl !== "http://localhost:3000/assets/avatar/" &&
+      avatarUrl !== `${process.env.NEXT_PUBLIC_APP_URL}/assets/avatar/` &&
       !avatarUrl.endsWith("assets/avatar/")
     );
   };
