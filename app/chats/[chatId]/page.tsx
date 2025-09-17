@@ -719,7 +719,7 @@ export default function SingleChat(): JSX.Element {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 bg-[url(/assets/image/chat-bg-br.png)] dark:bg-[url(/assets/image/chat-bg-pattern-dark.png)]">
+        <div className="flex-1 overflow-y-auto p-4 bg-[url(/assets/image/chat-bg-br.webp)] dark:bg-[url(/assets/image/chat-bg-pattern-dark.png)]">
           <div className="flex flex-col space-y-1">
             {/* Today divider */}
             <div className="flex justify-center my-4">
